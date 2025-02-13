@@ -1,0 +1,127 @@
+DISK CONTENT EXTRACTION LOG
+Performed by Applesauce v2.0.2
+www.applesaucefdc.com
+
+Timestamp: Feb 13, 2025 at 21:40
+
+    Media: 5.25" Floppy Disk
+   Format: Atari DOS
+
+== STATUS ======================================================================
+
+15 files were detected on the disk.
+No issues were encountered with the extraction process.
+
+== CATALOG =====================================================================
+
+D1:
+  CHBAS        046
+  EXXON   0    052
+  EXXON   1    047
+  EXXON   2    051
+  EXXON   3    042
+  EXXON   4    041
+  EXXON   5    058
+  EXXON   6    053
+  EXXON   7    054
+  EXXON   8    049
+  EXXON   9    038
+  EXXON   10   041
+  EXXON   11   043
+  EXXON   12   042
+  EXXON   13   045
+1 FREE SECTORS
+
+
+== FILE DETAILS ================================================================
+
+CHBAS
+Name: 'CHBAS'   Type: ''                   MD5: 41c32b78e595cb0ce0d70d6a46a0decb
+   File #: $00          Flags: $42          Start: $04      Sec Count: 46       
+
+--------------------------------------------------------------------------------
+
+EXXON.0
+Name: 'EXXON.0'   Type: '0'                MD5: fe008669f5b3e7dbc28df0401c5011f1
+   File #: $01          Flags: $42          Start: $21      Sec Count: 52       
+
+--------------------------------------------------------------------------------
+
+EXXON.1
+Name: 'EXXON.1'   Type: '1'                MD5: fc5646774cc3432836802e0ab08b7234
+   File #: $02          Flags: $42          Start: $48      Sec Count: 47       
+
+--------------------------------------------------------------------------------
+
+EXXON.2
+Name: 'EXXON.2'   Type: '2'                MD5: 294a85b88a59425a1b0e1d23596ab11d
+   File #: $03          Flags: $42          Start: $77      Sec Count: 51       
+
+--------------------------------------------------------------------------------
+
+EXXON.3
+Name: 'EXXON.3'   Type: '3'                MD5: 37463bd22726ae0355be01a980eb4833
+   File #: $04          Flags: $42          Start: $A5      Sec Count: 42       
+
+--------------------------------------------------------------------------------
+
+EXXON.4
+Name: 'EXXON.4'   Type: '4'                MD5: 457c04a2ad3b168871a64ab88f15295f
+   File #: $05          Flags: $42          Start: $CB      Sec Count: 41       
+
+--------------------------------------------------------------------------------
+
+EXXON.5
+Name: 'EXXON.5'   Type: '5'                MD5: 088eb31200899103f1338accb324d662
+   File #: $06          Flags: $42          Start: $F2      Sec Count: 58       
+
+--------------------------------------------------------------------------------
+
+EXXON.6
+Name: 'EXXON.6'   Type: '6'                MD5: c8ffec2129e906da57ad278ec7214417
+   File #: $07          Flags: $42          Start: $125     Sec Count: 53       
+
+--------------------------------------------------------------------------------
+
+EXXON.7
+Name: 'EXXON.7'   Type: '7'                MD5: 97495dee1e1afba05c0699f7e927a6e4
+   File #: $08          Flags: $42          Start: $158     Sec Count: 54       
+
+--------------------------------------------------------------------------------
+
+EXXON.8
+Name: 'EXXON.8'   Type: '8'                MD5: 4c3fe470e77707e4eb9f139e64ecd9a4
+   File #: $09          Flags: $42          Start: $A7      Sec Count: 49       
+
+--------------------------------------------------------------------------------
+
+EXXON.9
+Name: 'EXXON.9'   Type: '9'                MD5: 37a9e37de7e5fde3f83dfc41f22c91b5
+   File #: $0A          Flags: $42          Start: $1C0     Sec Count: 38       
+
+--------------------------------------------------------------------------------
+
+EXXON.10
+Name: 'EXXON.10'   Type: '10'              MD5: 2263582d8ca48fa50f372c5f6a0fdb70
+   File #: $0B          Flags: $42          Start: $1E6     Sec Count: 41       
+
+--------------------------------------------------------------------------------
+
+EXXON.11
+Name: 'EXXON.11'   Type: '11'              MD5: 3cb92219b539207f0c3cdee702b42be7
+   File #: $0C          Flags: $42          Start: $20D     Sec Count: 43       
+
+--------------------------------------------------------------------------------
+
+EXXON.12
+Name: 'EXXON.12'   Type: '12'              MD5: aa7f6bcdb1f866e90f0e217e47880a81
+   File #: $0D          Flags: $42          Start: $195     Sec Count: 42       
+
+--------------------------------------------------------------------------------
+
+EXXON.13
+Name: 'EXXON.13'   Type: '13'              MD5: c3ee01a7739c08caba6a2a86be6841f8
+   File #: $0F          Flags: $42          Start: $258     Sec Count: 45       
+
+--------------------------------------------------------------------------------
+
