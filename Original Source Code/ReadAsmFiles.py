@@ -25,7 +25,7 @@ def scanDir(directory):
 		data = open(directory+file,'rb').read()
 		if data[0:2] != b'SC':
 			print('### WRONG HEADER')
-			print(dump(data))
+			#print(dump(data))
 			continue
 		of = open(OUTPUT_PATH+file,'w')
 		offset = 6
@@ -39,7 +39,7 @@ def scanDir(directory):
 				offset += 1
 				if ch == 0x00:
 					break
-				if ch == 0x81:
+				elif (ch & 0x80) == 0x80:
 					ch = ' '
 				else:
 					ch = chr(ch)
