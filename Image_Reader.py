@@ -51,8 +51,8 @@ def drawImage(firstOffset,lastOffset,name):
 		print('%2d %s' % (row-firstOffset,st))
 	print()
 
-drawImage(0x52D7,0x52E7,"P0IMAGE") # regular plane (0-9), contrast color (10-15)
-drawImage(0x52E7,0x5303,"P1IMAGE") # plane shadow (0-9), plane turning left (10-16), plane turning right (17-27)
+drawImage(0x52D7,0x52E7,"P0IMAGE") # regular plane (0-9), contrast color (10-12), contrast color (13-15)
+drawImage(0x52E7,0x5303,"P1IMAGE") # plane shadow (0-7), plane turning left (8-17), plane turning right (18-27)
 drawImage(0x5303,0x5308,"CARRT")   # car driving right
 drawImage(0x5308,0x530D,"CARLT")   # car driving left
 drawImage(0x530D,0x5312,"TYRRT")   # car tyres driving right
