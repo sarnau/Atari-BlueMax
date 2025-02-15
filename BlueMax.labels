@@ -1,0 +1,16 @@
+// Labels exported by RetroDebugger v0.64.70 on 2025/02/15 21:10:41
+{
+  Version: "1"
+  Segments: [
+    {
+      Name: Default
+      CodeLabels: [
+        {
+          Address: 0c00
+          Name: RESET
+          Comment: Entry Point into BlueMax
+        }
+      ]
+    }
+  ]
+}
