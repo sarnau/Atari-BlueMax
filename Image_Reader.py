@@ -63,15 +63,15 @@ def drawImage(firstOffset,lastOffset,name):
 #drawImage(0x5329,0x532F,"TYRTRL")  # truck tyres driving left
 #drawImage(0x532F,0x5339,"SHDW")    # enemy plane shadow flying towards player
 #drawImage(0x5339,0x5343,"PLANE1")  # enemy plane flying towards player
-drawImage(0x5343,0x534B,"PROPIM")
+#drawImage(0x5343,0x534B,"PROPIM")  # enemy plane propeller animations (0-3 and 4-7)
 #drawImage(0x538E,0x539B,"XPL1IM")  # plane explosion
 #drawImage(0x53C7,0x53D3,"SHPIM")   # moving ship
 #drawImage(0x53D3,0x53DF,"SHPIM1")  # moving ship black highlight color
-drawImage(0x5421,0x542B,"FTR")
-drawImage(0x542B,0x5436,"FTL")
+#drawImage(0x5421,0x542B,"FTR")     # enemy plane turning right
+#drawImage(0x542B,0x5436,"FTL")     # enemy plane turning left
 #drawImage(0x5436,0x543F,"GNST")    # red-white flashing bullseye target
 drawImage(0x543F,0x5449,"XCRIM")
-drawImage(0x5449,0x5456,"XSHPIM")  # moving ship explosion
-drawImage(0x5498,0x54A5,"AAH")
-drawImage(0x54A5,0x54B2,"AAI")
-drawImage(0x54F2,0x5504,"XCPTLIM")
+#drawImage(0x5449,0x5456,"XSHPIM")  # moving ship explosion
+#drawImage(0x5498,0x54A5,"AAH")     # final targets (main color)
+#drawImage(0x54A5,0x54B2,"AAI")     # final targets (black color)
+#drawImage(0x54F2,0x5504,"XCPTLIM") # explosion off the final targets
