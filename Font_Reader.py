@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageShow, ImageFont
 PIXEL_SET = '█︎'
 PIXEL_CLEAR = ' '
 
-data = open('BlueMax.xex','rb').read()[0x5006:]
+data = bytearray(0x0C00)+open('BlueMax.xex','rb').read()[6:]
 
 class bcolors:
 	BLACK = '\033[38;5;0m'
@@ -55,23 +55,29 @@ def drawFont(addr,firstChar=0x00,lastChar=0x40,isColor=False):
 	for cindex in range(firstChar,lastChar+1,lineLen):
 		s = ''
 		for o in range(0,lineLen):
-			st = '$%02x' % (cindex + o)
-			s += (st + ' ' * 30)[:width+gap] + ' '
+			if o + cindex <= lastChar:
+				st = '$%02x' % (cindex + o)
+				s += (st + ' ' * 30)[:width+gap] + ' '
 		print(s)
 		for row in range(0,chheight):
 			s = ''
 			for o in range(0,lineLen):
-				bstr = '{:08b}'.format(data[addr + (chheight * (cindex + o)) + row])
-				st = ''
-				if isColor:
-					for i in range(0,len(bstr),2):
-						val = int(bstr[i:i+2],2)
-						st += atari_colors[val]+PIXEL_SET*2
-					st += bcolors.DEFAULT
-				else:
-					st = bstr.replace('1',PIXEL_SET*2).replace('0',PIXEL_CLEAR*2)
-				s += st + ' ' + ' ' * gap
+				if o + cindex <= lastChar:
+					bstr = '{:08b}'.format(data[addr + (chheight * (cindex + o)) + row])
+					st = ''
+					if isColor:
+						for i in range(0,len(bstr),2):
+							val = int(bstr[i:i+2],2)
+							st += atari_colors[val]+PIXEL_SET*2
+						st += bcolors.DEFAULT
+					else:
+						st = bstr.replace('1',PIXEL_SET*2).replace('0',PIXEL_CLEAR*2)
+					s += st + ' ' + ' ' * gap
 			print(s)
 	print()
 
-drawFont(0x0000,0x00,0x7F,True)  # multi color - Font for characters in the rooms
+drawFont(0x5C00,0x00,0x7F,True)  # multi color - Font for characters in the rooms
+
+drawFont(0x54B2,0x00,0x07,True)  # multi color - Font for characters in the rooms
+
+drawFont(0x552F,0x00,0x01,True)  # multi color - Font for characters in the rooms
