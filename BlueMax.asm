@@ -848,11 +848,14 @@ GAME_LEVEL_ADVANCED: = 2                ; XREF: CKSC+3/s
 ; ---------------------------------------------------------------------------
 
 ; enum ENEMY_BULLET_MOVEMENT_TYPES, width 1 byte
-ENEMY_BULLET_MOVEMENT_TYPES_LEFT: = 0   ; XREF: FM2GN+23/s
-ENEMY_BULLET_MOVEMENT_TYPES_LEFT2: = 1  ; XREF: FM2GN:C4/s FM2GN+67/s
-ENEMY_BULLET_MOVEMENT_TYPES_NOTHING: = 2 ; XREF: FM2GN+37/s FM2GN:C8/s
+ENEMY_BULLET_MOVEMENT_TYPES_LEFT: = 0   ; XREF: ZZ/s FTNKGN-1EE/s ...
+ENEMY_BULLET_MOVEMENT_TYPES_LEFT2: = 1  ; XREF: FTNKGN-C5B/s
+                                        ; FTNKGN:A9/s ...
+ENEMY_BULLET_MOVEMENT_TYPES_NOTHING: = 2 ; XREF: FTNKGN:ZX/s
+                                        ; FTNKGN-1DA/s ...
 ENEMY_BULLET_MOVEMENT_TYPES_LEFT_RANDOM: = 3
-ENEMY_BULLET_MOVEMENT_TYPES_RIGHT: = 4  ; XREF: FM2GN+12/s FM2GN:G2/s ...
+ENEMY_BULLET_MOVEMENT_TYPES_RIGHT: = 4  ; XREF: FTNKGN-C44/s
+                                        ; FTNKGN:G1/s ...
 
 ; ---------------------------------------------------------------------------
 
@@ -872,6 +875,23 @@ GAME_PHASE_5:    = 5                    ; XREF: AREA+13/s CLEAR+8/s ...
 GAME_PHASE_6:    = 6                    ; XREF: B7+28/s END+39/s ...
 GAME_PHASE_7:    = 7                    ; XREF: B7+20/s YI+11/s ...
 GAME_PHASE_8:    = 8                    ; XREF: AREA+17/s CLEAR+C/s ...
+
+; ---------------------------------------------------------------------------
+
+; enum UNKNOWNS_STATE, width 1 byte
+UNKNOWNS_STATE_0: = 0
+UNKNOWNS_STATE_1: = 1
+UNKNOWNS_STATE_2: = 2                   ; XREF: L6+3/s L6+42/s
+UNKNOWNS_STATE_3: = 3                   ; XREF: DRP23+13/s DRP23+72/s ...
+UNKNOWNS_STATE_4: = 4                   ; XREF: DRP23+17/s DRP23+99/s ...
+UNKNOWNS_STATE_5: = 5                   ; XREF: PLBCK+1C/s L6+F/s ...
+UNKNOWNS_STATE_6: = 6                   ; XREF: DRP23+F/s
+                                        ; DRBR__DRAW_BRIDGE+177/s
+UNKNOWNS_STATE_7: = 7                   ; XREF: PLFWD+11/s KV/s
+UNKNOWNS_STATE_8: = 8                   ; XREF: PLFWD+15/s
+UNKNOWNS_STATE_9: = 9
+UNKNOWNS_STATE_10: = 10                 ; XREF: PLFWD+9/s
+UNKNOWNS_STATE_11: = 11                 ; XREF: PLFWD+D/s PLFWD+DA/s
 
 ;
 ; +-------------------------------------------------------------------------+
@@ -1221,8 +1241,9 @@ TURN_STICK0:    .BYTE 0 ; (uninited)    ; DATA XREF: TURN+2↓r
                                         ; STICK0 copy for the TURN routine
 byte_608:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+261↓w
                                         ; JOYST:PN↓w ...
-byte_609:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+207↓w
+CAN_LAND_FLAG:  .BYTE 0 ; (uninited)    ; DATA XREF: RESET+207↓w
                                         ; CKLAND↓r ...
+                                        ; =0 => plane can land (runway reached)
 TREE_POS_BUF:   .BYTE 0,0,0,0,0,0 ; (uninited) ; DATA XREF: RESET:EU↓t
                                         ; DRTR__DRAW_TREE:EO↓t ...
                                         ; Position of trees
@@ -1300,7 +1321,7 @@ FUEL_TIMER:     .BYTE 0 ; (uninited)    ; DATA XREF: RESET+20A↓w
 IS_DEMO_MODE:   .BYTE 0 ; (uninited)    ; DATA XREF: RESET+145↓w
                                         ; EB+E8↓w ...
                                         ; 0=Demo Mode active
-byte_640:       .BYTE 0 ; (uninited)    ; DATA XREF: DRP23+C↓r
+VAR_UNKNOWN_STATE:.BYTE 0 ; (uninited)  ; DATA XREF: DRP23+C↓r
                                         ; DRP23+74↓w ...
 AUDC1_SHADOW:   .BYTE 0 ; (uninited)    ; DATA XREF: EB+91↓w KMKZ+A↓r ...
 AUDIO2_DROPSND_FREQ:.BYTE 0 ; (uninited) ; DATA XREF: RESET+1B3↓w
@@ -1359,7 +1380,7 @@ byte_65A:       .BYTE 0 ; (uninited)    ; DATA XREF: JOYST+5↓w
 RUNWAY_POS_X_INDEX:.BYTE 0 ; (uninited) ; DATA XREF: RESET+14A↓w
                                         ; DRUN__DRAW_RUNWAY+96↓w ...
                                         ; Right position where the runway starts
-byte_65C:       .BYTE 0 ; (uninited)    ; DATA XREF: A2+2↓w
+MISSLE_3_X_POS2:.BYTE 0 ; (uninited)    ; DATA XREF: A2+2↓w
                                         ; BRGPOS+28↓w ...
 byte_65D:       .BYTE 0 ; (uninited)    ; DATA XREF: A2+F↓w
                                         ; BRGPOS:loc_2AE4↓w ...
@@ -1373,7 +1394,7 @@ byte_661:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1CA↓w
                                         ; DRBT__DRAW_BOAT+43↓w ...
 byte_662:       .BYTE 0 ; (uninited)    ; DATA XREF: FTNKGN-C1C↓w
                                         ; FTNKGN:SN↓w
-byte_663:       .BYTE 0 ; (uninited)    ; DATA XREF: ZZ+8↓w
+MISSLE_3_X_POS: .BYTE 0 ; (uninited)    ; DATA XREF: ZZ+8↓w
                                         ; FTNKGN-C57↓w ...
 byte_664:       .BYTE 0 ; (uninited)    ; DATA XREF: A2+A↓w
                                         ; BRGPOS:loc_2ADB↓r ...
@@ -1445,7 +1466,7 @@ byte_694:       .BYTE 0 ; (uninited)    ; DATA XREF: B7+6A↓w
 WIND_ENABLED:   .BYTE 0 ; (uninited)    ; DATA XREF: WIND+2A↓w
                                         ; WIND:ZR↓w ...
                                         ; 50% chance that wind is in effect
-byte_696:       .BYTE 0 ; (uninited)    ; DATA XREF: ZZ:A1↓w
+VAR_MISSLE_3_STATE:.BYTE 0 ; (uninited) ; DATA XREF: ZZ:A1↓w
                                         ; FTNKGN:SM↓r ...
 MSHIP_BULLET_X_POS:.BYTE 0 ; (uninited) ; DATA XREF: B3+2↓w
                                         ; M2GPOS+1F↓r ...
@@ -2009,7 +2030,7 @@ L5:                                     ; CODE XREF: RESET+159↓j
                 STA     AUDIO2_DURATION_COUNTER
                 LDA     #26
                 STA     byte_FF
-                STA     byte_609
+                STA     CAN_LAND_FLAG   ; =0 => plane can land (runway reached)
                 STA     FUEL_TIMER
                 LDA     #6
                 STA     MAP_RIVER_LENGTH ; Length of a certain river feature to continue (straight, turn left/right)
@@ -4607,12 +4628,12 @@ DRP23:                                  ; CODE XREF: SRT+2A↑p
                 BNE     IR              ; => Return
                 JSR     XP23
                 JSR     SHP23
-                LDA     byte_640
-                CMP     #6
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_6
                 BEQ     IO
-                CMP     #3
+                CMP     #UNKNOWNS_STATE_3
                 BEQ     IP
-                CMP     #4
+                CMP     #UNKNOWNS_STATE_4
                 BEQ     IQ
 
 IR:                                     ; CODE XREF: DRP23+4↑j
@@ -4677,8 +4698,8 @@ IV:                                     ; CODE XREF: DRP23+70↓j
                 DEY
                 DEX
                 BNE     IV
-                LDA     #3
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_3
+                STA     VAR_UNKNOWN_STATE
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -4700,8 +4721,8 @@ IW:                                     ; CODE XREF: DRP23+97↓j
                 DEY
                 DEX
                 BNE     IW
-                LDA     #4
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_4
+                STA     VAR_UNKNOWN_STATE
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -4807,8 +4828,8 @@ KA:                                     ; CODE XREF: DRP23+12B↓j
                 DEY
                 DEX
                 BNE     KA
-                LDA     #3
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_3
+                STA     VAR_UNKNOWN_STATE
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -4829,8 +4850,8 @@ KB:                                     ; CODE XREF: DRP23+152↓j
                 DEY
                 DEX
                 BNE     KB
-                LDA     #4
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_4
+                STA     VAR_UNKNOWN_STATE
                 RTS
 ; End of function DRP23
 
@@ -5052,7 +5073,7 @@ A2:                                     ; CODE XREF: DRBT__DRAW_BOAT+32↑p
                                         ; B5+B↓p ...
                 ASL     A
                 ASL     A
-                STA     byte_65C
+                STA     MISSLE_3_X_POS2
                 STA     byte_661
                 LDA     #50
                 STA     byte_664
@@ -5219,8 +5240,8 @@ JH:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:JI↑j
                 LDA     RANDOM          ; Random Number Generator
                 AND     #7
                 BEQ     GS
-                LDA     #6
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_6
+                STA     VAR_UNKNOWN_STATE
                 STA     VBL_DRAW_DOWN_COUNTER ; VBL: down counter whenever the level scrolls a pixel
                 LDA     #1
                 STA     byte_FD
@@ -5258,13 +5279,13 @@ PD:                                     ; CODE XREF: SPD__SPEED_CHANGE+3↑j
                 CMP     #_2|_C_BLUE
                 BCC     KT              ; Increment speed by 1
                 CMP     #_3|_C_BLUE
-                BEQ     KN              ; Decrement speed by 1
+                BEQ     KN              ; Decrement speed by 1 with little delay
                 LDA     SC_STATUS_LINE.line_1.speed_digit_10
                 CMP     #_1|_C_BLUE
-                BCS     KN              ; Decrement speed by 1
+                BCS     KN              ; Decrement speed by 1 with little delay
                 LDA     SC_STATUS_LINE.line_1.speed_digit_1
                 CMP     #_1|_C_BLUE
-                BCS     KN              ; Decrement speed by 1
+                BCS     KN              ; Decrement speed by 1 with little delay
 
 KO:                                     ; CODE XREF: SPD__SPEED_CHANGE+2B↓j
                                         ; SPD__SPEED_CHANGE+30↓j ...
@@ -5276,7 +5297,7 @@ KL:                                     ; CODE XREF: SPD__SPEED_CHANGE+A↑j
                 CMP     #_3|_C_BLUE     ; Speed already 300?
                 BEQ     KO              ; => Return
 
-KM:                                     ; Limit speed increment/decrement changes with this counter
+KM:                                     ; Increment speed by 1 with little delay
                 DEC     SPEED_DELAY_COUNTER
                 BNE     KO              ; => Return
                 LDA     #2
@@ -5311,7 +5332,7 @@ KQ:                                     ; CODE XREF: SPD__SPEED_CHANGE+4F↑j
 
 KN:                                     ; CODE XREF: SPD__SPEED_CHANGE+15↑j
                                         ; SPD__SPEED_CHANGE+1C↑j ...
-                DEC     SPEED_DELAY_COUNTER ; Decrement speed by 1
+                DEC     SPEED_DELAY_COUNTER ; Decrement speed by 1 with little delay
                 BNE     KO              ; => Return
                 LDA     #2
                 STA     SPEED_DELAY_COUNTER ; Limit speed increment/decrement changes with this counter
@@ -5381,14 +5402,14 @@ PLFWD:                                  ; CODE XREF: SRT+F↑p CITY+6↓p
                 LDA     byte_FD
                 CMP     #3
                 BNE     LM              ; => Return
-                LDA     byte_640
-                CMP     #10
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_10
                 BEQ     LF
-                CMP     #11
+                CMP     #UNKNOWNS_STATE_11
                 BEQ     LF
-                CMP     #7
+                CMP     #UNKNOWNS_STATE_7
                 BEQ     KW
-                CMP     #8
+                CMP     #UNKNOWNS_STATE_8
                 BEQ     KD
                 JMP     LN
 ; ---------------------------------------------------------------------------
@@ -5412,15 +5433,16 @@ P4:                                     ; CODE XREF: PLFWD+21↑j
 
 P5:                                     ; CODE XREF: PLFWD+2A↑j
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$1F
+                AND     #11111b
                 ADC     #170
                 STA     HPOSP2          ; Enemy (Horizontal Position – first color)
                 STA     HPOSP3          ; Enemy (Horizontal Position – second color)
                 STA     ENEMY_X_POS     ; Enemy X position
-                LDY     #$F
+
+                LDY     #15
                 STY     byte_C2
                 STY     ENEMY_Y_POS     ; Enemy Y position
-                LDX     #$A
+                LDX     #10
 
 KU:                                     ; CODE XREF: PLFWD+51↓j
                 LDA     SHDW-1,X        ; enemy plane shadow flying towards player
@@ -5428,9 +5450,9 @@ KU:                                     ; CODE XREF: PLFWD+51↓j
                 DEY
                 DEX
                 BNE     KU
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$1F
+                AND     #11111b
                 ORA     #$C
                 ADC     #3
                 STA     byte_62F
@@ -5442,8 +5464,8 @@ KU:                                     ; CODE XREF: PLFWD+51↓j
 
 
 KV:                                     ; CODE XREF: L6:OY↓j
-                LDA     #7
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_7
+                STA     VAR_UNKNOWN_STATE
                 LDA     #3
                 STA     byte_FD
 
@@ -5534,8 +5556,8 @@ loc_214F:                               ; CODE XREF: PLFWD+C5↑j
 
 loc_215A:                               ; CODE XREF: PLFWD+A5↑j
                                         ; PLFWD+C0↑j ...
-                LDA     byte_640
-                CMP     #11
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_11
                 BEQ     LP
                 JSR     LINE            ; Check line of sight: enemy plane at the same altitude?
                 JSR     COLM02          ; If Player is at the same altitude as the enemey plane, check if that one got hit
@@ -5569,7 +5591,8 @@ loc_217B:                               ; CODE XREF: PLFWD+100↓j
 LN:                                     ; CODE XREF: PLFWD+19↑j
                 DEC     byte_62F
                 BNE     loc_21AD
-                INC     byte_640
+
+                INC     VAR_UNKNOWN_STATE
                 LDY     ENEMY_Y_POS     ; Enemy Y position
                 LDA     #10000b
                 STA     P3+4,Y          ; Enemy (second color)
@@ -5639,7 +5662,7 @@ LE:                                     ; CODE XREF: LD+9↓j
                 DEY
                 DEX
                 BNE     LE
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 JMP     LP
 ; End of function LD
 
@@ -5655,7 +5678,7 @@ LQ:                                     ; CODE XREF: PLFWD:KW↑j
 loc_21F2:                               ; CODE XREF: PLFWD+16C↑j
                 DEC     byte_636
                 BNE     loc_21FB
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -5920,6 +5943,7 @@ MY:                                     ; CODE XREF: REFUEL+BE↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Decrement speed, except if we are at 100
 
 SPDL:                                   ; CODE XREF: CKLAND+22↓p
                 LDA     SC_STATUS_LINE.line_1.speed_digit_100
@@ -5935,7 +5959,7 @@ SPDL:                                   ; CODE XREF: CKLAND+22↓p
 ; ---------------------------------------------------------------------------
 
 MH:                                     ; CODE XREF: SPDL+5↑j SPDL+C↑j ...
-                JMP     KN              ; Decrement speed by 1
+                JMP     KN              ; Decrement speed by 1 with little delay
 ; End of function SPDL
 
 ; ---------------------------------------------------------------------------
@@ -5948,7 +5972,7 @@ ML:                                     ; CODE XREF: STOPL+5↓j
 
 ; =============== S U B R O U T I N E =======================================
 
-; Check if the planed stopped successfully on the landing stop (speed == 000)
+; Decrement speed till we hit 000 (= we landed)
 
 STOPL:                                  ; CODE XREF: CKLAND+72↓p
 
@@ -5964,6 +5988,7 @@ STOPL:                                  ; CODE XREF: CKLAND+72↓p
                 LDA     SC_STATUS_LINE.line_1.speed_digit_1
                 CMP     #_0|_C_BLUE
                 BNE     ML
+
                 LDA     #SETVBV_VVBLKD
                 LDX     #>XSND          ; Deferred interrupt for sound
                 LDY     #<XSND          ; Deferred interrupt for sound
@@ -6021,7 +6046,7 @@ _1:                                     ; CODE XREF: STOPL+2F↑j
 ; Check if the player wants to land the plane while being over the runway
 
 CKLAND:                                 ; CODE XREF: SRT+1E↑p
-                LDA     byte_609
+                LDA     CAN_LAND_FLAG   ; =0 => plane can land (runway reached)
                 BEQ     MF
                 RTS
 ; ---------------------------------------------------------------------------
@@ -6043,7 +6068,7 @@ LAND:                                   ; CODE XREF: CKLAND+3B↓j
                 JSR     DRUN__DRAW_RUNWAY ; Draw the runway on the map
                 JSR     COMMON
                 JSR     RUNSND
-                JSR     SPDL
+                JSR     SPDL            ; Decrement speed, except if we are at 100
                 JSR     CKCOL           ; Check collision?!?
                 JSR     FBRGN           ; Fire Gun
                 JSR     FBTGN
@@ -6056,8 +6081,9 @@ MK:                                     ; CODE XREF: CKLAND+31↑j
                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
                 SEC
                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
-                CMP     #3
+                CMP     #3              ; plane low enough to land?
                 BNE     LAND
+
                 LDA     #0
                 STA     TRIGGER_COUNT   ; Increment with each button/trigger press
                 STA     DL_IRQ_BACKGROUND_COLOR ; Color back to BLACK
@@ -6065,6 +6091,7 @@ MK:                                     ; CODE XREF: CKLAND+31↑j
                 STA     WIND_DURATION   ; Duration during which Wind is in effect
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
                 STA     byte_6B6
+
                 LDA     P1PF_HPOSM1     ; Missile 1 Horizontal Position / Player 1 to Playfield Collision
                 CMP     #1000b          ; Player hit the playfield
                 BEQ     MJ
@@ -6081,7 +6108,7 @@ MJ:                                     ; CODE XREF: CKLAND+55↑j
                 JSR     PROP            ; Update the propeller graphics for rotation
                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
                 JSR     XPLSN
-                JSR     STOPL           ; Check if the planed stopped successfully on the landing stop (speed == 000)
+                JSR     STOPL           ; Decrement speed till we hit 000 (= we landed)
                 JMP     MJ
 ; End of function CKLAND
 
@@ -6458,8 +6485,8 @@ PLBCK:                                  ; CODE XREF: SRT+C↑p CITY+9↓p
                 BCC     L6
                 JSR     XP2
                 JSR     TRIGB
-                LDA     byte_640
-                CMP     #5
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_5
                 BCC     _1              ; => Return
                 JSR     COLM02          ; If Player is at the same altitude as the enemey plane, check if that one got hit
 
@@ -6477,14 +6504,14 @@ L6:                                     ; CODE XREF: PLBCK+B↑j
 ; FUNCTION CHUNK AT 2758 SIZE 00000091 BYTES
 ; FUNCTION CHUNK AT 27F7 SIZE 00000037 BYTES
 
-                LDA     byte_640
-                CMP     #2
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_2
                 BEQ     OD
-                CMP     #3
+                CMP     #UNKNOWNS_STATE_3
                 BEQ     OG
-                CMP     #4
+                CMP     #UNKNOWNS_STATE_4
                 BEQ     OI
-                CMP     #5
+                CMP     #UNKNOWNS_STATE_5
                 BEQ     OJ
                 JMP     OR
 ; ---------------------------------------------------------------------------
@@ -6513,9 +6540,9 @@ OB:                                     ; CODE XREF: PLBCK+2↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     OY
-                LDA     #2
+                LDA     #UNKNOWNS_STATE_2
                 STA     byte_FD
-                STA     byte_640
+                STA     VAR_UNKNOWN_STATE
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_3
                 BCS     OC              ; => Return
@@ -6535,7 +6562,7 @@ OD:                                     ; CODE XREF: L6+5↑j
                 BNE     OC              ; => Return
                 DEC     byte_636
                 BNE     OE
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
 
 OC:                                     ; CODE XREF: L6+2A↑j L6+35↑j ...
                 RTS                     ; => Return
@@ -6576,11 +6603,11 @@ OH:                                     ; CODE XREF: OG+10↓j
                 DEY
                 DEX
                 BNE     OH
-                LDA     #$C
+                LDA     #1100b
                 STA     P3+$BC          ; Enemy (second color)
-                LDA     #4
+                LDA     #100b
                 STA     P3+$BD          ; Enemy (second color)
-                LDA     #$10
+                LDA     #10000b
                 STA     P3+$BE          ; Enemy (second color)
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$3F ; '?'
@@ -6592,7 +6619,7 @@ OH:                                     ; CODE XREF: OG+10↓j
                 STA     ENEMY_X_POS     ; Enemy X position
                 STA     HPOSP2          ; Enemy (Horizontal Position – first color)
                 STA     HPOSP3          ; Enemy (Horizontal Position – second color)
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 LDA     byte_C4
                 BNE     Q3
                 LDA     #COLOR_INTENSITY_12|COLOR_DARK_PURPLE
@@ -6613,7 +6640,7 @@ Q3:                                     ; CODE XREF: OG+3F↑j
 OW:                                     ; CODE XREF: L6:OI↑j
                 DEC     byte_62F
                 BNE     OX
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 LDY     byte_C2
                 LDX     #8
 
@@ -6651,7 +6678,7 @@ OM:                                     ; CODE XREF: L6+111↓j
                 DEX
                 BNE     OM
                 JSR     AEL
-                INC     byte_640
+                INC     VAR_UNKNOWN_STATE
                 JMP     OR
 ; ---------------------------------------------------------------------------
 
@@ -6692,8 +6719,8 @@ OP:                                     ; CODE XREF: L6+13C↑j L6+153↓j
 
 OQ:                                     ; CODE XREF: L6+131↑j L6+148↑j
                 DEC     ENEMY_Y_POS     ; Enemy Y position
-                LDA     byte_640
-                CMP     #5
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_5
                 BNE     OV
 
 OR:                                     ; CODE XREF: L6+13↑j L6+FD↑j ...
@@ -7147,8 +7174,8 @@ TRIGB:                                  ; CODE XREF: PLBCK+16↑p
                 LDA     RANDOM          ; Random Number Generator
                 CMP     DIFF.field_2    ; Difficulty for the level
                 BCS     RM              ; => Return
-                LDA     byte_640
-                CMP     #5
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_5
                 BNE     RM              ; => Return
                 LDA     ENEMY_X_POS     ; Enemy X position
                 CLC
@@ -7295,7 +7322,7 @@ loc_2AE4:                               ; CODE XREF: BRGPOS+F↑j
                 LDA     byte_65E
                 LSR     A
                 BCS     SP              ; => Return
-                DEC     byte_65C
+                DEC     MISSLE_3_X_POS2
 
 SP:                                     ; CODE XREF: BRGPOS+26↑j
                                         ; FBRGN+2↓j ...
@@ -7318,7 +7345,7 @@ FBRGN:                                  ; CODE XREF: SRT+24↑p
                 LDY     byte_65F
                 BNE     SM
                 JSR     CKFGN
-                LDX     byte_65C
+                LDX     MISSLE_3_X_POS2
                 CPX     #185
                 BCS     TA
                 CPX     #161
@@ -7335,23 +7362,23 @@ ZW:                                     ; CODE XREF: FBRGN+48↓j
 
 
 ZZ:
-                LDA     #0
+                LDA     #ENEMY_BULLET_MOVEMENT_TYPES_LEFT
 
 A1:
-                STA     byte_696
+                STA     VAR_MISSLE_3_STATE
 
 SX:                                     ; CODE XREF: FTNKGN-1E1↓j
-                STX     P3PF_HPOSM3     ; Missile 3 Horizontal Position / Player 3 to Playfield Collision
-                STX     byte_663
+                STX     P3PF_HPOSM3     ; Set missile 3 X position
+                STX     MISSLE_3_X_POS
                 STY     byte_65F
-                LDA     #$80
+                LDA     #10000000b
                 STA     MISSLE,Y
                 STA     MISSLE-1,Y
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$F
-                ADC     #$F
+                ADC     #15
                 STA     byte_660
-                LDA     #$C
+                LDA     #12
                 STA     AUDIO4_GUN_SND_COUNTER
                 RTS
 ; End of function ZZ
@@ -7368,7 +7395,7 @@ TA:                                     ; CODE XREF: FBRGN+11↑j
                 TXA
                 SEC
                 SBC     #96
-                STA     byte_65C
+                STA     MISSLE_3_X_POS2
                 JMP     G3
 ; END OF FUNCTION CHUNK FOR FBRGN
 ; ---------------------------------------------------------------------------
@@ -7376,29 +7403,29 @@ TA:                                     ; CODE XREF: FBRGN+11↑j
 ;   ADDITIONAL PARENT FUNCTION FBRGN
 
 SM:                                     ; CODE XREF: FBRGN+7↑j
-                                        ; FTNKGN:loc_35DF↓j
-                LDA     byte_696
+                                        ; FTNKGN:A7↓j
+                LDA     VAR_MISSLE_3_STATE
                 BEQ     ZV
-                CMP     #1
+                CMP     #ENEMY_BULLET_MOVEMENT_TYPES_LEFT2
                 BNE     ZX
-                DEC     byte_663
+                DEC     MISSLE_3_X_POS
 
 ZV:                                     ; CODE XREF: FTNKGN-C5D↑j
                                         ; FTNKGN-C36↓j
-                DEC     byte_663
+                DEC     MISSLE_3_X_POS
 
 G5:                                     ; CODE XREF: FTNKGN-C3D↓j
-                LDA     byte_663
+                LDA     MISSLE_3_X_POS
                 STA     P3PF_HPOSM3     ; Missile 3 Horizontal Position / Player 3 to Playfield Collision
                 JMP     SW
 ; ---------------------------------------------------------------------------
 
 ZX:                                     ; CODE XREF: FTNKGN-C59↑j
-                CMP     #2
+                CMP     #ENEMY_BULLET_MOVEMENT_TYPES_NOTHING
                 BEQ     SW
-                CMP     #4
+                CMP     #ENEMY_BULLET_MOVEMENT_TYPES_RIGHT
                 BNE     G4
-                INC     byte_663
+                INC     MISSLE_3_X_POS
                 JMP     G5
 ; ---------------------------------------------------------------------------
 
@@ -9344,44 +9371,44 @@ FBTGN:                                  ; CODE XREF: SRT+27↑p
 A3:                                     ; CODE XREF: FBTGN+4↑j
                                         ; FTNKGN:B4↓j
                 LDY     byte_65F
-                BNE     loc_35DF
+                BNE     A7
                 JSR     CKFGN
 
 G3:                                     ; CODE XREF: FBRGN:ZW↑j
                                         ; FBRGN+51↑j
-                LDA     byte_65C
+                LDA     MISSLE_3_X_POS2
                 SEC
                 SBC     PLANE_HORI_POS  ; Horizontal Position of the Plane
-                BCC     loc_35D1
-                CMP     #$14
-                BCS     loc_35C6
-                LDA     #0
-                JMP     loc_35C8
+                BCC     A4
+                CMP     #20
+                BCS     A9
+                LDA     #ENEMY_BULLET_MOVEMENT_TYPES_LEFT
+                JMP     A6
 ; ---------------------------------------------------------------------------
 
-loc_35C6:                               ; CODE XREF: FTNKGN-1F0↑j
-                LDA     #1
+A9:                                     ; CODE XREF: FTNKGN-1F0↑j
+                LDA     #ENEMY_BULLET_MOVEMENT_TYPES_LEFT2
 
-loc_35C8:                               ; CODE XREF: FTNKGN-1EC↑j
+A6:                                     ; CODE XREF: FTNKGN-1EC↑j
                                         ; FTNKGN-1D8↓j ...
-                STA     byte_696
-                LDX     byte_65C
-                JMP     SX
+                STA     VAR_MISSLE_3_STATE
+                LDX     MISSLE_3_X_POS2
+                JMP     SX              ; Set missile 3 X position
 ; ---------------------------------------------------------------------------
 
-loc_35D1:                               ; CODE XREF: FTNKGN-1F4↑j
-                CMP     #$F0
-                BCC     loc_35DA
-                LDA     #2
-                JMP     loc_35C8
+A4:                                     ; CODE XREF: FTNKGN-1F4↑j
+                CMP     #240
+                BCC     G1
+                LDA     #ENEMY_BULLET_MOVEMENT_TYPES_NOTHING
+                JMP     A6
 ; ---------------------------------------------------------------------------
 
-loc_35DA:                               ; CODE XREF: FTNKGN-1DC↑j
-                LDA     #4
-                JMP     loc_35C8
+G1:                                     ; CODE XREF: FTNKGN-1DC↑j
+                LDA     #ENEMY_BULLET_MOVEMENT_TYPES_RIGHT
+                JMP     A6
 ; ---------------------------------------------------------------------------
 
-loc_35DF:                               ; CODE XREF: FTNKGN-1FF↑j
+A7:                                     ; CODE XREF: FTNKGN-1FF↑j
                 JMP     SM
 ; END OF FUNCTION CHUNK FOR FTNKGN
 
@@ -9865,7 +9892,7 @@ R3:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+4F↑j
                 LDX     #255
                 STX     byte_FD
                 INX
-                STX     byte_609
+                STX     CAN_LAND_FLAG   ; set to 0
                 LDA     #_R|_C_BLACK
                 STA     byte_C4
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
@@ -10023,7 +10050,7 @@ V2:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+11C↑j
                 STY     SC_STATUS_LINE.line_2.landing_flag ; "L" character
                 STY     byte_6B6
                 INY
-                STY     byte_609
+                STY     CAN_LAND_FLAG   ; set to 1
                 RTS
 ; End of function DRUN__DRAW_RUNWAY
 
@@ -11450,8 +11477,8 @@ loc_407B:                               ; CODE XREF: FIX+1A↑j
 
 
 TRACK:                                  ; CODE XREF: BTURN+5↑p
-                LDA     byte_640
-                CMP     #5
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_5
                 BEQ     _1
 
 _2:                                     ; CODE XREF: TRACK+B↓j
@@ -12198,21 +12225,22 @@ loc_4414:                               ; CODE XREF: GUNC-5F4↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Player collision with enemy?
 
 COLCPTL:                                ; CODE XREF: XCPTL↓p
                 LDA     P1PL            ; Player Graphics Register 0
                 AND     #1100b          ; Collisition with the enemy? (Player 2/3)
-                BNE     loc_4443
+                BNE     _1
 
-locret_4442:                            ; CODE XREF: COLCPTL+E↓j
+_2:                                     ; CODE XREF: COLCPTL+E↓j
                 RTS                     ; => Return
 ; ---------------------------------------------------------------------------
 
-loc_4443:                               ; CODE XREF: COLCPTL+5↑j
+_1:                                     ; CODE XREF: COLCPTL+5↑j
                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
-                CMP     #$19
-                BCS     locret_4442     ; => Return
+                CMP     #25
+                BCS     _2              ; => Return
                 STA     byte_654
                 JMP     CRASH           ; Plane was crashed
 ; End of function COLCPTL
@@ -12235,7 +12263,7 @@ _5:                                     ; CODE XREF: LOW+3↑j LOW+7↑j
                 SEC
                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
                 CMP     #24
-                BCC     _6
+                BCC     _6              ; 24-29 => strafing altitude
                 CMP     #29
                 BCC     _3
 
@@ -12509,7 +12537,7 @@ loc_45CB:                               ; CODE XREF: CKSC+30↑j
 
 
 XCPTL:                                  ; CODE XREF: CPTL:_1↑p
-                JSR     COLCPTL
+                JSR     COLCPTL         ; Player collision with enemy?
                 LDA     byte_6C5
                 BNE     _1
                 RTS
@@ -12837,7 +12865,7 @@ _3:                                     ; CODE XREF: PBMB+13↓j
 ; ---------------------------------------------------------------------------
 
 _1:                                     ; CODE XREF: PBMB+4↑j
-                STA     byte_640
+                STA     VAR_UNKNOWN_STATE
                 LDA     VVBLKD          ; DEFERRED VERTICAL BLANK NMI VECTOR
                 CMP     #>VBIR__DEFERRED_VBL_DRAW ; Deferred VBL: scroll the playfield and play sound
                 BEQ     _3              ; => Return
@@ -12851,8 +12879,8 @@ _1:                                     ; CODE XREF: PBMB+4↑j
                 STA     byte_6A8
                 LDA     #70
                 STA     byte_62F
-                LDA     #4
-                STA     byte_640
+                LDA     #UNKNOWNS_STATE_4
+                STA     VAR_UNKNOWN_STATE
                 LDA     PLANE_VERT_POS  ; Vertical Position of the Plane
                 LSR     A
                 STA     TEMP_B0
@@ -12935,8 +12963,8 @@ _33:                                    ; CODE XREF: BMBR+12↑j
                 LDA     ENEMY_X_POS     ; Enemy X position
                 CMP     #170
                 BCS     _3              ; => Return
-                LDA     byte_640
-                CMP     #5
+                LDA     VAR_UNKNOWN_STATE
+                CMP     #UNKNOWNS_STATE_5
                 BNE     _3              ; => Return
                 LDA     TRIGGER_COUNT   ; Increment with each button/trigger press
                 CMP     #2
