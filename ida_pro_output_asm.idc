@@ -10,5 +10,9 @@ static main()
   fhandle = fopen(file, "w");
   gen_file(OFILE_LST, fhandle, 0, BADADDR, GENFLG_ASMTYPE);
 
+  file = get_idb_path()[0:-4] + ".idc";
+  fhandle = fopen(file, "w");
+  gen_file(OFILE_IDC, fhandle, 0, BADADDR, GENFLG_ASMTYPE);
+
   qexit(0); // exit to OS, error code 0 - success
 }

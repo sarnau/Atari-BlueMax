@@ -752,7 +752,7 @@ L_SKYSCRAPER_B_5B: = $5B                ; XREF: DRBR__DRAW_BRIDGE+163/s
 L_SKYSCRAPER_B_C: = $5C                 ; XREF: DATA:AAB/s
 L_SKYSCRAPER_B_5D: = $5D                ; XREF: DATA:AAB/s
 L_SKYSCRAPER_B_5E: = $5E                ; XREF: DATA:AAB/s
-L_5F:            = $5F                  ; XREF: AEI:loc_4922/s
+L_EXPLOSION_5F:  = $5F                  ; XREF: AEI:loc_4922/s
 L_WATER_60:      = $60                  ; XREF: ZE+A5/s XI+7/s
 L_61:            = $61                  ; XREF: ZE+AD/s
 L_62:            = $62                  ; XREF: ZE:loc_34B1/s
@@ -1644,7 +1644,7 @@ MENU_LAST_CONSOL_6E9:.BYTE 0 ; (uninited)
                                         ; MENU__CHECK_KEYS+3↓r ...
                                         ; Last value of CONSOL in the MENU selection
 byte_6EA:       .BYTE 0 ; (uninited)    ; DATA XREF: PRIOR__+3D↓w
-                                        ; AFB:loc_48F5↓r
+                                        ; AFB:_1↓r
 byte_6EB:       .BYTE 0 ; (uninited)    ; DATA XREF: BOMB:HJ↓w Z3+A↓r ...
 AUDIO2_DROPSND_FREQ_SAVED:.BYTE 0 ; (uninited) ; DATA XREF: DRPSND+F↓w
                                         ; Z3+4D↓r
@@ -12806,19 +12806,19 @@ _1:                                     ; CODE XREF: DFBLDG+3F↓j
                 STA     ABX,X           ; $56:
                 LDA     ACI,X           ; $60:
                 STA     ABY,X           ; $58:
-                LDA     ABO,X
+                LDA     ABO,X           ; Tile: building
                 STA     ABZ,X           ; $5A:
-                LDA     ABP,X
+                LDA     ABP,X           ; Tile: building roof
                 STA     ACA,X           ; $5C:
-                LDA     ABN,X
+                LDA     ABN,X           ; Tile: building
                 STA     ACB,X           ; $5E:
                 LDA     ABR,X           ; 8 zero bytes (used for initialization)
                 STA     ACC,X           ; $55:
-                LDA     ABT,X
+                LDA     ABT,X           ; Tile: building
                 STA     ACD,X           ; $59:
-                LDA     ACJ,X
+                LDA     ACJ,X           ; Tile: target
                 STA     ACE,X           ; $57:
-                LDA     ABL,X
+                LDA     ABL,X           ; Tile: building wall/window
                 STA     ACF,X           ; $5D:
                 DEX
                 BPL     _1
@@ -12881,19 +12881,19 @@ DFTNK:                                  ; CODE XREF: QN+4C↑p B7+A3↑p ...
                 LDX     #7
 
 _1:                                     ; CODE XREF: DFTNK+2D↓j
-                LDA     ABL,X
+                LDA     ABL,X           ; Tile: building wall/window
                 STA     ABE,X           ; $45:
                 LDA     ABM,X           ; $7D:
                 STA     ABG,X           ; $4F:
-                LDA     ABN,X
+                LDA     ABN,X           ; Tile: building
                 STA     ABH,X           ; $49:
-                LDA     ABO,X
+                LDA     ABO,X           ; Tile: building
                 STA     ABI,X           ; $4A:
-                LDA     ABP,X
+                LDA     ABP,X           ; Tile: building roof
                 STA     ABJ,X           ; $12: Runway, Road
                 LDA     ABR,X           ; 8 zero bytes (used for initialization)
                 STA     ABQ,X           ; $3F: Black tile
-                LDA     ABT,X
+                LDA     ABT,X           ; Tile: building
                 STA     ABS,X           ; $7F:
                 DEX
                 BPL     _1
@@ -13174,15 +13174,15 @@ XI:                                     ; CODE XREF: ID:BD↑j
                 LDA     EXPLOSION_TILE_ANIMATION
                 LSR     A
                 LSR     A
-                BCC     loc_48E8
+                BCC     _1
                 LDA     #L_WATER_60|L_C_0
-                JMP     loc_48EA
+                JMP     _2
 ; ---------------------------------------------------------------------------
 
-loc_48E8:                               ; CODE XREF: XI+5↑j
+_1:                                     ; CODE XREF: XI+5↑j
                 LDA     #L_EXPLOSION_WATER_1|L_C_0
 
-loc_48EA:                               ; CODE XREF: XI+9↑j
+_2:                                     ; CODE XREF: XI+9↑j
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 INY
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -13195,25 +13195,25 @@ loc_48EA:                               ; CODE XREF: XI+9↑j
 
 AFB:                                    ; CODE XREF: PC+2F↑j
                 LDA     byte_C5
-                BEQ     loc_48F5
+                BEQ     _1
 
-locret_48F4:                            ; CODE XREF: AFB+12↓j
+_2:                                     ; CODE XREF: AFB+12↓j
                 RTS                     ; => Return
 ; ---------------------------------------------------------------------------
 
-loc_48F5:                               ; CODE XREF: AFB+2↑j
+_1:                                     ; CODE XREF: AFB+2↑j
                 LDA     byte_6EA
                 CMP     #243
-                BCS     loc_4908
+                BCS     _3
                 CMP     #150
-                BCC     loc_4908
+                BCC     _3
                 CMP     #213
-                BCC     locret_48F4     ; => Return
+                BCC     _2              ; => Return
                 STA     byte_6EB
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_4908:                               ; CODE XREF: AFB+A↑j AFB+E↑j
+_3:                                     ; CODE XREF: AFB+A↑j AFB+E↑j
                 LDA     #1
                 STA     byte_6EB
                 LDA     byte_61F
@@ -13237,7 +13237,7 @@ AEI:                                    ; CODE XREF: ID:AEH↑j
 ; ---------------------------------------------------------------------------
 
 loc_4922:                               ; CODE XREF: AEI+5↑j
-                LDA     #L_5F|L_C_0
+                LDA     #L_EXPLOSION_5F|L_C_0
 
 loc_4924:                               ; CODE XREF: AEI+9↑j
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -15357,20 +15357,26 @@ ABD:            .BYTE $45,$54,$15,$51,$44,$55,$15,$51
 ABL:            .BYTE $3F,$3F,$3F,  3,  3,  3,$3F,$3F
                                         ; DATA XREF: DFBLDG+38↑r
                                         ; DFTNK:_1↑r
+                                        ; Tile: building wall/window
 ABN:            .BYTE   3,  3, $F, $F,$3F,$3F,$FF,$FF
                                         ; DATA XREF: DFBLDG+20↑r
                                         ; DFTNK+E↑r
+                                        ; Tile: building
 ABO:            .BYTE $FC,$FC,$F1,$F1,$C5,$C5,$15,$15
                                         ; DATA XREF: DFBLDG+14↑r
                                         ; DFTNK+14↑r
+                                        ; Tile: building
 ABP:            .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
                                         ; DATA XREF: DFBLDG+1A↑r
                                         ; DFTNK+1A↑r
+                                        ; Tile: building roof
 ABT:            .BYTE $54,$54,$50,$50,$40,$40,  0,  0
                                         ; DATA XREF: DFBLDG+2C↑r
                                         ; DFTNK+26↑r
+                                        ; Tile: building
 ACJ:            .BYTE $AA,$AA,$BE,$82,$82,$82,$BE,$AA
                                         ; DATA XREF: DFBLDG+32↑r
+                                        ; Tile: target
 
 XCPTLIM:        .BYTE    10000b         ; DATA XREF: BMCPTL+40↑t
                 .BYTE     1000b         ; explosion off the final targets
@@ -15481,6 +15487,7 @@ FTGI:           .BYTE _F|_C_BLACK,_L|_C_BLACK,_Y|_C_BLACK,_I|_C_BLACK,_N|_C_BLAC
 SQLDI:          .BYTE _S|_C_BLACK,_Q|_C_BLACK,_U|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_R|_C_BLACK,_O|_C_BLACK,_N|_C_BLACK,_SPACE|_C_BLACK,_L|_C_BLACK,_E|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_E|_C_BLACK,_R|_C_BLACK
                                         ; DATA XREF: SQLD__PRINT_SQUADRON_LEADER:_1↑r
                                         ; "SQUADRON LEADER"
+
 ; from here on, we again have unitialized variables
 AEG:            .BYTE   0,$6A,$AD,$52,$6A,$C9,$5A,$D0,$D1,$A9,$50,$8D,$52,$6A,$EE,$51
                                         ; DATA XREF: RESET+17↑w

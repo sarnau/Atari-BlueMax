@@ -849,7 +849,7 @@ FFFFFFFF
 0000007F L_SKYSCRAPER_B_C: = $5C                 ; XREF: DATA:AAB/s
 0000007F L_SKYSCRAPER_B_5D: = $5D                ; XREF: DATA:AAB/s
 0000007F L_SKYSCRAPER_B_5E: = $5E                ; XREF: DATA:AAB/s
-0000007F L_5F:            = $5F                  ; XREF: AEI:loc_4922/s
+0000007F L_EXPLOSION_5F:  = $5F                  ; XREF: AEI:loc_4922/s
 0000007F L_WATER_60:      = $60                  ; XREF: ZE+A5/s
 0000007F                                         ; XI+7/s
 0000007F L_61:            = $61                  ; XREF: ZE+AD/s
@@ -1862,7 +1862,7 @@ VARS:06E9                                         ; DATA XREF: CNSL__CONSOLE:_5�
 VARS:06E9                                         ; MENU__CHECK_KEYS+3↓r ...
 VARS:06E9                                         ; Last value of CONSOL in the MENU selection
 VARS:06EA byte_6EA:       .BYTE 0 ; (uninited)    ; DATA XREF: PRIOR__+3D↓w
-VARS:06EA                                         ; AFB:loc_48F5↓r
+VARS:06EA                                         ; AFB:_1↓r
 VARS:06EB byte_6EB:       .BYTE 0 ; (uninited)    ; DATA XREF: BOMB:HJ↓w
 VARS:06EB                                         ; Z3+A↓r ...
 VARS:06EC AUDIO2_DROPSND_FREQ_SAVED:.BYTE 0 ; (uninited)
@@ -13078,19 +13078,19 @@ GAME:46CC                 LDA     ACH,X           ; $02: Water
 GAME:46CF                 STA     ABX,X           ; $56:
 GAME:46D2                 LDA     ACI,X           ; $60:
 GAME:46D5                 STA     ABY,X           ; $58:
-GAME:46D8                 LDA     ABO,X
+GAME:46D8                 LDA     ABO,X           ; Tile: building
 GAME:46DB                 STA     ABZ,X           ; $5A:
-GAME:46DE                 LDA     ABP,X
+GAME:46DE                 LDA     ABP,X           ; Tile: building roof
 GAME:46E1                 STA     ACA,X           ; $5C:
-GAME:46E4                 LDA     ABN,X
+GAME:46E4                 LDA     ABN,X           ; Tile: building
 GAME:46E7                 STA     ACB,X           ; $5E:
 GAME:46EA                 LDA     ABR,X           ; 8 zero bytes (used for initialization)
 GAME:46ED                 STA     ACC,X           ; $55:
-GAME:46F0                 LDA     ABT,X
+GAME:46F0                 LDA     ABT,X           ; Tile: building
 GAME:46F3                 STA     ACD,X           ; $59:
-GAME:46F6                 LDA     ACJ,X
+GAME:46F6                 LDA     ACJ,X           ; Tile: target
 GAME:46F9                 STA     ACE,X           ; $57:
-GAME:46FC                 LDA     ABL,X
+GAME:46FC                 LDA     ABL,X           ; Tile: building wall/window
 GAME:46FF                 STA     ACF,X           ; $5D:
 GAME:4702                 DEX
 GAME:4703                 BPL     _1
@@ -13157,19 +13157,19 @@ GAME:4740                                         ; B7+A3↑p ...
 GAME:4740                 LDX     #7
 GAME:4742
 GAME:4742 _1:                                     ; CODE XREF: DFTNK+2D↓j
-GAME:4742                 LDA     ABL,X
+GAME:4742                 LDA     ABL,X           ; Tile: building wall/window
 GAME:4745                 STA     ABE,X           ; $45:
 GAME:4748                 LDA     ABM,X           ; $7D:
 GAME:474B                 STA     ABG,X           ; $4F:
-GAME:474E                 LDA     ABN,X
+GAME:474E                 LDA     ABN,X           ; Tile: building
 GAME:4751                 STA     ABH,X           ; $49:
-GAME:4754                 LDA     ABO,X
+GAME:4754                 LDA     ABO,X           ; Tile: building
 GAME:4757                 STA     ABI,X           ; $4A:
-GAME:475A                 LDA     ABP,X
+GAME:475A                 LDA     ABP,X           ; Tile: building roof
 GAME:475D                 STA     ABJ,X           ; $12: Runway, Road
 GAME:4760                 LDA     ABR,X           ; 8 zero bytes (used for initialization)
 GAME:4763                 STA     ABQ,X           ; $3F: Black tile
-GAME:4766                 LDA     ABT,X
+GAME:4766                 LDA     ABT,X           ; Tile: building
 GAME:4769                 STA     ABS,X           ; $7F:
 GAME:476C                 DEX
 GAME:476D                 BPL     _1
@@ -13450,15 +13450,15 @@ GAME:48DC XI:                                     ; CODE XREF: ID:BD↑j
 GAME:48DC                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:48DF                 LSR     A
 GAME:48E0                 LSR     A
-GAME:48E1                 BCC     loc_48E8
+GAME:48E1                 BCC     _1
 GAME:48E3                 LDA     #L_WATER_60|L_C_0
-GAME:48E5                 JMP     loc_48EA
+GAME:48E5                 JMP     _2
 GAME:48E8 ; ---------------------------------------------------------------------------
 GAME:48E8
-GAME:48E8 loc_48E8:                               ; CODE XREF: XI+5↑j
+GAME:48E8 _1:                                     ; CODE XREF: XI+5↑j
 GAME:48E8                 LDA     #L_EXPLOSION_WATER_1|L_C_0
 GAME:48EA
-GAME:48EA loc_48EA:                               ; CODE XREF: XI+9↑j
+GAME:48EA _2:                                     ; CODE XREF: XI+9↑j
 GAME:48EA                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:48EC                 INY
 GAME:48ED                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -13471,25 +13471,25 @@ GAME:48F0
 GAME:48F0
 GAME:48F0 AFB:                                    ; CODE XREF: PC+2F↑j
 GAME:48F0                 LDA     byte_C5
-GAME:48F2                 BEQ     loc_48F5
+GAME:48F2                 BEQ     _1
 GAME:48F4
-GAME:48F4 locret_48F4:                            ; CODE XREF: AFB+12↓j
+GAME:48F4 _2:                                     ; CODE XREF: AFB+12↓j
 GAME:48F4                 RTS                     ; => Return
 GAME:48F5 ; ---------------------------------------------------------------------------
 GAME:48F5
-GAME:48F5 loc_48F5:                               ; CODE XREF: AFB+2↑j
+GAME:48F5 _1:                                     ; CODE XREF: AFB+2↑j
 GAME:48F5                 LDA     byte_6EA
 GAME:48F8                 CMP     #243
-GAME:48FA                 BCS     loc_4908
+GAME:48FA                 BCS     _3
 GAME:48FC                 CMP     #150
-GAME:48FE                 BCC     loc_4908
+GAME:48FE                 BCC     _3
 GAME:4900                 CMP     #213
-GAME:4902                 BCC     locret_48F4     ; => Return
+GAME:4902                 BCC     _2              ; => Return
 GAME:4904                 STA     byte_6EB
 GAME:4907                 RTS
 GAME:4908 ; ---------------------------------------------------------------------------
 GAME:4908
-GAME:4908 loc_4908:                               ; CODE XREF: AFB+A↑j
+GAME:4908 _3:                                     ; CODE XREF: AFB+A↑j
 GAME:4908                                         ; AFB+E↑j
 GAME:4908                 LDA     #1
 GAME:490A                 STA     byte_6EB
@@ -13514,7 +13514,7 @@ GAME:491F                 JMP     loc_4924
 GAME:4922 ; ---------------------------------------------------------------------------
 GAME:4922
 GAME:4922 loc_4922:                               ; CODE XREF: AEI+5↑j
-GAME:4922                 LDA     #L_5F|L_C_0
+GAME:4922                 LDA     #L_EXPLOSION_5F|L_C_0
 GAME:4924
 GAME:4924 loc_4924:                               ; CODE XREF: AEI+9↑j
 GAME:4924                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -15641,20 +15641,26 @@ DATA:54BA                                         ; Tile: explosion 2 on gras
 DATA:54C2 ABL:            .BYTE $3F,$3F,$3F,  3,  3,  3,$3F,$3F
 DATA:54C2                                         ; DATA XREF: DFBLDG+38↑r
 DATA:54C2                                         ; DFTNK:_1↑r
+DATA:54C2                                         ; Tile: building wall/window
 DATA:54CA ABN:            .BYTE   3,  3, $F, $F,$3F,$3F,$FF,$FF
 DATA:54CA                                         ; DATA XREF: DFBLDG+20↑r
 DATA:54CA                                         ; DFTNK+E↑r
+DATA:54CA                                         ; Tile: building
 DATA:54D2 ABO:            .BYTE $FC,$FC,$F1,$F1,$C5,$C5,$15,$15
 DATA:54D2                                         ; DATA XREF: DFBLDG+14↑r
 DATA:54D2                                         ; DFTNK+14↑r
+DATA:54D2                                         ; Tile: building
 DATA:54DA ABP:            .BYTE $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 DATA:54DA                                         ; DATA XREF: DFBLDG+1A↑r
 DATA:54DA                                         ; DFTNK+1A↑r
+DATA:54DA                                         ; Tile: building roof
 DATA:54E2 ABT:            .BYTE $54,$54,$50,$50,$40,$40,  0,  0
 DATA:54E2                                         ; DATA XREF: DFBLDG+2C↑r
 DATA:54E2                                         ; DFTNK+26↑r
+DATA:54E2                                         ; Tile: building
 DATA:54EA ACJ:            .BYTE $AA,$AA,$BE,$82,$82,$82,$BE,$AA
 DATA:54EA                                         ; DATA XREF: DFBLDG+32↑r
+DATA:54EA                                         ; Tile: target
 DATA:54F2
 DATA:54F2 XCPTLIM:        .BYTE    10000b         ; DATA XREF: BMCPTL+40↑t
 DATA:54F2                 .BYTE     1000b         ; explosion off the final targets
@@ -15765,6 +15771,7 @@ DATA:560D                                         ; "FLYING TIGER"
 DATA:5619 SQLDI:          .BYTE _S|_C_BLACK,_Q|_C_BLACK,_U|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_R|_C_BLACK,_O|_C_BLACK,_N|_C_BLACK,_SPACE|_C_BLACK,_L|_C_BLACK,_E|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_E|_C_BLACK,_R|_C_BLACK
 DATA:5619                                         ; DATA XREF: SQLD__PRINT_SQUADRON_LEADER:_1↑r
 DATA:5619                                         ; "SQUADRON LEADER"
+DATA:5628
 DATA:5628 ; from here on, we again have unitialized variables
 DATA:5628 AEG:            .BYTE   0,$6A,$AD,$52,$6A,$C9,$5A,$D0,$D1,$A9,$50,$8D,$52,$6A,$EE,$51
 DATA:5628                                         ; DATA XREF: RESET+17↑w
