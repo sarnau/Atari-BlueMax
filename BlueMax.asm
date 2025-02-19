@@ -705,13 +705,13 @@ L_BRIDGE_N:      = $36                  ; XREF: DRBR__DRAW_BRIDGE+D2/s
 L_BRIDGE_O:      = $37                  ; XREF: DATA:BR3/s DATA:AAD/s
 L_BRIDGE_P:      = $38                  ; XREF: DATA:BR3/s DATA:AAD/s
 L_BRIDGE_Q:      = $39                  ; XREF: DATA:BR1/s DATA:AAC/s
-L_SHIP_A:        = $3A                  ; XREF: DRBT__DRAW_BOAT+4E/s
+L_FIXED_BOAT_TOP_LEFT: = $3A            ; XREF: DRBT__DRAW_BOAT+4E/s
                                         ; CKCHAR+10/s
-L_SHIP_B:        = $3B                  ; XREF: DRBT__DRAW_BOAT:HB/s
+L_FIXED_BOAT_TOP_RIGHT: = $3B           ; XREF: DRBT__DRAW_BOAT:HB/s
                                         ; CKCHAR+14/s
-L_SHIP_C:        = $3C                  ; XREF: DRBT__DRAW_BOAT+3A/s
+L_FIXED_BOAT_BOTTOM_LEFT: = $3C         ; XREF: DRBT__DRAW_BOAT+3A/s
                                         ; CKCHAR+18/s ...
-L_SHIP_D:        = $3D                  ; XREF: DRBT__DRAW_BOAT+35/s
+L_FIXED_BOAT_BOTTOM_RIGHT: = $3D        ; XREF: DRBT__DRAW_BOAT+35/s
                                         ; CKCHAR+1C/s ...
 L_3E:            = $3E                  ; XREF: ID:HO/s
 L_3F:            = $3F                  ; XREF: QN+9F/s DATA:AAA/s
@@ -719,7 +719,7 @@ L_EXPLOSION_GRAS_1: = $40               ; XREF: XPLSN:HY/s ID:HP/s
 L_EXPLOSION_GRAS_2: = $41               ; XREF: ID+6A/s
 L_EXPLOSION_GRAS_3: = $42               ; XREF: ID+7D/s
 L_EXPLOSION_WATER_1: = $43              ; XREF: XPLSN:HW/s HV:IB/s ...
-L_EXPLOSION_WATER_2: = $44              ; XREF: HV:IA/s
+L_EXPLOSION_WATER_2: = $44              ; XREF: HV:IA/s Y6:loc_43A2/s
 L_45:            = $45                  ; XREF: QN+5A/s DATA:AAA/s
 L_TANK_LEFT_A:   = $46                  ; XREF: QN+2A/s TNKC1-25/s ...
 L_TANK_RIGHT_A:  = $47                  ; XREF: QN+2F/s TNKC1-29/s ...
@@ -775,11 +775,11 @@ L_TANK_RIGHT_B:  = $72                  ; XREF: GUNC+72/s DATA:AAG/s
 L_FLASHING_MARKER: = $73                ; XREF: GUNC-5DD/s GUNC-5CB/s
 L_RUNWAY_RIGHT:  = $74                  ; XREF: DATA:ROADS/s
                                         ; DATA:ENRNIM/s
-L_75:            = $75                  ; XREF: V8:_1/s Y6+11/s
+L_75:            = $75                  ; XREF: V8:_1/s V8+2B/s ...
 L_76:            = $76                  ; XREF: V8+20/s Y6+C/s
 L_77:            = $77                  ; XREF: V8+8/s V8+17/s
 L_78:            = $78                  ; XREF: V8+C/s
-L_79:            = $79                  ; XREF: Y6:loc_43BC/s Y6+5D/s
+L_79:            = $79                  ; XREF: Y6+1B/s Y6:loc_43BC/s ...
 L_7A:            = $7A                  ; XREF: Y6+3F/s
 L_7B:            = $7B                  ; XREF: Y6+32/s Y6+4C/s
 L_RUNWAY_CENTER: = $7C                  ; XREF: DRBR__DRAW_BRIDGE+B8/s
@@ -1020,8 +1020,9 @@ DISABLE_MAP_GENERATION:.BYTE 0 ; (uninited) ; DATA XREF: RESET+61↓w
 SCROLL_OFFSET_F1:.BYTE 0 ; (uninited)   ; DATA XREF: RESET+65↓w
                                         ; RESET+73↓r ...
                                         ; HSCROL and VSCROL shadow during gameplay
-off_F2:         .BYTE 0,0 ; (uninited)  ; DATA XREF: VBIR__DEFERRED_VBL_DRAW+64↓w
+VBL_NEXT_ROW_PTR:.BYTE 0,0 ; (uninited) ; DATA XREF: VBIR__DEFERRED_VBL_DRAW+64↓w
                                         ; DRAW:N↓w ...
+                                        ; new row to be draw. Set inside the VBL.
 PLANE_HORI_POS: .BYTE 0 ; (uninited)    ; DATA XREF: RESET+226↓w CE↓r ...
                                         ; Horizontal Position of the Plane
 PLANE_VERT_POS: .BYTE 0 ; (uninited)    ; DATA XREF: RESET+230↓w
@@ -1046,9 +1047,9 @@ byte_FD:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1E2↓w
                                         ; TURN+145↓r ...
 byte_FE:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+129↓w
                                         ; VBIR__DEFERRED_VBL_DRAW:J↓r ...
-byte_FF:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+205↓w
+RIVER_RIGHT_X_POS:.BYTE 0 ; (uninited)  ; DATA XREF: RESET+205↓w
                                         ; DRAW:P↓r ...
-; end of 'VARS_ZP'
+; end of 'VARS_ZP'                      ; Right position of the river
 
 ; ===========================================================================
 
@@ -1274,10 +1275,12 @@ byte_61A:       .BYTE 0 ; (uninited)    ; DATA XREF: DRBR__DRAW_BRIDGE+FA↓w
                                         ; DRBR__DRAW_BRIDGE+140↓r
 byte_61B:       .BYTE 0 ; (uninited)    ; DATA XREF: VBIR__DEFERRED_VBL_DRAW+38↓w
                                         ; DRBR__DRAW_BRIDGE+29↓r
-byte_61C:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+116↓w
+RIVER_BOAT_ROW_FLAG:.BYTE 0 ; (uninited) ; DATA XREF: RESET+116↓w
                                         ; DRBT__DRAW_BOAT:GV↓r ...
-byte_61D:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+132↓w
+                                        ; !=0 boat top row drawn, ==0 boat bottom row drawn
+RIVER_BOAT_NEXT_COUNTER:.BYTE 0 ; (uninited) ; DATA XREF: RESET+132↓w
                                         ; DRBT__DRAW_BOAT+A↓r ...
+                                        ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
 PLANE_BULLET_X_POS:.BYTE 0 ; (uninited) ; DATA XREF: TRIG__TRIGGER_MACHINE_GUN+26↓w
                                         ; TRIG__TRIGGER_MACHINE_GUN+3F↓r ...
                                         ; X-Position of the current bullet from the plane
@@ -1293,7 +1296,7 @@ byte_624:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+70↓w Y8+2↓w ...
 VBL_DRAW_DOWN_COUNTER:.BYTE 0 ; (uninited)
                                         ; DATA XREF: VBIR__DEFERRED_VBL_DRAW:SCROL↓r
                                         ; VBIR__DEFERRED_VBL_DRAW+11↓w ...
-                                        ; VBL: down counter whenever the level scrolls a pixel
+                                        ; VBL: 30Hz down counter whenever the level scrolls a pixel
 MSHIP_VAR_62B:  .BYTE 0 ; (uninited)    ; DATA XREF: SHIP+68↓w
                                         ; SHIP:I6↓w ...
 byte_62C:       .BYTE 0 ; (uninited)    ; DATA XREF: DRUN__DRAW_RUNWAY+A↓w
@@ -1580,8 +1583,10 @@ byte_6DB:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+191↓w
 byte_6DC:       .BYTE 0 ; (uninited)    ; DATA XREF: SHIP+5F↓w
                                         ; SHP23:_3↓w
                 .BYTE 0 ; (uninited)
-byte_6DE:       .BYTE 0 ; (uninited)    ; DATA XREF: DRBT__DRAW_BOAT+63↓w
+RIVER_BOAT_HIT_COUNTER:.BYTE 0 ; (uninited)
+                                        ; DATA XREF: DRBT__DRAW_BOAT+63↓w
                                         ; SHBT:_5↓w
+                                        ; The boat requires 2 hits to be destroyed
 LAST_STRIG0:    .BYTE 0 ; (uninited)    ; DATA XREF: TRIGC__TRIGGER_COUNT+3↓r
                                         ; TRIGC__TRIGGER_COUNT:_1↓w ...
                                         ; Last STRIG0 value (for debouncing)
@@ -1940,7 +1945,7 @@ EU:                                     ; CODE XREF: RESET+114↓j
                 STA     TREE_POS_BUF-1,X ; Position of trees
                 DEX
                 BNE     EU
-                STA     byte_61C
+                STA     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
                 STA     PLANE_BULLET_Y_POS ; Y-Position of the current bullet from the plane
                 STA     byte_FA
                 STA     DL_IRQ_BACKGROUND_COLOR ; Background color set in the DL IRQ
@@ -1952,7 +1957,7 @@ EU:                                     ; CODE XREF: RESET+114↓j
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$1F
                 ADC     #$F
-                STA     byte_61D
+                STA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 LDA     #$40 ; '@'
                 STA     CH              ; GLOBAL VARIABLE FOR KEYBOARD
                 LDA     #$50 ; 'P'
@@ -2033,7 +2038,7 @@ L5:                                     ; CODE XREF: RESET+159↓j
                 STA     byte_602
                 STA     AUDIO2_DURATION_COUNTER
                 LDA     #26
-                STA     byte_FF
+                STA     RIVER_RIGHT_X_POS ; Right position of the river
                 STA     CAN_LAND_FLAG   ; =0 => plane can land (runway reached)
                 STA     FUEL_TIMER
                 LDA     #6
@@ -2387,14 +2392,14 @@ VBIR__DEFERRED_VBL_DRAW:                ; DATA XREF: EB+B7↑t EB+B9↑t ...
                 DEC     VBL_DOWN_COUNTER ; VBL down counter, running countinously during the game
                 LDA     VBL_DOWN_COUNTER ; VBL down counter, running countinously during the game
                 LSR     A
-                BCC     SCROL
+                BCC     SCROL           ; Scrolling happens at 30Hz
                 JMP     XSND            ; Deferred interrupt for sound
 ; ---------------------------------------------------------------------------
 
 SCROL:                                  ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+7↑j
-                LDA     VBL_DRAW_DOWN_COUNTER ; VBL: down counter whenever the level scrolls a pixel
+                LDA     VBL_DRAW_DOWN_COUNTER ; Scrolling happens at 30Hz
                 BEQ     JR
-                DEC     VBL_DRAW_DOWN_COUNTER ; VBL: down counter whenever the level scrolls a pixel
+                DEC     VBL_DRAW_DOWN_COUNTER ; VBL: 30Hz down counter whenever the level scrolls a pixel
 
 JR:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+F↑j
                 LDA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
@@ -2417,7 +2422,7 @@ J:                                      ; CODE XREF: RESET:EA↑j
                 LDA     #8
                 STA     byte_F8
                 LDA     RANDOM          ; Random Number Generator
-                AND     #3
+                AND     #11b
                 STA     byte_61B
 
 GN:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+29↑j
@@ -2441,13 +2446,13 @@ GN:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+29�
                 STA     BOTM            ; Last byte of the screen level memory
                 SEC
                 SBC     #20
-                STA     off_F2
+                STA     VBL_NEXT_ROW_PTR ; new row to be draw. Set inside the VBL.
                 PHP
                 LDA     BOTSCREN+1
                 STA     BOTM+1          ; Last byte of the screen level memory
                 PLP
                 SBC     #0
-                STA     off_F2+1
+                STA     VBL_NEXT_ROW_PTR+1 ; new row to be draw. Set inside the VBL.
                 LDY     #66
 
 K:                                      ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+88↓j
@@ -2495,7 +2500,7 @@ M:                                      ; CODE XREF: DRAW+2↑j
                 LDA     #L_GRAS|L_C_0
 
 N:                                      ; CODE XREF: DRAW+C↓j
-                STA     (off_F2),Y      ; Fill whole line with gras
+                STA     (VBL_NEXT_ROW_PTR),Y ; Fill whole line with gras
                 DEY
                 BNE     N               ; Fill whole line with gras
 
@@ -2578,11 +2583,11 @@ STRGHT:                                 ; CODE XREF: DRAW+13↑j
 ; ---------------------------------------------------------------------------
 
 P:                                      ; CODE XREF: DRAW+81↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #65
                 BCS     AF
                 LDA     #L_WATER_GRAS_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AF:                                     ; CODE XREF: DRAW+8A↑j
                 DEY
@@ -2593,7 +2598,7 @@ AF:                                     ; CODE XREF: DRAW+8A↑j
 Q:                                      ; CODE XREF: DRAW+A1↓j
                 CPY     #65
                 BCS     AG
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AG:                                     ; CODE XREF: DRAW+99↑j
                 DEY
@@ -2603,7 +2608,7 @@ AG:                                     ; CODE XREF: DRAW+99↑j
                 CPY     #65
                 BCS     AH
                 LDA     #L_CLIFF_WATER_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AH:                                     ; CODE XREF: DRAW+A5↑j
                 DEY
@@ -2613,17 +2618,17 @@ AH:                                     ; CODE XREF: DRAW+A5↑j
                 LDA     byte_606
                 BEQ     BN
                 LDA     #L_CLIFF_GRAS_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
 BN:                                     ; CODE XREF: DRAW+B5↑j
                 LDA     #L_CLIFF_GRAS_B2|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     U
                 LDA     #L_CLIFF_GRAS_B1|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 U:                                      ; CODE XREF: DRAW+91↑j
                                         ; DRAW+9E↑j ...
@@ -2643,14 +2648,14 @@ R:                                      ; CODE XREF: DRAW+D0↑j
                 LDA     MAP_RIVER_LENGTH ; Length of a certain river feature to continue (straight, turn left/right)
                 LSR     A
                 BCC     S
-                DEC     byte_FF
-                LDY     byte_FF
+                DEC     RIVER_RIGHT_X_POS ; Right position of the river
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     byte_666
                 BEQ     W
                 CPY     #65
                 BCS     AL
                 LDA     #L_WATER_GRAS_C2|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AL:                                     ; CODE XREF: DRAW+E6↑j
                 DEY
@@ -2661,7 +2666,7 @@ AL:                                     ; CODE XREF: DRAW+E6↑j
 X_:                                     ; CODE XREF: DRAW+FD↓j
                 CPY     #65
                 BCS     AM
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AM:                                     ; CODE XREF: DRAW+F5↑j
                 DEY
@@ -2674,7 +2679,7 @@ AM:                                     ; CODE XREF: DRAW+F5↑j
                 CMP     #1
                 BEQ     AZ
                 LDA     #L_GRAS_CLIFF_WATER_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 V:                                      ; CODE XREF: DRAW+ED↑j
                                         ; DRAW+FA↑j ...
@@ -2684,7 +2689,7 @@ V:                                      ; CODE XREF: DRAW+ED↑j
 
 AZ:                                     ; CODE XREF: DRAW+108↑j
                 LDA     #L_GRAS_CLIFF_WATER_B|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -2695,11 +2700,11 @@ W:                                      ; CODE XREF: DRAW+E2↑j
 ; ---------------------------------------------------------------------------
 
 S:                                      ; CODE XREF: DRAW+D9↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #65
                 BCS     BB
                 LDA     #L_WATER_GRAS_C1|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 BB:                                     ; CODE XREF: DRAW+123↑j
                 DEY
@@ -2710,7 +2715,7 @@ BB:                                     ; CODE XREF: DRAW+123↑j
 T:                                      ; CODE XREF: DRAW+13A↓j
                 CPY     #65
                 BCS     AJ
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AJ:                                     ; CODE XREF: DRAW+132↑j
                 DEY
@@ -2720,7 +2725,7 @@ AJ:                                     ; CODE XREF: DRAW+132↑j
                 CPY     #65
                 BCS     AK
                 LDA     #L_CLIFF_WATER_C|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AK:                                     ; CODE XREF: DRAW+13E↑j
                 DEY
@@ -2731,7 +2736,7 @@ AK:                                     ; CODE XREF: DRAW+13E↑j
                 CMP     #$FF
                 BNE     Y_
                 LDA     #L_CLIFF_GRAS_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEC     byte_603
                 LDA     #$FF
                 STA     byte_602
@@ -2740,7 +2745,7 @@ AK:                                     ; CODE XREF: DRAW+13E↑j
 
 Y_:                                     ; CODE XREF: DRAW+150↑j
                 LDA     #L_GRASS_CLIFF_D|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 TL:                                     ; CODE XREF: DRAW+149↑j
                                         ; DRAW+1C7↓j
@@ -2757,13 +2762,13 @@ RGHT:                                   ; CODE XREF: DRAW:AR↑j
 ; ---------------------------------------------------------------------------
 
 Z:                                      ; CODE XREF: DRAW+167↑j
-                INC     byte_FF
-                LDY     byte_FF
+                INC     RIVER_RIGHT_X_POS ; Right position of the river
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     byte_667
                 BCC     AA
                 LDA     #0
                 STA     byte_606
-                DEC     byte_FF
+                DEC     RIVER_RIGHT_X_POS ; Right position of the river
                 LDA     #5
                 STA     byte_602
                 JMP     RND
@@ -2773,7 +2778,7 @@ AA:                                     ; CODE XREF: DRAW+178↑j
                 CPY     #65
                 BCS     AB
                 LDA     #L_WATER_GRAS_B2|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AB:                                     ; CODE XREF: DRAW+18B↑j
                 DEY
@@ -2781,7 +2786,7 @@ AB:                                     ; CODE XREF: DRAW+18B↑j
                 CPY     #65
                 BCS     AC
                 LDA     #L_WATER_GRAS_B1|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AC:                                     ; CODE XREF: DRAW+196↑j
                 DEY
@@ -2792,7 +2797,7 @@ AC:                                     ; CODE XREF: DRAW+196↑j
 AD:                                     ; CODE XREF: DRAW+1AD↓j
                 CPY     #65
                 BCS     AE
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AE:                                     ; CODE XREF: DRAW+1A5↑j
                 DEY
@@ -2802,7 +2807,7 @@ AE:                                     ; CODE XREF: DRAW+1A5↑j
                 CPY     #65
                 BCS     AN
                 LDA     #L_CLIFF_WATER_B2|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AN:                                     ; CODE XREF: DRAW+1B1↑j
                 DEY
@@ -2810,7 +2815,7 @@ AN:                                     ; CODE XREF: DRAW+1B1↑j
                 CPY     #65
                 BCS     AO
                 LDA     #L_CLIFF_WATER_B1|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AO:                                     ; CODE XREF: DRAW+1BC↑j
                 DEY
@@ -2821,7 +2826,7 @@ AO:                                     ; CODE XREF: DRAW+1BC↑j
                 CMP     #$FF
                 BNE     AP
                 LDA     #L_CLIFF_GRAS_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEC     byte_603
                 LDA     #$FF
                 STA     byte_602
@@ -2834,11 +2839,11 @@ AI:                                     ; CODE XREF: DRAW+192↑j
 
 AP:                                     ; CODE XREF: DRAW+1CE↑j
                 LDA     #L_CLIFF_GRAS_B2|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     AI
                 LDA     #L_CLIFF_GRAS_B1|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function DRAW
 
@@ -3732,13 +3737,13 @@ EO:                                     ; CODE XREF: DRTR__DRAW_TREE+37↓j
                 LSR     A
                 BCC     EQ
                 LDA     #L_TREE_TOP_RIGHT_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     ER              ; Set random top-left part of a tree at Y-1
 ; ---------------------------------------------------------------------------
 
 EQ:                                     ; CODE XREF: DRTR__DRAW_TREE+17↑j
                 LDA     #L_TREE_TOP_RIGHT_B|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 ER:                                     ; CODE XREF: DRTR__DRAW_TREE+1D↑j
                 DEY                     ; Set random top-left part of a tree at Y-1
@@ -3746,13 +3751,13 @@ ER:                                     ; CODE XREF: DRTR__DRAW_TREE+1D↑j
                 LSR     A
                 BCC     ES
                 LDA     #L_TREE_TOP_LEFT_B|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EP
 ; ---------------------------------------------------------------------------
 
 ES:                                     ; CODE XREF: DRTR__DRAW_TREE+29↑j
                 LDA     #L_TREE_TOP_LEFT_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EP:                                     ; CODE XREF: DRTR__DRAW_TREE+C↑j
                                         ; DRTR__DRAW_TREE+2F↑j
@@ -3780,7 +3785,7 @@ FH:                                     ; CODE XREF: DRTR__DRAW_TREE+3B↑j
 EM:                                     ; CODE XREF: DRTR__DRAW_TREE+3F↑j
                                         ; DRTR__DRAW_TREE+4B↑j
                 TAX
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CLC
                 ADC     #2
                 STA     TREE_PLANT_MAX_X ; max. X position for planing trees in a row
@@ -3814,26 +3819,26 @@ EG:                                     ; CODE XREF: DRTR__DRAW_TREE+77↑j
                                         ; DRTR__DRAW_TREE+7C↑j
                 TAY                     ; Found a position A
                 LDA     #L_GRAS|L_C_0
-                CMP     (off_F2),Y
+                CMP     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 BNE     EF              ; search for next spot for a tree
                 INY
-                CMP     (off_F2),Y      ; require 3 tiles of gras to use that area
+                CMP     (VBL_NEXT_ROW_PTR),Y ; require 3 tiles of gras to use that area
                 BNE     EF              ; search for next spot for a tree
                 INY
-                CMP     (off_F2),Y
+                CMP     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 BNE     EF              ; search for next spot for a tree
 
                 LDA     RANDOM          ; Set random bottom-right part of a tree at Y
                 LSR     A
                 BCC     EH
                 LDA     #L_TREE_BOTTOM_RIGHT_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EI              ; Set random bottom-left part of a tree at Y-1
 ; ---------------------------------------------------------------------------
 
 EH:                                     ; CODE XREF: DRTR__DRAW_TREE+96↑j
                 LDA     #L_TREE_BOTTOM_RIGHT_B|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EI:                                     ; CODE XREF: DRTR__DRAW_TREE+9C↑j
                 DEY                     ; Set random bottom-left part of a tree at Y-1
@@ -3841,13 +3846,13 @@ EI:                                     ; CODE XREF: DRTR__DRAW_TREE+9C↑j
                 LSR     A
                 BCC     EJ
                 LDA     #L_TREE_BOTTOM_LEFT_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EK
 ; ---------------------------------------------------------------------------
 
 EJ:                                     ; CODE XREF: DRTR__DRAW_TREE+A8↑j
                 LDA     #L_TREE_BOTTOM_LEFT_B|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EK:                                     ; CODE XREF: DRTR__DRAW_TREE+AE↑j
                 TYA
@@ -3942,11 +3947,11 @@ DRBT__DRAW_BOAT:                        ; CODE XREF: SRT+6↑p
 ; ---------------------------------------------------------------------------
 
 GV:                                     ; CODE XREF: DRBT__DRAW_BOAT+2↑j
-                LDY     byte_61C
-                BNE     HB
-                LDA     byte_61D
+                LDY     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
+                BNE     HB              ; Draw 2nd row of the river boat (the top one)
+                LDA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 BEQ     GX
-                DEC     byte_61D
+                DEC     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -3954,51 +3959,52 @@ GX:                                     ; CODE XREF: DRBT__DRAW_BOAT+D↑j
                 LDA     byte_FE
                 CMP     #5
                 BCS     GY
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #58
                 BCS     GY
                 CMP     #31
                 BCC     GY
-                LDA     #$F
-                STA     byte_61D
+                LDA     #15
+                STA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 RTS
 ; ---------------------------------------------------------------------------
 
 GY:                                     ; CODE XREF: DRBT__DRAW_BOAT+17↑j
                                         ; DRBT__DRAW_BOAT+1D↑j ...
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 SEC
-                SBC     #4
+                SBC     #4              ; Ship is near the right riverbank
                 TAY
                 CLC
                 ADC     #6
                 JSR     A2
-                LDA     #L_SHIP_D|L_C_1
-                STA     (off_F2),Y
+                LDA     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_SHIP_C|L_C_1
-                STA     (off_F2),Y
-                STY     byte_61C
+                LDA     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
+                STY     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
                 STA     byte_BF
                 STA     byte_661
                 RTS
 ; ---------------------------------------------------------------------------
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 HB:                                     ; CODE XREF: DRBT__DRAW_BOAT+8↑j
-                LDA     #L_SHIP_B|L_C_1
-                STA     (off_F2),Y
+                LDA     #L_FIXED_BOAT_TOP_RIGHT|L_C_1 ; Draw 2nd row of the river boat (the top one)
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_SHIP_A|L_C_1
-                STA     (off_F2),Y
+                LDA     #L_FIXED_BOAT_TOP_LEFT|L_C_1
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #0
-                STA     byte_61C
+                STA     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
+
                 LDA     RANDOM          ; Random Number Generator
-                ORA     #$10
-                AND     #$1F
-                STA     byte_61D
+                ORA     #16
+                AND     #31
+                STA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 LDA     #2
-                STA     byte_6DE
+                STA     RIVER_BOAT_HIT_COUNTER ; The boat requires 2 hits to be destroyed
                 RTS
 ; End of function DRBT__DRAW_BOAT
 
@@ -4598,7 +4604,7 @@ _1:                                     ; CODE XREF: V8+6↑j
                 JSR     CPBT
                 STA     (off_C7),Y
                 DEY
-                LDA     #$F5
+                LDA     #L_75|L_C_1
                 STA     (off_C7),Y
                 RTS
 ; End of function V8
@@ -4658,7 +4664,7 @@ IQ:                                     ; CODE XREF: DRP23+19↑j
 ; ---------------------------------------------------------------------------
 
 IO:                                     ; CODE XREF: DRP23+11↑j
-                LDA     VBL_DRAW_DOWN_COUNTER ; VBL: down counter whenever the level scrolls a pixel
+                LDA     VBL_DRAW_DOWN_COUNTER ; VBL: 30Hz down counter whenever the level scrolls a pixel
                 BEQ     IS
                 RTS
 ; ---------------------------------------------------------------------------
@@ -4961,8 +4967,8 @@ FJ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+2↑j
                 LDA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
                 BNE     GQ              ; => Return
 
-LV:
-                LDY     byte_FF
+LV:                                     ; Right position of the river
+                LDY     RIVER_RIGHT_X_POS
                 CPY     #54
                 BCS     FL
                 CPY     #34
@@ -4996,7 +5002,7 @@ FN:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+18↑j
 
 GU:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+2C↑j
                                         ; DRBR__DRAW_BRIDGE+32↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 LDA     byte_F8
                 BEQ     GL
                 CMP     #1
@@ -5043,7 +5049,7 @@ GL:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+3A↑j
                 LDA     #3
                 STA     byte_6AD
                 LDY     #$16
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 SEC
                 SBC     #1
                 JMP     GNSGHT
@@ -5060,12 +5066,12 @@ FS:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+4E↑j
 
 FT:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+96↓j
                 LDA     BR1-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     FT
                 STX     byte_BF
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CLC
                 ADC     #9
 ; End of function DRBR__DRAW_BRIDGE
@@ -5096,7 +5102,7 @@ FR:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+4A↑j
                 LDA     #L_RUNWAY_CENTER|L_C_1
 
 FW:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+BE↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 DEX
                 BNE     FW
@@ -5105,7 +5111,7 @@ FW:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+BE↓j
                 LDA     #L_BRIDGE_M|L_C_1
 
 FY:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D0↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 CPY     #64
                 BEQ     FX
@@ -5114,19 +5120,19 @@ FY:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D0↓j
                 LDA     #L_BRIDGE_N|L_C_1
 
 FZ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D9↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 CPY     #64
                 BNE     FZ
 
 FX:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+CD↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 DEY
                 LDX     #$15
 
 GA:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+E7↓j
                 LDA     BR2-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     GA
@@ -5135,7 +5141,7 @@ GA:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+E7↓j
                 LDA     #L_RUNWAY_CENTER|L_C_1
 
 GB:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+F5↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     GB
@@ -5144,7 +5150,7 @@ GB:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+F5↓j
                 LDA     #L_BRIDGE_M|L_C_1
 
 GC:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+105↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     GD              ; => Return
                 DEX
@@ -5152,7 +5158,7 @@ GC:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+105↓j
                 LDA     #L_BRIDGE_N|L_C_1
 
 GE:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+10C↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BNE     GE
 
@@ -5169,7 +5175,7 @@ FQ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:FO↑j
                 LDX     byte_618
 
 GF:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+122↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 CPY     #65
                 BEQ     GR
@@ -5178,19 +5184,19 @@ GF:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+122↓j
                 LDA     #L_BRIDGE_L|L_C_1
 
 GG:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+12B↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 CPY     #65
                 BNE     GG
 
 GR:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+11F↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 LDX     #21
 
 GH:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+138↓j
                 DEY
                 LDA     BR3-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEX
                 BNE     GH
                 TYA
@@ -5201,7 +5207,7 @@ GH:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+138↓j
                 LDA     #L_BRIDGE_K|L_C_1
 
 GJ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+14B↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     GI              ; => Return
                 DEX
@@ -5209,7 +5215,7 @@ GJ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+14B↓j
                 LDA     #L_BRIDGE_L|L_C_1
 
 GK:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+152↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BNE     GK
 
@@ -5223,16 +5229,16 @@ GS:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:FP↑j
                 LDA     #L_RUNWAY_CENTER|L_C_1
 
 GT:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+15C↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BNE     GT
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 DEY
                 LDX     #20
                 LDA     #L_5B|L_C_1
 
 T4:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+169↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     T4
@@ -5247,7 +5253,7 @@ JH:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:JI↑j
                 BEQ     GS
                 LDA     #UNKNOWNS_STATE_6
                 STA     VAR_UNKNOWN_STATE
-                STA     VBL_DRAW_DOWN_COUNTER ; VBL: down counter whenever the level scrolls a pixel
+                STA     VBL_DRAW_DOWN_COUNTER ; VBL: 30Hz down counter whenever the level scrolls a pixel
                 LDA     #1
                 STA     byte_FD
                 JMP     GS
@@ -6865,7 +6871,7 @@ QQ:                                     ; CODE XREF: DRTNK+18↑j
                 LDA     byte_FE
                 CMP     #8
                 BCS     QR
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #25
                 BCC     QR
                 LDA     #10
@@ -6875,7 +6881,7 @@ QQ:                                     ; CODE XREF: DRTNK+18↑j
 
 QR:                                     ; CODE XREF: DRTNK+24↑j
                                         ; DRTNK+2A↑j
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #36
                 BCC     QS
                 LDA     #3
@@ -6912,7 +6918,7 @@ QT:                                     ; CODE XREF: QS+10↑j
 
 
 QN:                                     ; CODE XREF: DRTNK+11↑j
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
 
 TT:                                     ; CODE XREF: TNKC+1A↓j
                 INY
@@ -6940,17 +6946,17 @@ QW:                                     ; CODE XREF: QN+3C↓j
                 LSR     A
                 BCC     QU
                 LDA     #L_TANK_LEFT_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDA     #L_TANK_RIGHT_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     QV
 ; ---------------------------------------------------------------------------
 
 QU:                                     ; CODE XREF: QN+28↑j
                 INY
                 LDA     #L_ROAD_DIAG_RIGHT_C|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 QV:                                     ; CODE XREF: QN+33↑j
                 DEX
@@ -6989,7 +6995,7 @@ RD:                                     ; CODE XREF: QN+91↓j
                 ADC     byte_652
 
 QZ:                                     ; CODE XREF: QN+64↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 DEX
                 BNE     QZ
@@ -6999,14 +7005,14 @@ QZ:                                     ; CODE XREF: QN+64↓j
                 LDA     #L_4A|L_C_0
                 CLC
                 ADC     byte_652
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #11
                 STA     byte_6A3
                 JSR     B5
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
                 LDY     byte_653
                 DEY
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -7014,7 +7020,7 @@ RA:                                     ; CODE XREF: QN+69↑j
                 LDA     #L_RUNWAY_CENTER_12|L_C_0
                 CLC
                 ADC     byte_652
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -7028,20 +7034,20 @@ RF:                                     ; CODE XREF: QN:RE↑j
                 LDY     byte_653
                 DEY
                 LDA     #L_7F|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDX     #4
                 LDA     #L_3F|L_C_1
 
 RG:                                     ; CODE XREF: QN+A5↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 DEX
                 BNE     RG
                 LDA     #L_49|L_C_0
                 CLC
                 ADC     byte_652
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDY     byte_676
                 BNE     WF
                 DEY
@@ -7630,7 +7636,7 @@ WH:                                     ; CODE XREF: ENRUN+36↑j
 UA:                                     ; CODE XREF: ENRUN+4A↓j
                 DEY
                 LDA     ENRNIM-1,X      ; Enemy runway
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEX
                 BNE     UA
 
@@ -7638,10 +7644,10 @@ UA:                                     ; CODE XREF: ENRUN+4A↓j
                 LDA     ENEMY_RUNWAY_PLANE_FLAG
                 BEQ     UB
                 LDA     #L_RUNWAY_PLANE_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDA     #L_RUNWAY_PLANE_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #0
                 STA     ENEMY_RUNWAY_PLANE_FLAG
                 JMP     UC
@@ -7659,10 +7665,10 @@ UB:                                     ; CODE XREF: ENRUN+50↑j
                 BNE     UC              ; 12.5% chance of a plane
                 INY
                 LDA     #L_RUNWAY_PLANE_D|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDA     #L_RUNWAY_PLANE_C|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 STA     ENEMY_RUNWAY_PLANE_FLAG
 
 UC:                                     ; CODE XREF: ENRUN+60↑j
@@ -7699,7 +7705,7 @@ UE:                                     ; CODE XREF: ENRUN+92↑j
 
 UJ:                                     ; CODE XREF: ENRUN+BA↓j
                 LDA     HNGR1-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     UJ
@@ -7712,7 +7718,7 @@ UF:                                     ; CODE XREF: ENRUN+96↑j
 
 UK:                                     ; CODE XREF: ENRUN+C6↓j
                 LDA     HNGR2-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     UK
@@ -7726,7 +7732,7 @@ UG:                                     ; CODE XREF: ENRUN+9A↑j
 UM:                                     ; CODE XREF: ENRUN+D2↓j
                                         ; ENRUN+D8↓j
                 LDA     HNGR3-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     UM
@@ -7748,7 +7754,7 @@ UI:                                     ; CODE XREF: ENRUN+A6↑j
 
 UN:                                     ; CODE XREF: ENRUN+E6↓j
                 LDA     HNGR5-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     UN
@@ -7774,7 +7780,7 @@ H1:                                     ; CODE XREF: ENRUN+F4↑j
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
 
 H2:                                     ; CODE XREF: ENRUN+F8↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #0
                 STA     byte_6A3
                 LDA     byte_FD
@@ -7792,7 +7798,7 @@ H4:                                     ; CODE XREF: ENRUN+106↑j
 
 
 AREA:                                   ; CODE XREF: CITY+3↓p
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #2
                 BCC     TC
                 CPY     #87
@@ -7859,7 +7865,7 @@ XD:                                     ; CODE XREF: CLEAR+A↑j
 
 TG:                                     ; CODE XREF: CLEAR+12↑j
                                         ; CLEAR+1A↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BNE     TG
                 RTS
@@ -7894,7 +7900,7 @@ TR:                                     ; CODE XREF: DROAD+2A↓j
                 CPY     #0
                 BEQ     TQ
                 LDA     ROADR-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 TP:                                     ; CODE XREF: DROAD+1D↑j
                 DEY
@@ -7913,7 +7919,7 @@ TO:                                     ; CODE XREF: DROAD+F↑j
 TS:                                     ; CODE XREF: DROAD+3A↓j
                 DEY
                 LDA     ROADS-1,X
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEX
                 BNE     TS
                 JSR     DRCAR           ; Draw a car in the middle of a vertial/diagnal road
@@ -8365,18 +8371,18 @@ loc_3048:                               ; CODE XREF: BLDG:loc_2FEA↑j
                 LDA     #L_54|L_C_0
                 CLC
                 ADC     byte_B5
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 ADC     #2
                 DEY
                 CPX     #1
                 BEQ     loc_306E
                 CPX     #2
                 BEQ     loc_3069
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
 loc_3069:                               ; CODE XREF: BLDG+BA↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     loc_30BF
 ; ---------------------------------------------------------------------------
 
@@ -8387,7 +8393,7 @@ loc_306E:                               ; CODE XREF: BLDG+B6↑j
                 ADC     byte_B5
 
 loc_3076:                               ; CODE XREF: BLDG+D0↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3076
@@ -8427,7 +8433,7 @@ loc_30AE:                               ; CODE XREF: BLDG+FD↑j
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
 
 loc_30B0:                               ; CODE XREF: BLDG+101↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     byte_FD
                 BNE     loc_30BC
                 LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
@@ -8446,7 +8452,7 @@ loc_30BF:                               ; CODE XREF: BLDG+C1↑j
 
 loc_30C5:                               ; CODE XREF: BLDG+11F↓j
                 DEY
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEX
                 BNE     loc_30C5
                 RTS
@@ -8464,7 +8470,7 @@ loc_30CC:                               ; CODE XREF: BLDG+A5↑j
                 ADC     byte_B5
 
 loc_30E0:                               ; CODE XREF: BLDG+13A↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_30E0
@@ -8487,7 +8493,7 @@ loc_30EA:                               ; CODE XREF: BLDG+12B↑j
                 ADC     byte_B5
 
 loc_3103:                               ; CODE XREF: BLDG+15D↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3103
@@ -8496,19 +8502,19 @@ loc_3109:                               ; CODE XREF: BLDG+151↑j
                 LDA     #L_58|L_C_0
                 CLC
                 ADC     byte_B5
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDX     byte_671
                 DEY
                 DEX
                 LDA     #L_55|L_C_0
 
 loc_3117:                               ; CODE XREF: BLDG+171↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3117
                 LDA     #L_59|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -9070,7 +9076,7 @@ YQ:                                     ; CODE XREF: ZE+22↑j
                 LDX     #3
 
 XO:                                     ; CODE XREF: ZE+42↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     XO
@@ -9089,7 +9095,7 @@ YI:                                     ; CODE XREF: ZE+7E↓j ZE+E4↓p
                 LDX     byte_67B
 
 XR:                                     ; CODE XREF: YI+7↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     XR
@@ -9139,18 +9145,18 @@ loc_3473:                               ; CODE XREF: ZE+29↑j
                 ADC     byte_681+1
                 CPX     #5
                 BEQ     loc_3484
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
 loc_3484:                               ; CODE XREF: ZE+8E↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
 loc_3487:                               ; CODE XREF: ZE+84↑j
                 LDA     #L_65|L_C_0
                 CLC
                 ADC     byte_681
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDX     byte_67C
                 INX
@@ -9159,12 +9165,12 @@ loc_3487:                               ; CODE XREF: ZE+84↑j
                 LDA     #L_60|L_C_0
 
 loc_3498:                               ; CODE XREF: ZE+AB↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3498
                 LDA     #L_61|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -9180,7 +9186,7 @@ loc_34B1:                               ; CODE XREF: ZE+B8↑j
                 LDA     #L_62|L_C_0
                 CLC
                 ADC     byte_BD
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDA     #L_RUNWAY_CENTER_12|L_C_0
                 CLC
@@ -9189,11 +9195,11 @@ loc_34B1:                               ; CODE XREF: ZE+B8↑j
                 BEQ     loc_34CC
                 CPX     #2
                 BEQ     loc_34C9
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
 loc_34C9:                               ; CODE XREF: ZE+D3↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
 loc_34CC:                               ; CODE XREF: ZE+CF↑j
@@ -9212,7 +9218,7 @@ loc_34D9:                               ; CODE XREF: ZE+BD↑j ZE+E2↑j
                 LDX     #3
 
 loc_34E1:                               ; CODE XREF: ZE+F4↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_34E1
@@ -9225,7 +9231,7 @@ loc_34E1:                               ; CODE XREF: ZE+F4↓j
                 ADC     byte_681+2
 
 loc_34F4:                               ; CODE XREF: ZE+107↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_34F4
@@ -9243,7 +9249,7 @@ XYZ:                                    ; CODE XREF: ZE+44↑p
                 ADC     byte_BC
 
 loc_3502:                               ; CODE XREF: XYZ+B↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3502
@@ -9823,17 +9829,17 @@ B0:                                     ; CODE XREF: B5+2↑j
                 LDA     byte_FE
                 CMP     #10
                 BCC     B1
-                LDA     byte_61D
+                LDA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 CMP     #10
                 BCC     B1
                 LDA     byte_661
                 BNE     B1
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 JMP     B2
 ; ---------------------------------------------------------------------------
 
 B1:                                     ; CODE XREF: B5+15↑j B5+1C↑j ...
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
 
 H3:                                     ; CODE XREF: ENRUN+10B↑j
                                         ; BLDG+10F↑j
@@ -9893,10 +9899,10 @@ LY:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+8↑j
                 BEQ     EW              ; => Return
                 LDA     #100
                 STA     byte_FE
-                LDA     byte_61C
+                LDA     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
                 BNE     EW              ; => Return
                 LDA     #120
-                STA     byte_61D
+                STA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 LDA     byte_FD
                 CMP     #255
                 BEQ     MD
@@ -9919,7 +9925,7 @@ R3:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+4F↑j
 
 MD:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+4B↑j
                 JSR     FLSH
-                LDY     byte_FF
+                LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #40
                 BCS     LZ
                 DEX
@@ -9943,7 +9949,7 @@ MA:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+7C↑j
                 LDA     RANDOM          ; Random Number Generator
                 AND     #7
                 STA     RUNWAY_POS_X_INDEX ; Right position where the runway starts
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #50
                 BCS     EX
                 LDA     #44
@@ -9972,7 +9978,7 @@ SH:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+B5↑j
 
                 LDY     RUNWAY_POS_X_INDEX ; Right position where the runway starts
                 LDA     #L_RUNWAY_RIGHT_11|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDX     #9
                 LDA     RUNWAY_POS_Y_INDEX ; Runway is 45 characters long, this is an index used for drawing the correct line
@@ -9987,7 +9993,7 @@ SH:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+B5↑j
 ; ---------------------------------------------------------------------------
 
 NB:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+D4↑j
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #45
                 BCS     EZ              ; Draw a horizontal runway marker line
                 LDA     #255
@@ -10001,12 +10007,12 @@ EZ:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+CC↑j
 
 FA:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+D8↑j
                                         ; DRUN__DRAW_RUNWAY+F0↓j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     FA
                 LDA     #L_RUNWAY_LEFT_13|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
                 LDA     RUNWAY_POS_Y_INDEX ; Runway is 45 characters long, this is an index used for drawing the correct line
@@ -10354,20 +10360,20 @@ J6:                                     ; CODE XREF: DRCAR+5↑j
                 LSR     A
                 BCC     J7
                 LDA     #L_STREET_CAR_RIGHT_COLOR_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDA     #L_STREET_CAR_LEFT_COLOR_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
 J7:                                     ; CODE XREF: DRCAR+13↑j
                                         ; DRCAR+19↑j ...
                 LDA     #L_STREET_CAR_RIGHT_COLOR_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDA     #L_STREET_CAR_LEFT_COLOR_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function DRCAR
 
@@ -10388,7 +10394,7 @@ I3:                                     ; CODE XREF: SHIP+2↑j
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$F
                 BNE     I4              ; => Return
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #60
                 BCS     I4              ; => Return
                 CMP     #29
@@ -10586,7 +10592,7 @@ E9:                                     ; CODE XREF: TNK+8↑j
                 LDA     byte_FE
                 CMP     #2
                 BCS     F1
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #58
                 BCS     F1
                 CMP     #30
@@ -10601,7 +10607,7 @@ F1:                                     ; CODE XREF: TNK+24↑j TNK+2A↑j ...
                 BCS     _1
                 LDA     CURRENT_GAME_PHASE
                 BNE     E2
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #45
                 BCC     E2
 
@@ -10673,7 +10679,7 @@ F3:                                     ; CODE XREF: TNKC1-5B↑j
 ; ---------------------------------------------------------------------------
 
 F4:                                     ; CODE XREF: TNKC1-8B↑j
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #$2C ; ','
                 BCS     loc_3C81
 
@@ -10701,18 +10707,18 @@ E8:                                     ; CODE XREF: TNKC1-17↓j
                 LSR     A
                 BCC     E6
                 LDA     #L_TANK_RIGHT_A|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #L_TANK_LEFT_A|L_C_1
                 JMP     E7
 ; ---------------------------------------------------------------------------
 
 E6:                                     ; CODE XREF: TNKC1-2B↑j
                 LDA     #L_ROAD_DIAG_RIGHT_C|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 E7:                                     ; CODE XREF: TNKC1-23↑j
                 DEY
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     E8
@@ -10732,7 +10738,7 @@ TH:                                     ; CODE XREF: TNKC1-10↑j
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
 
 F2:                                     ; CODE XREF: TNKC1-C↑j
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JSR     B5
                 RTS
 ; END OF FUNCTION CHUNK FOR TNKC1
@@ -10945,13 +10951,13 @@ CKCHAR:                                 ; CODE XREF: XPLSN+35↑p
                 BEQ     Z0
                 CMP     #L_RUNWAY_PLANE_D|L_C_1
                 BEQ     Z1
-                CMP     #L_SHIP_A|L_C_1
+                CMP     #L_FIXED_BOAT_TOP_LEFT|L_C_1
                 BEQ     X9
-                CMP     #L_SHIP_B|L_C_1
+                CMP     #L_FIXED_BOAT_TOP_RIGHT|L_C_1
                 BEQ     X8
-                CMP     #L_SHIP_C|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
                 BEQ     Y1
-                CMP     #L_SHIP_D|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
                 BEQ     Y0
                 LDX     #8
 
@@ -11379,7 +11385,7 @@ Q6:                                     ; CODE XREF: TRGT+4C↑j
                 BEQ     Q7
                 CMP     #15
                 BCS     Q7
-                LDA     byte_FF
+                LDA     RIVER_RIGHT_X_POS ; Right position of the river
                 CMP     #30
                 BCC     R2              ; => Return
                 CMP     #58
@@ -12108,18 +12114,18 @@ Y6:                                     ; CODE XREF: ID:Y5↑j
                 JSR     CPBT
                 STA     (off_C7),Y
                 DEY
-                LDA     #$F9
+                LDA     #L_79|L_C_1
                 STA     (off_C7),Y
                 RTS
 ; ---------------------------------------------------------------------------
 
 loc_43A2:                               ; CODE XREF: Y6+A↑j
-                LDA     #$44 ; 'D'
+                LDA     #L_EXPLOSION_WATER_2|L_C_0
                 JMP     loc_43D0
 ; ---------------------------------------------------------------------------
 
 _2:                                     ; CODE XREF: Y6+5↑j
-                LDA     #2
+                LDA     #L_WATER|L_C_0
                 JMP     loc_43D0
 ; ---------------------------------------------------------------------------
 
@@ -12224,7 +12230,7 @@ loc_4414:                               ; CODE XREF: GUNC-5F4↑j
                 SBC     #10
                 TAY
                 LDA     #L_FLASHING_MARKER|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 CLC
                 ADC     #7
@@ -12234,7 +12240,7 @@ loc_4414:                               ; CODE XREF: GUNC-5F4↑j
                 ADC     #1
                 TAY
                 LDA     #L_FLASHING_MARKER|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 ADC     #7
                 JMP     B3
@@ -12373,14 +12379,14 @@ _1:                                     ; CODE XREF: SHBT+6↑j
                 BEQ     _10
                 CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
                 BEQ     _10
-                CMP     #L_SHIP_C|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
                 BEQ     _5
-                CMP     #L_SHIP_D|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
                 BNE     _2              ; => Return
                 DEY
 
 _5:                                     ; CODE XREF: SHBT+39↑j
-                DEC     byte_6DE
+                DEC     RIVER_BOAT_HIT_COUNTER ; The boat requires 2 hits to be destroyed
                 BNE     _2              ; => Return
                 LDA     #0
                 STA     byte_661
@@ -13326,7 +13332,7 @@ _5:                                     ; CODE XREF: CTYGN+2A↓j
                                         ; CTYGN+32↓j ...
                 LDY     #25
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #32
                 JMP     A2
 ; ---------------------------------------------------------------------------
@@ -13354,7 +13360,7 @@ _4:                                     ; CODE XREF: CTYGN+26↑j
                                         ; CTYGN+2E↑j ...
                 LDY     #25
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #32
                 JMP     B3
 ; End of function CTYGN
@@ -13411,7 +13417,7 @@ _2:                                     ; CODE XREF: GUNC+13↑j
                 SBC     #10
                 TAY
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 CLC
                 ADC     #7
@@ -13421,7 +13427,7 @@ _2:                                     ; CODE XREF: GUNC+13↑j
                 ADC     #1
                 TAY
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 ADC     #7
                 JMP     B3
@@ -13447,10 +13453,10 @@ _6:                                     ; CODE XREF: GUNC+5B↑j
 _4:                                     ; CODE XREF: GUNC+62↑j
                 TAY
                 LDA     #L_TANK_LEFT_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDA     #L_TANK_RIGHT_B|L_C_1
-                STA     (off_F2),Y
+                STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function GUNC
 
