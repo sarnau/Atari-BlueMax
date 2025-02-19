@@ -723,22 +723,22 @@ L_EXPLOSION_WATER_2: = $44              ; XREF: HV:IA/s
 L_45:            = $45                  ; XREF: QN+5A/s DATA:AAA/s
 L_TANK_LEFT_A:   = $46                  ; XREF: QN+2A/s TNKC1-25/s ...
 L_TANK_RIGHT_A:  = $47                  ; XREF: QN+2F/s TNKC1-29/s ...
-L_48:            = $48                  ; XREF: QN+37/s TNKC1:E6/s ...
+L_ROAD_DIAG_RIGHT_C: = $48              ; XREF: QN+37/s TNKC1:E6/s ...
 L_49:            = $49                  ; XREF: QN+A7/s DATA:AAA/s
 L_4A:            = $4A                  ; XREF: QN+6B/s DATA:AAA/s
-L_ROAD_A:        = $4B                  ; XREF: DATA:ROADS/s
+L_RUNWAY_LEFT:   = $4B                  ; XREF: DATA:ROADS/s
                                         ; DATA:ENRNIM/s ...
-L_ROAD_B:        = $4C                  ; XREF: DATA:ROADR/s
+L_ROAD_DIAG_RIGHT_B: = $4C              ; XREF: DATA:ROADR/s
                                         ; DATA:AAE/s
-L_ROAD_C:        = $4D                  ; XREF: DATA:ROADR/s
+L_ROAD_DIAG_RIGHT_A: = $4D              ; XREF: DATA:ROADR/s
                                         ; DATA:AAE/s
-L_ROAD_D:        = $4E                  ; XREF: DATA:ROADR/s
+L_ROAD_DIAG_LEFT_B: = $4E               ; XREF: DATA:ROADR/s
                                         ; DATA:AAE/s
 L_ROAD_E:        = $4F
-L_50:            = $50                  ; XREF: ENRUN+57/s CKCHAR/s
-L_51:            = $51                  ; XREF: ENRUN+52/s CKCHAR+4/s
-L_52:            = $52                  ; XREF: ENRUN+7B/s CKCHAR+8/s
-L_53:            = $53                  ; XREF: ENRUN+76/s CKCHAR+C/s
+L_RUNWAY_PLANE_A: = $50                 ; XREF: ENRUN+57/s CKCHAR/s
+L_RUNWAY_PLANE_B: = $51                 ; XREF: ENRUN+52/s CKCHAR+4/s
+L_RUNWAY_PLANE_C: = $52                 ; XREF: ENRUN+7B/s CKCHAR+8/s
+L_RUNWAY_PLANE_D: = $53                 ; XREF: ENRUN+76/s CKCHAR+C/s
 L_54:            = $54                  ; XREF: BLDG+AA/s DATA:AAB/s
 L_55:            = $55                  ; XREF: BLDG+16B/s DATA:AAB/s
 L_56:            = $56                  ; XREF: BLDG+131/s BLDG+154/s ...
@@ -765,15 +765,15 @@ L_68:            = $68
 L_69:            = $69
 L_6A:            = $6A
 L_6B:            = $6B
-L_CAR_LEFT_A:    = $6C                  ; XREF: DRCAR+26/s SHBT+1F/s ...
-L_CAR_RIGHT_A:   = $6D                  ; XREF: DRCAR+21/s SHBT+27/s ...
-L_CAR_LEFT_B:    = $6E                  ; XREF: DRCAR+30/s SHBT+23/s ...
-L_CAR_RIGHT_B:   = $6F                  ; XREF: DRCAR:J7/s SHBT+2B/s ...
+L_STREET_CAR_LEFT_COLOR_A: = $6C        ; XREF: DRCAR+26/s SHBT+1F/s ...
+L_STREET_CAR_RIGHT_COLOR_A: = $6D       ; XREF: DRCAR+21/s SHBT+27/s ...
+L_STREET_CAR_LEFT_COLOR_B: = $6E        ; XREF: DRCAR+30/s SHBT+23/s ...
+L_STREET_CAR_RIGHT_COLOR_B: = $6F       ; XREF: DRCAR:J7/s SHBT+2B/s ...
 L_ANTI_AIRCRAFT_BATTERY_B: = $70        ; XREF: GUNC+34/s GUNC+46/s ...
 L_TANK_LEFT_B:   = $71                  ; XREF: GUNC+6D/s DATA:AAG/s
 L_TANK_RIGHT_B:  = $72                  ; XREF: GUNC+72/s DATA:AAG/s
-L_73:            = $73                  ; XREF: GUNC-5DD/s GUNC-5CB/s
-L_ROAD_74:       = $74                  ; XREF: DATA:ROADS/s
+L_FLASHING_MARKER: = $73                ; XREF: GUNC-5DD/s GUNC-5CB/s
+L_RUNWAY_RIGHT:  = $74                  ; XREF: DATA:ROADS/s
                                         ; DATA:ENRNIM/s
 L_75:            = $75                  ; XREF: V8:_1/s Y6+11/s
 L_76:            = $76                  ; XREF: V8+20/s Y6+C/s
@@ -782,11 +782,11 @@ L_78:            = $78                  ; XREF: V8+C/s
 L_79:            = $79                  ; XREF: Y6:loc_43BC/s Y6+5D/s
 L_7A:            = $7A                  ; XREF: Y6+3F/s
 L_7B:            = $7B                  ; XREF: Y6+32/s Y6+4C/s
-L_ROAD_7C:       = $7C                  ; XREF: DRBR__DRAW_BRIDGE+B8/s
+L_RUNWAY_CENTER: = $7C                  ; XREF: DRBR__DRAW_BRIDGE+B8/s
                                         ; DRBR__DRAW_BRIDGE+EF/s ...
-L_7D:            = $7D                  ; XREF: DATA:ROADR/s
+L_ROAD_DIAG_LEFT_A: = $7D               ; XREF: DATA:ROADR/s
                                         ; DATA:AAE/s
-L_7E:            = $7E                  ; XREF: AEI+7/s DATA:HNGR1/s ...
+L_SOLID_WALL:    = $7E                  ; XREF: CLEAR+10/s AEI+7/s ...
 L_7F:            = $7F                  ; XREF: QN+98/s DATA:AAA/s
 L_C_0:           = 0                    ; XREF: DRAW+7/s DRAW+29/s ...
 L_C_1:           = $80                  ; XREF: DRBT__DRAW_BOAT+35/s
@@ -971,7 +971,8 @@ byte_B6:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1E7↓w
                                         ; EB+1D↓w ...
 CURRENT_GAME_PHASE:.BYTE 0 ; (uninited) ; DATA XREF: RESET+1C8↓w
                                         ; EB+14E↓w ...
-byte_B8:        .BYTE 0 ; (uninited)    ; DATA XREF: EB+145↓w B7↓r ...
+GAME_PHASE_ROWS:.BYTE 0 ; (uninited)    ; DATA XREF: EB+145↓w B7↓r ...
+                                        ; Length of a game phase in remaining rows
 byte_B9:        .BYTE 0 ; (uninited)    ; DATA XREF: BLDGL:ZF↓r
                                         ; BLDGL+4B↓w ...
 byte_BA:        .BYTE 0 ; (uninited)    ; DATA XREF: B7+86↓w ZE:YG↓r ...
@@ -1406,13 +1407,16 @@ byte_667:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+180↓w
 byte_668:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+12B↓w DROAD↓r ...
 byte_669:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+11C↓w
                                         ; DROAD:TM↓r ...
-byte_66A:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+126↓w
+ROAD_RIGHT_X_POS:.BYTE 0 ; (uninited)   ; DATA XREF: EB+126↓w
                                         ; ENRUN:WH↓r ...
-byte_66B:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+12E↓w
+                                        ; right X position where the road starts
+ENEMY_RUNWAY_START:.BYTE 0 ; (uninited) ; DATA XREF: EB+12E↓w
                                         ; ENRUN-4↓w ...
-byte_66C:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+133↓w
+                                        ; How many lines till the enemy runway will appear
+ENEMY_RUNWAY_LENGTH:.BYTE 0 ; (uninited) ; DATA XREF: EB+133↓w
                                         ; ENRUN-19↓w ...
-byte_66D:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+13B↓w
+                                        ; Length/current line of the enemy runway (default length=36)
+ENEMY_RUNWAY_PLANE_FLAG:.BYTE 0 ; (uninited) ; DATA XREF: EB+13B↓w
                                         ; ENRUN+4D↓r ...
 DL_IRQ_BACKGROUND_COLOR:.BYTE 0 ; (uninited) ; DATA XREF: RESET+11D↓w
                                         ; TURN+139↓w ...
@@ -1526,7 +1530,7 @@ AUDIO4_GUN_SND_COUNTER:.BYTE 0 ; (uninited) ; DATA XREF: RESET+18E↓w
 byte_6B0:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+13F↓w
                                         ; EB+E5↓w ...
 byte_6B1:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+286↓w
-                                        ; GUNC:loc_4400↓w ...
+                                        ; GUNC:TB↓w ...
 byte_6B2:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+1E↓w
                                         ; DNXP+7↓r
 byte_6B3:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+24↓w
@@ -1984,7 +1988,7 @@ L5:                                     ; CODE XREF: RESET+159↓j
                 STA     byte_667
                 LDA     #SND_FREQ_251
                 STA     AUDF1           ; Audio 1 Frequency Register
-                JSR     DFGN
+                JSR     DFGN            ; Restore anti-airgraft gun battery graphics at character $31
                 JSR     QUIET__STOP_ALL_SOUNDS ; Sound: stop all audio output
                 STA     AUDIO4_GUN_SND_COUNTER
                 STA     byte_6DB
@@ -2243,24 +2247,25 @@ ZN:                                     ; CODE XREF: EB+107↑j
                 LDA     #1
                 STA     byte_666
                 STA     byte_669
+
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$F
-                ADC     #$1E
-                STA     byte_66A
-                ORA     #$10
+                AND     #1111b
+                ADC     #30
+                STA     ROAD_RIGHT_X_POS ; right X position where the road starts
+                ORA     #16
                 STA     byte_668
-                STA     byte_66B
-                LDA     #$24 ; '$'
-                STA     byte_66C
+                STA     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
+                LDA     #36
+                STA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
                 STA     byte_674
                 LDY     #0
-                STY     byte_66D
+                STY     ENEMY_RUNWAY_PLANE_FLAG
                 STY     byte_677
                 STY     byte_686
                 DEY
-                STY     byte_B8
+                STY     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$1F
+                AND     #11111b
                 STA     byte_B2
                 INC     CURRENT_GAME_PHASE
                 JSR     AKA
@@ -5088,7 +5093,7 @@ A2:                                     ; CODE XREF: DRBT__DRAW_BOAT+32↑p
 FR:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+4A↑j
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_617
-                LDA     #L_ROAD_7C|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_C_1
 
 FW:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+BE↓j
                 STA     (off_F2),Y
@@ -5127,7 +5132,7 @@ GA:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+E7↓j
                 BNE     GA
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_619
-                LDA     #L_ROAD_7C|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_C_1
 
 GB:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+F5↓j
                 STA     (off_F2),Y
@@ -5215,7 +5220,7 @@ GI:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+148↑j
 GS:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:FP↑j
                                         ; DRBR__DRAW_BRIDGE+16E↓j ...
                 LDY     #64
-                LDA     #L_ROAD_7C|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_C_1
 
 GT:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+15C↓j
                 STA     (off_F2),Y
@@ -6533,6 +6538,7 @@ OB:                                     ; CODE XREF: PLBCK+2↑j
                 BNE     OC              ; => Return
                 STA     byte_6A8
                 STA     ENEMY_TURN_MODE ; 0=none, 1=left, 2=right, >2=any
+
                 LDA     byte_6A6
                 BNE     OC              ; => Return
                 LDA     #23
@@ -6943,7 +6949,7 @@ QW:                                     ; CODE XREF: QN+3C↓j
 
 QU:                                     ; CODE XREF: QN+28↑j
                 INY
-                LDA     #L_48|L_C_0
+                LDA     #L_ROAD_DIAG_RIGHT_C|L_C_0
                 STA     (off_F2),Y
 
 QV:                                     ; CODE XREF: QN+33↑j
@@ -7553,49 +7559,50 @@ ST:                                     ; CODE XREF: COLM30+5↑j
 
 TY:                                     ; CODE XREF: ENRUN+19↓j
                 LDA     #36
-                STA     byte_66C
+                STA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
                 LDA     byte_676
                 CMP     #2
                 BNE     WI
-                LDA     #$FF
+                LDA     #255
                 STA     byte_B6
 
 WI:                                     ; CODE XREF: ENRUN-11↑j
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$7F
                 ORA     #$40 ; '@'
-                STA     byte_66B
+                STA     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
                 RTS
 ; END OF FUNCTION CHUNK FOR ENRUN
 
 ; =============== S U B R O U T I N E =======================================
 
+; Draw the enemy runway, when visible
 
 ENRUN:                                  ; CODE XREF: DROAD+42↓p
 
 ; FUNCTION CHUNK AT 2C23 SIZE 0000001B BYTES
 
-                LDA     byte_66B
+                LDA     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
                 BEQ     TX
-                DEC     byte_66B
+                DEC     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
 
 XE:                                     ; CODE XREF: ENRUN+14↓j
                 RTS                     ; => Return
 ; ---------------------------------------------------------------------------
 
 TX:                                     ; CODE XREF: ENRUN+3↑j
-                LDA     byte_66C
-                CMP     #$24 ; '$'
+                LDA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
+                CMP     #36             ; first row of the runway appearing?
                 BNE     WX
                 LDA     CURRENT_GAME_PHASE
-                CMP     #GAME_PHASE_2
+                CMP     #GAME_PHASE_2   ; not before level 3
                 BCS     XE              ; => Return
 
 WX:                                     ; CODE XREF: ENRUN+E↑j
-                DEC     byte_66C
+                DEC     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
                 BEQ     TY
-                LDA     byte_66C
-                CMP     #$23 ; '#'
+                LDA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
+                CMP     #35
                 BNE     TZ
                 STA     byte_6F9
 
@@ -7614,7 +7621,7 @@ TZ:                                     ; CODE XREF: ENRUN+20↑j
                 STA     byte_B6
 
 WH:                                     ; CODE XREF: ENRUN+36↑j
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #7
                 TAY
@@ -7622,61 +7629,63 @@ WH:                                     ; CODE XREF: ENRUN+36↑j
 
 UA:                                     ; CODE XREF: ENRUN+4A↓j
                 DEY
-                LDA     ENRNIM-1,X
+                LDA     ENRNIM-1,X      ; Enemy runway
                 STA     (off_F2),Y
                 DEX
                 BNE     UA
+
                 INY
-                LDA     byte_66D
+                LDA     ENEMY_RUNWAY_PLANE_FLAG
                 BEQ     UB
-                LDA     #L_51|L_C_1
+                LDA     #L_RUNWAY_PLANE_B|L_C_1
                 STA     (off_F2),Y
                 INY
-                LDA     #L_50|L_C_1
+                LDA     #L_RUNWAY_PLANE_A|L_C_1
                 STA     (off_F2),Y
                 LDA     #0
-                STA     byte_66D
+                STA     ENEMY_RUNWAY_PLANE_FLAG
                 JMP     UC
 ; ---------------------------------------------------------------------------
 
 UB:                                     ; CODE XREF: ENRUN+50↑j
-                LDA     byte_66C
+                LDA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
                 CMP     #4
                 BCC     UC
                 CMP     #33
                 BCS     UC
+
                 LDA     RANDOM          ; Random Number Generator
                 AND     #7
-                BNE     UC
+                BNE     UC              ; 12.5% chance of a plane
                 INY
-                LDA     #L_53|L_C_1
+                LDA     #L_RUNWAY_PLANE_D|L_C_1
                 STA     (off_F2),Y
                 INY
-                LDA     #L_52|L_C_1
+                LDA     #L_RUNWAY_PLANE_C|L_C_1
                 STA     (off_F2),Y
-                STA     byte_66D
+                STA     ENEMY_RUNWAY_PLANE_FLAG
 
 UC:                                     ; CODE XREF: ENRUN+60↑j
                                         ; ENRUN+68↑j ...
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #19
                 TAY
-                LDA     byte_66C
+                LDA     ENEMY_RUNWAY_LENGTH ; Length/current line of the enemy runway (default length=36)
                 CMP     #20
                 BEQ     UD
                 CMP     #19
-                BEQ     UE              ; Draw HNGR1
+                BEQ     UE              ; Draw HNGR1 - first row of the hangar
                 CMP     #18
-                BEQ     UF              ; Draw HNGR2
+                BEQ     UF              ; Draw HNGR2 - second row of the hangar
                 CMP     #17
-                BEQ     UG              ; Draw HNGR3 A
+                BEQ     UG              ; Draw HNGR3 - center part
                 CMP     #16
-                BEQ     UG              ; Draw HNGR3 A
+                BEQ     UG              ; Draw HNGR3 - center part
                 CMP     #15
-                BEQ     UH              ; Draw HNGR3 B
+                BEQ     UH              ; Draw HNGR3 - second to last row
                 CMP     #14
-                BEQ     UI              ; Draw HNGR5
+                BEQ     UI              ; Draw HNGR5 - last row
                 CMP     #34
                 BEQ     H0              ; Add Anti-Aircraft-Battery
                 CMP     #9
@@ -7686,7 +7695,7 @@ UC:                                     ; CODE XREF: ENRUN+60↑j
 
 UE:                                     ; CODE XREF: ENRUN+92↑j
                                         ; DRUN__DRAW_RUNWAY+12D↓j
-                LDX     #5              ; Draw HNGR1
+                LDX     #5              ; Draw HNGR1 - first row of the hangar
 
 UJ:                                     ; CODE XREF: ENRUN+BA↓j
                 LDA     HNGR1-1,X
@@ -7699,7 +7708,7 @@ UJ:                                     ; CODE XREF: ENRUN+BA↓j
 
 UF:                                     ; CODE XREF: ENRUN+96↑j
                                         ; DRUN__DRAW_RUNWAY:FC↓j
-                LDX     #6              ; Draw HNGR2
+                LDX     #6              ; Draw HNGR2 - second row of the hangar
 
 UK:                                     ; CODE XREF: ENRUN+C6↓j
                 LDA     HNGR2-1,X
@@ -7712,7 +7721,7 @@ UK:                                     ; CODE XREF: ENRUN+C6↓j
 
 UG:                                     ; CODE XREF: ENRUN+9A↑j
                                         ; ENRUN+9E↑j ...
-                LDX     #6              ; Draw HNGR3 A
+                LDX     #6              ; Draw HNGR3 - center part
 
 UM:                                     ; CODE XREF: ENRUN+D2↓j
                                         ; ENRUN+D8↓j
@@ -7726,14 +7735,14 @@ UM:                                     ; CODE XREF: ENRUN+D2↓j
 
 UH:                                     ; CODE XREF: ENRUN+A2↑j
                                         ; DRUN__DRAW_RUNWAY:FF↓j
-                LDX     #5              ; Draw HNGR3 B
+                LDX     #5              ; Draw HNGR3 - second to last row
                 DEY
                 JMP     UM
 ; ---------------------------------------------------------------------------
 
 UI:                                     ; CODE XREF: ENRUN+A6↑j
                                         ; DRUN__DRAW_RUNWAY:FE↓j
-                LDX     #4              ; Draw HNGR5
+                LDX     #4              ; Draw HNGR5 - last row
                 DEY
                 DEY
 
@@ -7750,7 +7759,7 @@ R0:                                     ; => Return
 
 H0:                                     ; CODE XREF: ENRUN+AA↑j
                                         ; ENRUN+AE↑j
-                LDA     byte_66A        ; Add Anti-Aircraft-Battery
+                LDA     ROAD_RIGHT_X_POS ; Add Anti-Aircraft-Battery
                 SEC
                 SBC     #7
                 TAY
@@ -7770,7 +7779,7 @@ H2:                                     ; CODE XREF: ENRUN+F8↑j
                 STA     byte_6A3
                 LDA     byte_FD
                 BNE     H4
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 JMP     H3
 ; ---------------------------------------------------------------------------
 
@@ -7792,7 +7801,7 @@ AREA:                                   ; CODE XREF: CITY+3↓p
 TC:                                     ; CODE XREF: AREA+4↑j
                 LDA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
                 BNE     TU              ; => Return
-                JSR     B7
+                JSR     B7              ; Advance to next row of the level
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_5
                 BCC     WW
@@ -7829,6 +7838,7 @@ TF:                                     ; CODE XREF: AREA+31↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Clear one row of playfield with default character
 
 CLEAR:                                  ; CODE XREF: CITY↓p B7+9D↓p
                 LDA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
@@ -7839,7 +7849,7 @@ CLEAR:                                  ; CODE XREF: CITY↓p B7+9D↓p
                 BCC     XD
                 CMP     #GAME_PHASE_8
                 BCS     XD
-                LDA     #254
+                LDA     #L_SOLID_WALL|L_C_1
                 JMP     TG
 ; ---------------------------------------------------------------------------
 
@@ -7871,7 +7881,7 @@ TN:                                     ; CODE XREF: CLEAR+2↑j
 
 TM:                                     ; CODE XREF: DROAD+3↑j
                 LDY     byte_669
-                CPY     byte_66A
+                CPY     ROAD_RIGHT_X_POS ; right X position where the road starts
                 BEQ     TO
                 LDA     #COLOR_INTENSITY_10|COLOR_ORANGE
                 STA     COLOR1
@@ -7906,9 +7916,9 @@ TS:                                     ; CODE XREF: DROAD+3A↓j
                 STA     (off_F2),Y
                 DEX
                 BNE     TS
-                JSR     DRCAR           ; Draw a car
+                JSR     DRCAR           ; Draw a car in the middle of a vertial/diagnal road
                 JSR     BLDG
-                JSR     ENRUN
+                JSR     ENRUN           ; Draw the enemy runway, when visible
                 RTS
 ; End of function DROAD
 
@@ -7933,7 +7943,7 @@ TV:                                     ; CODE XREF: TNKC+3↑j
 ; ---------------------------------------------------------------------------
 
 TW:                                     ; CODE XREF: TNKC+C↑j
-                LDY     byte_66A
+                LDY     ROAD_RIGHT_X_POS ; right X position where the road starts
                 JMP     TT
 ; End of function TNKC
 
@@ -7943,7 +7953,7 @@ TW:                                     ; CODE XREF: TNKC+C↑j
 
 CITY:                                   ; CODE XREF: EB+153↑j
                                         ; CITY+34↓j
-                JSR     CLEAR
+                JSR     CLEAR           ; Clear one row of playfield with default character
                 JSR     AREA
                 JSR     PLFWD
                 JSR     PLBCK
@@ -8248,7 +8258,7 @@ BLDG:                                   ; CODE XREF: DROAD+3F↑p
 ; ---------------------------------------------------------------------------
 
 loc_2FB1:                               ; CODE XREF: BLDG+33↓j
-                LDA     #$F
+                LDA     #15
                 STA     byte_B2
 
 locret_2FB5:                            ; CODE XREF: BLDG+15↓j
@@ -8268,7 +8278,7 @@ loc_2FB6:                               ; CODE XREF: BLDG+2↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     loc_2FD8
-                LDA     byte_66B
+                LDA     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
                 CMP     #20
                 BCS     loc_2FED
 
@@ -8276,7 +8286,7 @@ loc_2FD8:                               ; CODE XREF: BLDG+25↑j
                 LDA     byte_650
                 CMP     #10
                 BCC     loc_2FB1
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 ADC     #3
                 ADC     byte_671
                 JMP     loc_2FF2
@@ -8287,7 +8297,7 @@ loc_2FEA:                               ; CODE XREF: BLDG+F↑j
 ; ---------------------------------------------------------------------------
 
 loc_2FED:                               ; CODE XREF: BLDG+2C↑j
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SBC     #9
 
 loc_2FF2:                               ; CODE XREF: BLDG+3D↑j
@@ -8306,7 +8316,7 @@ loc_2FFE:                               ; CODE XREF: BLDG+51↑j
                 ADC     #2
                 STA     byte_673
                 LDA     byte_670
-                CMP     byte_66A
+                CMP     ROAD_RIGHT_X_POS ; right X position where the road starts
                 BCS     loc_301F
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
@@ -8388,7 +8398,7 @@ loc_3076:                               ; CODE XREF: BLDG+D0↓j
                 STA     byte_B6
 
 loc_3087:                               ; CODE XREF: BLDG+D7↑j
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 CMP     byte_670
                 BCC     loc_309A
                 SEC
@@ -8420,7 +8430,7 @@ loc_30B0:                               ; CODE XREF: BLDG+101↑j
                 STA     (off_F2),Y
                 LDA     byte_FD
                 BNE     loc_30BC
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 JMP     H3
 ; ---------------------------------------------------------------------------
 
@@ -8503,11 +8513,11 @@ loc_3117:                               ; CODE XREF: BLDG+171↓j
 ; ---------------------------------------------------------------------------
 
 loc_3122:                               ; CODE XREF: BLDG+149↑j
-                LDX     #$FF
+                LDX     #255
                 STX     byte_B6
                 STX     byte_674
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$1F
+                AND     #11111b
                 ADC     #25
                 STA     byte_B2
                 LDA     byte_C4
@@ -8515,10 +8525,10 @@ loc_3122:                               ; CODE XREF: BLDG+149↑j
                 BNE     Q9              ; => Return
                 LDA     #2
                 STA     byte_6AD
-                LDY     #$11
+                LDY     #17
                 LDA     byte_670
                 CLC
-                ADC     #$A
+                ADC     #10
                 JMP     GNSGHT
 ; ---------------------------------------------------------------------------
 
@@ -8533,20 +8543,20 @@ WY:                                     ; CODE XREF: B7+A↓j
                 INC     byte_677
                 LDA     byte_677
                 CMP     #2
-                BEQ     loc_3191
+                BEQ     WZ
                 CMP     #3
-                BEQ     loc_3196
-                LDA     #$48 ; 'H'
-                STA     byte_66A
+                BEQ     XS
+                LDA     #72
+                STA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 LDY     byte_669
                 INY
-                CPY     byte_66A
+                CPY     ROAD_RIGHT_X_POS ; right X position where the road starts
                 BEQ     XC
                 RTS
 ; ---------------------------------------------------------------------------
 
 ADL:                                    ; CODE XREF: B7+2A↓j
-                JMP     WT
+                JMP     WT              ; Game phase: 6
 ; ---------------------------------------------------------------------------
 
 XC:                                     ; CODE XREF: B7-38↑j
@@ -8569,59 +8579,63 @@ XC:                                     ; CODE XREF: B7-38↑j
                 JMP     SRT
 ; ---------------------------------------------------------------------------
 
-loc_318B:                               ; CODE XREF: B7+22↓j
-                JMP     loc_326C
+YM:                                     ; CODE XREF: B7+22↓j
+                JMP     U8              ; Game phase: 7
 ; ---------------------------------------------------------------------------
 
-loc_318E:                               ; CODE XREF: B7+26↓j
-                JMP     loc_3271
+U9:                                     ; CODE XREF: B7+26↓j
+                JMP     WV              ; Game phase: 8
 ; ---------------------------------------------------------------------------
 
-loc_3191:                               ; CODE XREF: B7-4A↑j
+WZ:                                     ; CODE XREF: B7-4A↑j
                 INC     CURRENT_GAME_PHASE
-                JMP     WS
+                JMP     WS              ; phase is 24 rows long
 ; ---------------------------------------------------------------------------
 
-loc_3196:                               ; CODE XREF: B7-46↑j
+XS:                                     ; CODE XREF: B7-46↑j
                 INC     CURRENT_GAME_PHASE
-                JMP     loc_3218
+                JMP     XB
 ; END OF FUNCTION CHUNK FOR B7
 
 ; =============== S U B R O U T I N E =======================================
 
+; Advance to next row of the level
 
 B7:                                     ; CODE XREF: AREA+E↑p
 
 ; FUNCTION CHUNK AT 3149 SIZE 00000052 BYTES
 
-                LDA     byte_B8
-                BEQ     WN
-                DEC     byte_B8
+                LDA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
+                BEQ     WN              ; end of this phase reached? => advance to next one!
+                DEC     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
 WN:                                     ; CODE XREF: B7+2↑j
                 LDA     byte_677
                 BNE     WY
+
                 INC     CURRENT_GAME_PHASE
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_2
-                BEQ     loc_31F1
+                BEQ     WO              ; Game phase: 2
                 CMP     #GAME_PHASE_3
-                BEQ     loc_31F6
+                BEQ     WP              ; Game phase: 3
                 CMP     #GAME_PHASE_4
-                BEQ     loc_321D
+                BEQ     WQ              ; Game phase: 4
                 CMP     #GAME_PHASE_5
-                BEQ     loc_322B
+                BEQ     WR              ; Game phase: 5
                 CMP     #GAME_PHASE_7
-                BEQ     loc_318B
+                BEQ     YM              ; Game phase: 7
                 CMP     #GAME_PHASE_8
-                BEQ     loc_318E
+                BEQ     U9              ; Game phase: 8
                 CMP     #GAME_PHASE_6
-                BEQ     ADL
+                BEQ     ADL             ; Game phase: 6
 
-loc_31C7:                               ; CODE XREF: B7+5E↓j
-                JSR     DFGN
+; Game phase: 0 or 1
+
+U7:                                     ; CODE XREF: B7+5E↓j
+                JSR     DFGN            ; Restore anti-airgraft gun battery graphics at character $31
                 LDY     #GAME_PHASE_1
                 STY     CURRENT_GAME_PHASE
                 STY     byte_677
@@ -8632,24 +8646,24 @@ loc_31C7:                               ; CODE XREF: B7+5E↓j
                 STA     COLOR2
                 STA     SAVED_COLOR0_3+2
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$3F ; '?'
-                ORA     #$40 ; '@'
-                STA     byte_B8
+                AND     #63
+                ORA     #64             ; Length: 64-127 rows
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 LDA     #COLOR_INTENSITY_10|COLOR_ORANGE
                 STA     COLOR1
                 STA     SAVED_COLOR0_3+1
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_31F1:                               ; CODE XREF: B7+12↑j
-                LDA     #61
-                STA     byte_B8
+WO:                                     ; CODE XREF: B7+12↑j
+                LDA     #61             ; Game phase: 2
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_31F6:                               ; CODE XREF: B7+16↑j
-                LDY     byte_6AE
-                BEQ     loc_31C7
+WP:                                     ; CODE XREF: B7+16↑j
+                LDY     byte_6AE        ; Game phase: 3
+                BEQ     U7
                 LDY     #1
                 STY     byte_B6
                 STY     byte_684
@@ -8662,76 +8676,79 @@ loc_31F6:                               ; CODE XREF: B7+16↑j
                 INC     byte_6A6
                 STY     SAVED_COLOR0_3+1
 
-loc_3218:                               ; CODE XREF: B7-3↑j
-                LDA     #$D
-                STA     byte_B8
+XB:                                     ; CODE XREF: B7-3↑j
+                LDA     #13
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_321D:                               ; CODE XREF: B7+1A↑j
-                LDA     #0
+WQ:                                     ; CODE XREF: B7+1A↑j
+                LDA     #0              ; Game phase: 4
                 STA     byte_B6
                 STA     byte_BA
                 STA     byte_690
 
 WS:                                     ; CODE XREF: B7-8↑j B7+B4↓j ...
-                LDA     #24
-                STA     byte_B8
+                LDA     #24             ; phase is 24 rows long
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_322B:                               ; CODE XREF: B7+1E↑j
-                LDA     #COLOR_INTENSITY_6|COLOR_GRAY
+WR:                                     ; CODE XREF: B7+1E↑j
+                LDA     #COLOR_INTENSITY_6|COLOR_GRAY ; Game phase: 5
                 STA     COLOR2
                 STA     SAVED_COLOR0_3+2
                 LDA     #COLOR_INTENSITY_4|COLOR_GRAY
                 STA     COLOR4
 
-                JSR     CLEAR
+                JSR     CLEAR           ; Clear one row of playfield with default character
                 JSR     DFHNGR          ; Define Hangar – restore the font characters for the hangar
                 JSR     DFTNK           ; Final target phase: define tanks
                 JSR     DFBLDG          ; Final target phase: define skyscraper buildings
-                LDX     #7
 
-loc_3246:                               ; CODE XREF: B7+B2↓j
-                LDA     ADJ,X
+                LDX     #7              ; Set new anti-airgraft gun battery graphics at character $31
+
+_1:                                     ; CODE XREF: B7+B2↓j
+                LDA     ADJ,X           ; Final city anti-aircraft gun battery. Replaces character $31 (standard anti-aircraft gun battery)
                 STA     ADK,X           ; $31: Anti-Aircraft Battery
                 DEX
-                BPL     loc_3246
-                JMP     WS
+                BPL     _1
+                JMP     WS              ; phase is 24 rows long
 ; ---------------------------------------------------------------------------
 
 WT:                                     ; CODE XREF: B7:ADL↑j
-                LDA     #COLOR_INTENSITY_0|COLOR_GOLD
+                LDA     #COLOR_INTENSITY_0|COLOR_GOLD ; Game phase: 6
                 STA     COLOR3
                 STA     SAVED_COLOR0_3+3
                 LDA     #COLOR_INTENSITY_0|COLOR_RED_ORANGE
                 STA     COLOR0          ; COLOR 0
                 STA     SAVED_COLOR0_3
+
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$1F
-                ORA     #64
-                STA     byte_B8
+                AND     #31
+                ORA     #64             ; Length: 64-95 rows
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_326C:                               ; CODE XREF: B7:loc_318B↑j
-                LDA     #36
-                STA     byte_B8
+U8:                                     ; CODE XREF: B7:YM↑j
+                LDA     #36             ; Game phase: 7
+                STA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_3271:                               ; CODE XREF: B7:loc_318E↑j
-                LDA     #COLOR_INTENSITY_4|COLOR_GREEN
+WV:                                     ; CODE XREF: B7:U9↑j
+                LDA     #COLOR_INTENSITY_4|COLOR_GREEN ; Game phase: 8
                 STA     COLOR0          ; COLOR 0
                 STA     SAVED_COLOR0_3
-                LDA     #4
+                LDA     #COLOR_INTENSITY_4|COLOR_GRAY
                 STA     SAVED_COLOR0_3+3
                 STA     COLOR3
+
                 DEC     byte_6A6
                 PLA
                 PLA
-                JMP     WS
+                JMP     WS              ; phase is 24 rows long
 ; End of function B7
 
 
@@ -8846,10 +8863,10 @@ ZB:                                     ; CODE XREF: BLDGL+2B↓j
                 LDX     #5
 
 ZC:                                     ; CODE XREF: BLDGL+38↓j
-                LDA     byte_B8,X
+                LDA     GAME_PHASE_ROWS,X ; Length of a game phase in remaining rows
                 PHA
                 LDA     byte_68E,X
-                STA     byte_B8,X
+                STA     GAME_PHASE_ROWS,X ; Length of a game phase in remaining rows
                 DEX
                 BNE     ZC
                 DEC     byte_694
@@ -9082,7 +9099,7 @@ XR:                                     ; CODE XREF: YI+7↓j
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_7
                 BNE     YS
-                LDA     byte_B8
+                LDA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 CMP     #13
                 BCS     YS
                 LDA     #0
@@ -9792,7 +9809,7 @@ B5:                                     ; CODE XREF: QN+78↑p
                                         ; ENRUN:H4↑j ...
                 LDA     CURRENT_GAME_PHASE
                 BEQ     B0
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
 
 B2:                                     ; CODE XREF: B5+25↓j
                 CLC
@@ -9965,7 +9982,7 @@ SH:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+B5↑j
                 BEQ     EZ              ; Draw a horizontal runway marker line
                 CMP     #44
                 BEQ     NB
-                LDA     #L_ROAD_7C|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_C_1
                 JMP     FA
 ; ---------------------------------------------------------------------------
 
@@ -10025,7 +10042,7 @@ FB:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+100↑j
                 LDA     #2              ; Draw HNGR1
                 STA     byte_B6
                 STA     byte_6F9
-                JMP     UE              ; Draw HNGR1
+                JMP     UE              ; Draw HNGR1 - first row of the hangar
 ; ---------------------------------------------------------------------------
 
 FC:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+104↑j
@@ -10310,11 +10327,11 @@ L0:                                     ; CODE XREF: BTURN+7A↑j
 
 ; =============== S U B R O U T I N E =======================================
 
-; Draw a car
+; Draw a car in the middle of a vertial/diagnal road
 
 DRCAR:                                  ; CODE XREF: DROAD+3C↑p
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$F
+                AND     #1111b
                 BEQ     J6
 
 J8:                                     ; CODE XREF: DRCAR+15↓j
@@ -10322,9 +10339,9 @@ J8:                                     ; CODE XREF: DRCAR+15↓j
 ; ---------------------------------------------------------------------------
 
 J6:                                     ; CODE XREF: DRCAR+5↑j
-                LDY     byte_66A
+                LDY     ROAD_RIGHT_X_POS ; right X position where the road starts
                 DEY
-                DEY
+                DEY                     ; x-4 => car is centered on the road
                 DEY
                 DEY
                 LDA     CURRENT_GAME_PHASE
@@ -10336,20 +10353,20 @@ J6:                                     ; CODE XREF: DRCAR+5↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     J7
-                LDA     #L_CAR_RIGHT_A|L_C_1
+                LDA     #L_STREET_CAR_RIGHT_COLOR_A|L_C_1
                 STA     (off_F2),Y
                 DEY
-                LDA     #L_CAR_LEFT_A|L_C_1
+                LDA     #L_STREET_CAR_LEFT_COLOR_A|L_C_1
                 STA     (off_F2),Y
                 RTS
 ; ---------------------------------------------------------------------------
 
 J7:                                     ; CODE XREF: DRCAR+13↑j
                                         ; DRCAR+19↑j ...
-                LDA     #L_CAR_RIGHT_B|L_C_1
+                LDA     #L_STREET_CAR_RIGHT_COLOR_B|L_C_1
                 STA     (off_F2),Y
                 DEY
-                LDA     #L_CAR_LEFT_B|L_C_1
+                LDA     #L_STREET_CAR_LEFT_COLOR_B|L_C_1
                 STA     (off_F2),Y
                 RTS
 ; End of function DRCAR
@@ -10614,7 +10631,7 @@ E3:                                     ; CODE XREF: TNK+17↑j
 E4:                                     ; CODE XREF: TNKC1-93↑j
                 LDA     CURRENT_GAME_PHASE
                 BEQ     F4
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 CMP     byte_669
                 BNE     F5
                 LDX     PLANE_HORI_POS  ; Horizontal Position of the Plane
@@ -10632,7 +10649,7 @@ _1_0:                                   ; CODE XREF: TNKC1-7D↑j
                 ADC     PLANE_HORI_POS  ; Horizontal Position of the Plane
                 CMP     #120
                 BCS     _2
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #18
                 LDX     #238
@@ -10643,12 +10660,12 @@ _2:                                     ; CODE XREF: TNKC1-6C↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     F3
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 JMP     F5
 ; ---------------------------------------------------------------------------
 
 F3:                                     ; CODE XREF: TNKC1-5B↑j
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #8
                 LDX     #$F8
@@ -10690,7 +10707,7 @@ E8:                                     ; CODE XREF: TNKC1-17↓j
 ; ---------------------------------------------------------------------------
 
 E6:                                     ; CODE XREF: TNKC1-2B↑j
-                LDA     #L_48|L_C_0
+                LDA     #L_ROAD_DIAG_RIGHT_C|L_C_0
                 STA     (off_F2),Y
 
 E7:                                     ; CODE XREF: TNKC1-23↑j
@@ -10741,7 +10758,7 @@ TI:                                     ; CODE XREF: TNKC1+3↑j
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_4
                 BCS     NO
-                LDA     byte_66B
+                LDA     ENEMY_RUNWAY_START ; How many lines till the enemy runway will appear
                 CMP     #2
                 BCC     NO
                 LDA     byte_B2
@@ -10920,13 +10937,13 @@ _1:                                     ; CODE XREF: X5+A↑j
 
 
 CKCHAR:                                 ; CODE XREF: XPLSN+35↑p
-                CMP     #L_50|L_C_1
+                CMP     #L_RUNWAY_PLANE_A|L_C_1
                 BEQ     Y7
-                CMP     #L_51|L_C_1
+                CMP     #L_RUNWAY_PLANE_B|L_C_1
                 BEQ     Y9
-                CMP     #L_52|L_C_1
+                CMP     #L_RUNWAY_PLANE_C|L_C_1
                 BEQ     Z0
-                CMP     #L_53|L_C_1
+                CMP     #L_RUNWAY_PLANE_D|L_C_1
                 BEQ     Z1
                 CMP     #L_SHIP_A|L_C_1
                 BEQ     X9
@@ -11545,7 +11562,7 @@ _1:                                     ; CODE XREF: CPTL+4↑j CPTL+8↑j
                 BEQ     _12             ; => Return
 
                 LDA     GAME_COMPLETION_MASK
-                LDX     byte_B8
+                LDX     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 CPX     #63
                 BEQ     _8
                 CPX     #32
@@ -12185,10 +12202,10 @@ locret_43FF:                            ; CODE XREF: CPBT+4↑j
 ; ---------------------------------------------------------------------------
 ; START OF FUNCTION CHUNK FOR GUNC
 
-loc_4400:                               ; CODE XREF: GUNC:loc_49F9↓j
+TB:                                     ; CODE XREF: GUNC:ADC↓j
                 DEC     byte_6B1
                 LDA     byte_6B1
-                CMP     #$12
+                CMP     #18
                 BEQ     loc_4414
                 CMP     #6
                 BEQ     loc_440F
@@ -12202,21 +12219,21 @@ loc_440F:                               ; CODE XREF: GUNC-5F0↑j
 loc_4414:                               ; CODE XREF: GUNC-5F4↑j
                 LDA     #45
                 STA     byte_BF
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #10
                 TAY
-                LDA     #L_73|L_C_1
+                LDA     #L_FLASHING_MARKER|L_C_1
                 STA     (off_F2),Y
                 TYA
                 CLC
                 ADC     #7
                 JSR     A2
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 CLC
                 ADC     #1
                 TAY
-                LDA     #L_73|L_C_1
+                LDA     #L_FLASHING_MARKER|L_C_1
                 STA     (off_F2),Y
                 TYA
                 ADC     #7
@@ -12344,13 +12361,13 @@ _1:                                     ; CODE XREF: SHBT+6↑j
                 BEQ     _7
                 CMP     #L_TANK_RIGHT_A|L_C_1
                 BEQ     _6
-                CMP     #L_CAR_LEFT_A|L_C_1
+                CMP     #L_STREET_CAR_LEFT_COLOR_A|L_C_1
                 BEQ     _7
-                CMP     #L_CAR_LEFT_B|L_C_1
+                CMP     #L_STREET_CAR_LEFT_COLOR_B|L_C_1
                 BEQ     _7
-                CMP     #L_CAR_RIGHT_A|L_C_1
+                CMP     #L_STREET_CAR_RIGHT_COLOR_A|L_C_1
                 BEQ     _6
-                CMP     #L_CAR_RIGHT_B|L_C_1
+                CMP     #L_STREET_CAR_RIGHT_COLOR_B|L_C_1
                 BEQ     _6
                 CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
                 BEQ     _10
@@ -13150,7 +13167,7 @@ AEI:                                    ; CODE XREF: ID:AEH↑j
                 LSR     A
                 LSR     A
                 BCC     loc_4922
-                LDA     #L_7E|L_C_1
+                LDA     #L_SOLID_WALL|L_C_1
                 JMP     loc_4924
 ; ---------------------------------------------------------------------------
 
@@ -13267,13 +13284,14 @@ _1:                                     ; CODE XREF: TRIGC__TRIGGER_COUNT+6↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Restore anti-airgraft gun battery graphics at character $31
 
 DFGN:                                   ; CODE XREF: RESET+188↑p
-                                        ; B7:loc_31C7↑p
+                                        ; B7:U7↑p
                 LDX     #7
 
 _1:                                     ; CODE XREF: DFGN+9↓j
-                LDA     ADI,X
+                LDA     ADI,X           ; Standard anti-aircraft gun battery. Used to restore after the final city anti-aircraft gun battery was used as  character $31.
                 STA     ADK,X           ; $31: Anti-Aircraft Battery
                 DEX
                 BPL     _1
@@ -13286,25 +13304,25 @@ _1:                                     ; CODE XREF: DFGN+9↓j
 
 CTYGN:                                  ; CODE XREF: CITY+15↑p
                 LDA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
-                BNE     locret_49BD     ; => Return
+                BNE     _2              ; => Return
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_5
-                BCC     locret_49BD     ; => Return
-                BEQ     loc_49BE
+                BCC     _2              ; => Return
+                BEQ     _3
                 CMP     #GAME_PHASE_8
-                BCC     loc_49CF
+                BCC     _1
 
-locret_49BD:                            ; CODE XREF: CTYGN+2↑j
+_2:                                     ; CODE XREF: CTYGN+2↑j
                                         ; CTYGN+8↑j ...
                 RTS                     ; => Return
 ; ---------------------------------------------------------------------------
 
-loc_49BE:                               ; CODE XREF: CTYGN+A↑j
-                LDA     byte_B8
+_3:                                     ; CODE XREF: CTYGN+A↑j
+                LDA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 CMP     #4
-                BNE     locret_49BD     ; => Return
+                BNE     _2              ; => Return
 
-loc_49C4:                               ; CODE XREF: CTYGN+2A↓j
+_5:                                     ; CODE XREF: CTYGN+2A↓j
                                         ; CTYGN+32↓j ...
                 LDY     #25
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
@@ -13313,26 +13331,26 @@ loc_49C4:                               ; CODE XREF: CTYGN+2A↓j
                 JMP     A2
 ; ---------------------------------------------------------------------------
 
-loc_49CF:                               ; CODE XREF: CTYGN+E↑j
-                LDA     byte_B8
+_1:                                     ; CODE XREF: CTYGN+E↑j
+                LDA     GAME_PHASE_ROWS ; Length of a game phase in remaining rows
                 CMP     #1
-                BEQ     loc_49EE
+                BEQ     _4
                 CMP     #13
-                BEQ     loc_49C4
+                BEQ     _5
                 CMP     #25
-                BEQ     loc_49EE
+                BEQ     _4
                 CMP     #37
-                BEQ     loc_49C4
+                BEQ     _5
                 CMP     #49
-                BEQ     loc_49EE
+                BEQ     _4
                 CMP     #61
-                BEQ     loc_49C4
+                BEQ     _5
                 CMP     #74
-                BEQ     loc_49EE
+                BEQ     _4
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_49EE:                               ; CODE XREF: CTYGN+26↑j
+_4:                                     ; CODE XREF: CTYGN+26↑j
                                         ; CTYGN+2E↑j ...
                 LDY     #25
                 LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
@@ -13344,8 +13362,8 @@ loc_49EE:                               ; CODE XREF: CTYGN+26↑j
 ; ---------------------------------------------------------------------------
 ; START OF FUNCTION CHUNK FOR GUNC
 
-loc_49F9:                               ; CODE XREF: GUNC+8↓j
-                JMP     loc_4400
+ADC:                                    ; CODE XREF: GUNC+8↓j
+                JMP     TB
 ; END OF FUNCTION CHUNK FOR GUNC
 
 ; =============== S U B R O U T I N E =======================================
@@ -13358,37 +13376,37 @@ GUNC:                                   ; CODE XREF: AREA+24↑p
 
                 LDA     CURRENT_GAME_PHASE
                 CMP     #GAME_PHASE_4
-                BEQ     loc_4A07
+                BEQ     _1
                 CMP     #GAME_PHASE_8
-                BEQ     loc_49F9
+                BEQ     ADC
 
-locret_4A06:                            ; CODE XREF: GUNC+1B↓j
+_7:                                     ; CODE XREF: GUNC+1B↓j
                 RTS                     ; => Return
 ; ---------------------------------------------------------------------------
 
-loc_4A07:                               ; CODE XREF: GUNC+4↑j
+_1:                                     ; CODE XREF: GUNC+4↑j
                 DEC     byte_6B1
                 LDA     byte_6B1
                 CMP     #18
-                BEQ     loc_4A25
+                BEQ     _2
                 CMP     #6
-                BEQ     loc_4A20
+                BEQ     _3
                 CMP     #4
-                BCC     locret_4A06     ; => Return
+                BCC     _7              ; => Return
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
-                BCC     loc_4A4C
+                BCC     _5
                 RTS
 ; ---------------------------------------------------------------------------
 
-loc_4A20:                               ; CODE XREF: GUNC+17↑j
+_3:                                     ; CODE XREF: GUNC+17↑j
                 LDA     #30
                 STA     byte_6B1
 
-loc_4A25:                               ; CODE XREF: GUNC+13↑j
+_2:                                     ; CODE XREF: GUNC+13↑j
                 LDA     #45
                 STA     byte_BF
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SEC
                 SBC     #10
                 TAY
@@ -13398,7 +13416,7 @@ loc_4A25:                               ; CODE XREF: GUNC+13↑j
                 CLC
                 ADC     #7
                 JSR     A2
-                LDA     byte_66A
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 CLC
                 ADC     #1
                 TAY
@@ -13409,24 +13427,24 @@ loc_4A25:                               ; CODE XREF: GUNC+13↑j
                 JMP     B3
 ; ---------------------------------------------------------------------------
 
-loc_4A4C:                               ; CODE XREF: GUNC+21↑j
+_5:                                     ; CODE XREF: GUNC+21↑j
                 LDA     RANDOM          ; Random Number Generator
-                AND     #$F
+                AND     #1111b
                 STA     TEMP_B0
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
-                BCC     loc_4A61
-                LDA     byte_66A
+                BCC     _6
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 ADC     TEMP_B0
-                JMP     loc_4A68
+                JMP     _4
 ; ---------------------------------------------------------------------------
 
-loc_4A61:                               ; CODE XREF: GUNC+5B↑j
-                LDA     byte_66A
+_6:                                     ; CODE XREF: GUNC+5B↑j
+                LDA     ROAD_RIGHT_X_POS ; right X position where the road starts
                 SBC     #12
                 SBC     TEMP_B0
 
-loc_4A68:                               ; CODE XREF: GUNC+62↑j
+_4:                                     ; CODE XREF: GUNC+62↑j
                 TAY
                 LDA     #L_TANK_LEFT_B|L_C_1
                 STA     (off_F2),Y
@@ -15074,7 +15092,7 @@ BR1:            .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_C_1,L_CLIFF_GRAS_A|L_C_0,L_BRI
                 .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_J|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1
                 .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_Q|L_C_1
                 .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_J|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1
-                .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_H|L_C_1,L_48|L_C_0
+                .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_H|L_C_1,L_ROAD_DIAG_RIGHT_C|L_C_0
                 .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
 BR2:            .BYTE L_BRIDGE_C|L_C_1,L_BRIDGE_A|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1
                                         ; DATA XREF: DRBR__DRAW_BRIDGE:GA↑t
@@ -15106,22 +15124,21 @@ XPL1IM:         .BYTE 10001000b         ; DATA XREF: TURN:_10↑r
                 .BYTE 10000010b
                 .BYTE         1
 
-ROADR:          .BYTE L_7D|L_C_1,L_ROAD_D|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_C|L_C_1,L_ROAD_B|L_C_1,L_48|L_C_0
+ROADR:          .BYTE L_ROAD_DIAG_LEFT_A|L_C_1,L_ROAD_DIAG_LEFT_B|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_ROAD_DIAG_RIGHT_A|L_C_1,L_ROAD_DIAG_RIGHT_B|L_C_1,L_ROAD_DIAG_RIGHT_C|L_C_0
                                         ; DATA XREF: DROAD+23↑t
-ROADS:          .BYTE L_ROAD_A|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_74|L_C_1
+ROADS:          .BYTE L_RUNWAY_LEFT|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_RIGHT|L_C_1
                                         ; DATA XREF: DROAD+34↑t
-HNGR1:          .BYTE L_HANGAR_A|L_C_1,L_7E|L_C_0,L_7E|L_C_0,L_HANGAR_A|L_C_1,L_HANGAR_F|L_C_1
+HNGR1:          .BYTE L_HANGAR_A|L_C_1,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_HANGAR_A|L_C_1,L_HANGAR_F|L_C_1
                                         ; DATA XREF: ENRUN:UJ↑t
 HNGR2:          .BYTE L_HANGAR_B|L_C_1,L_HANGAR_C|L_C_1,L_HANGAR_D|L_C_1,L_HANGAR_E|L_C_1,L_HANGAR_G|L_C_1,L_HANGAR_F|L_C_1
                                         ; DATA XREF: ENRUN:UK↑t
-HNGR3:          .BYTE L_HANGAR_H|L_C_0,L_7E|L_C_0,L_7E|L_C_0,L_7E|L_C_0,L_HANGAR_G|L_C_1,L_HANGAR_F|L_C_1
+HNGR3:          .BYTE L_HANGAR_H|L_C_0,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_HANGAR_G|L_C_1,L_HANGAR_F|L_C_1
                                         ; DATA XREF: ENRUN:UM↑t
 HNGR5:          .BYTE L_HANGAR_I|L_C_0,L_HANGAR_J|L_C_0,L_HANGAR_K|L_C_0,L_HANGAR_L|L_C_0
                                         ; DATA XREF: ENRUN:UN↑t
-ENRNIM:         .BYTE L_ROAD_A|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1
+ENRNIM:         .BYTE L_RUNWAY_LEFT|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_RIGHT|L_C_1
                                         ; DATA XREF: ENRUN+44↑t
-                .BYTE L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1
-                .BYTE L_ROAD_7C|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_74|L_C_1
+                                        ; Enemy runway
 
 SHPIM:          .BYTE         0         ; DATA XREF: SHIP:I5↑t
                 .BYTE      110b         ; moving ship
@@ -15228,13 +15245,13 @@ AAC:            .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_D|L_C_1,L_BRIDG
 AAD:            .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_O|L_C_1,L_BRIDGE_P|L_C_1
                                         ; DATA XREF: CKCHAR:_1↑t
                                         ; Targets: some parts of a bridge
-AAE:            .BYTE L_7D|L_C_1,L_ROAD_D|L_C_1,L_ROAD_7C|L_C_1,L_ROAD_C|L_C_1,L_ROAD_B|L_C_1,L_ROAD_A|L_C_1,L_BRIDGE_M|L_C_1,L_BRIDGE_N|L_C_1
+AAE:            .BYTE L_ROAD_DIAG_LEFT_A|L_C_1,L_ROAD_DIAG_LEFT_B|L_C_1,L_RUNWAY_CENTER|L_C_1,L_ROAD_DIAG_RIGHT_A|L_C_1,L_ROAD_DIAG_RIGHT_B|L_C_1,L_RUNWAY_LEFT|L_C_1,L_BRIDGE_M|L_C_1,L_BRIDGE_N|L_C_1
                                         ; DATA XREF: CKCHAR:_9↑t
                                         ; Targets: roads
-AAF:            .BYTE L_HANGAR_A|L_C_1,L_7E|L_C_0,L_HANGAR_B|L_C_1,L_HANGAR_C|L_C_1,L_HANGAR_D|L_C_1,L_HANGAR_E|L_C_1,L_HANGAR_G|L_C_1,L_HANGAR_H|L_C_0,L_HANGAR_I|L_C_0,L_HANGAR_J|L_C_0,L_HANGAR_K|L_C_0,L_HANGAR_L|L_C_0,L_HANGAR_F|L_C_1
+AAF:            .BYTE L_HANGAR_A|L_C_1,L_SOLID_WALL|L_C_0,L_HANGAR_B|L_C_1,L_HANGAR_C|L_C_1,L_HANGAR_D|L_C_1,L_HANGAR_E|L_C_1,L_HANGAR_G|L_C_1,L_HANGAR_H|L_C_0,L_HANGAR_I|L_C_0,L_HANGAR_J|L_C_0,L_HANGAR_K|L_C_0,L_HANGAR_L|L_C_0,L_HANGAR_F|L_C_1
                                         ; DATA XREF: Z3:_1↑r
                                         ; Targets: all parts of a hangar
-AAG:            .BYTE L_CAR_LEFT_A|L_C_1,L_CAR_RIGHT_A|L_C_1,L_CAR_LEFT_B|L_C_1,L_CAR_RIGHT_B|L_C_1,L_ANTI_AIRCRAFT_BATTERY_B|L_C_1,L_TANK_LEFT_B|L_C_1,L_TANK_RIGHT_B|L_C_1,L_TANK_LEFT_A|L_C_1,L_TANK_RIGHT_A|L_C_1,L_ANTI_AIRCRAFT_BATTERY_A|L_C_0,L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+AAG:            .BYTE L_STREET_CAR_LEFT_COLOR_A|L_C_1,L_STREET_CAR_RIGHT_COLOR_A|L_C_1,L_STREET_CAR_LEFT_COLOR_B|L_C_1,L_STREET_CAR_RIGHT_COLOR_B|L_C_1,L_ANTI_AIRCRAFT_BATTERY_B|L_C_1,L_TANK_LEFT_B|L_C_1,L_TANK_RIGHT_B|L_C_1,L_TANK_LEFT_A|L_C_1,L_TANK_RIGHT_A|L_C_1,L_ANTI_AIRCRAFT_BATTERY_A|L_C_0,L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
                                         ; DATA XREF: Z3:_7↑t
                                         ; Targets: all cars, tanks, ait-aircraft battery on the playfield
 
@@ -15327,8 +15344,10 @@ EAS9:           DIFF_STRUCT <  7,  $C, $FF, $30, $60,  $E, $1C>
 
 ADI:            .BYTE $51,$51,$51,$51,$40, $C,$34,  0
                                         ; DATA XREF: DFGN:_1↑r
+                                        ; Standard anti-aircraft gun battery. Used to restore after the final city anti-aircraft gun battery was used as  character $31.
 ADJ:            .BYTE   0,$20,$20,$20,$EC,$EC,$FC,$FC
-                                        ; DATA XREF: B7:loc_3246↑r
+                                        ; DATA XREF: B7:_1↑r
+                                        ; Final city anti-aircraft gun battery. Replaces character $31 (standard anti-aircraft gun battery)
 
 OPTIM:          .BYTE $70               ; DATA XREF: CNSL__CONSOLE:_6↑r
                                         ; Display List for the menu
