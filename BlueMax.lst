@@ -792,7 +792,7 @@ FFFFFFFF
 0000007F                                         ; CKCHAR+18/s ...
 0000007F L_FIXED_BOAT_BOTTOM_RIGHT: = $3D        ; XREF: DRBT__DRAW_BOAT+35/s
 0000007F                                         ; CKCHAR+1C/s ...
-0000007F L_3E:            = $3E                  ; XREF: ID:HO/s
+0000007F L_EXPLOSION_GRAS_4: = $3E               ; XREF: ID:HO/s
 0000007F L_3F:            = $3F                  ; XREF: QN+9F/s
 0000007F                                         ; DATA:AAA/s
 0000007F L_EXPLOSION_GRAS_1: = $40               ; XREF: XPLSN:HY/s
@@ -851,7 +851,7 @@ FFFFFFFF
 0000007F L_5D:            = $5D                  ; XREF: DATA:AAB/s
 0000007F L_5E:            = $5E                  ; XREF: DATA:AAB/s
 0000007F L_5F:            = $5F                  ; XREF: AEI:loc_4922/s
-0000007F L_60:            = $60                  ; XREF: ZE+A5/s
+0000007F L_WATER_60:      = $60                  ; XREF: ZE+A5/s
 0000007F                                         ; XI+7/s
 0000007F L_61:            = $61                  ; XREF: ZE+AD/s
 0000007F L_62:            = $62                  ; XREF: ZE:loc_34B1/s
@@ -882,17 +882,17 @@ FFFFFFFF
 0000007F                                         ; GUNC-5CB/s
 0000007F L_RUNWAY_RIGHT:  = $74                  ; XREF: DATA:ROADS/s
 0000007F                                         ; DATA:ENRNIM/s
-0000007F L_75:            = $75                  ; XREF: V8:_1/s
+0000007F L_EXPLOSION_WATER_3: = $75              ; XREF: V8:_1/s
 0000007F                                         ; V8+2B/s ...
-0000007F L_76:            = $76                  ; XREF: V8+20/s
+0000007F L_EXPLOSION_WATER_4: = $76              ; XREF: V8+20/s
 0000007F                                         ; Y6+C/s
-0000007F L_77:            = $77                  ; XREF: V8+8/s
+0000007F L_EXPLOSION_WATER_5: = $77              ; XREF: V8+8/s
 0000007F                                         ; V8+17/s
-0000007F L_78:            = $78                  ; XREF: V8+C/s
-0000007F L_79:            = $79                  ; XREF: Y6+1B/s
+0000007F L_EXPLOSION_WATER_6: = $78              ; XREF: V8+C/s
+0000007F L_EXPLOSION_STREET_2: = $79             ; XREF: Y6+1B/s
 0000007F                                         ; Y6:loc_43BC/s ...
-0000007F L_7A:            = $7A                  ; XREF: Y6+3F/s
-0000007F L_7B:            = $7B                  ; XREF: Y6+32/s
+0000007F L_EXPLOSION_STREET_3: = $7A             ; XREF: Y6+3F/s
+0000007F L_EXPLOSION_STREET_1: = $7B             ; XREF: Y6+32/s
 0000007F                                         ; Y6+4C/s
 0000007F L_RUNWAY_CENTER: = $7C                  ; XREF: DRBR__DRAW_BRIDGE+B8/s
 0000007F                                         ; DRBR__DRAW_BRIDGE+EF/s ...
@@ -995,11 +995,11 @@ FFFFFFFF
 FFFFFFFF ; ---------------------------------------------------------------------------
 FFFFFFFF
 FFFFFFFF ; enum GAME_PHASE, width 1 byte
-FFFFFFFF GAME_PHASE_0:    = 0                    ; XREF: B7:XC/s
-FFFFFFFF GAME_PHASE_1:    = 1                    ; XREF: B7+2F/s
-FFFFFFFF GAME_PHASE_2:    = 2                    ; XREF: ENRUN+12/s
+FFFFFFFF GAME_PHASE_RIVER_PHASE_0: = 0           ; XREF: B7:XC/s
+FFFFFFFF GAME_PHASE_DIAGNOAL_ROAD_1: = 1         ; XREF: B7+2F/s
+FFFFFFFF GAME_PHASE_DIAGNOAL_ROAD_2: = 2         ; XREF: ENRUN+12/s
 FFFFFFFF                                         ; BLDG+77/s ...
-FFFFFFFF GAME_PHASE_3:    = 3                    ; XREF: L6+4B/s
+FFFFFFFF GAME_PHASE_ROAD_HARD_RIGHT_3: = 3       ; XREF: L6+4B/s
 FFFFFFFF                                         ; TNKC+10/s ...
 FFFFFFFF GAME_PHASE_4:    = 4                    ; XREF: B7+18/s
 FFFFFFFF                                         ; TNKC1+10/s ...
@@ -1011,6 +1011,36 @@ FFFFFFFF GAME_PHASE_7:    = 7                    ; XREF: B7+20/s
 FFFFFFFF                                         ; YI+11/s ...
 FFFFFFFF GAME_PHASE_8:    = 8                    ; XREF: AREA+17/s
 FFFFFFFF                                         ; CLEAR+C/s ...
+FFFFFFFF
+FFFFFFFF ; ---------------------------------------------------------------------------
+FFFFFFFF
+FFFFFFFF ; enum EXPLOSITION_TARGET, width 1 byte
+FFFFFFFF EXPLOSITION_TARGET_WATER: = 0           ; XREF: Y8/s
+FFFFFFFF                                         ; BMBSHP+D/s
+FFFFFFFF EXPLOSITION_TARGET_SINGLE_TILE: = 1     ; XREF: SHBT+71/s
+FFFFFFFF EXPLOSITION_TARGET_2: = 2               ; XREF: HU:HX/s
+FFFFFFFF                                         ; ID+63/s ...
+FFFFFFFF EXPLOSITION_TARGET_3: = 3               ; XREF: ID+D/s
+FFFFFFFF                                         ; CKCHAR:loc_3E1E/s
+FFFFFFFF EXPLOSITION_TARGET_SKYSCRAPER: = 4      ; XREF: ID+11/s
+FFFFFFFF                                         ; CKCHAR+6D/s
+FFFFFFFF EXPLOSITION_TARGET_BUILDING: = 5        ; XREF: ID+15/s
+FFFFFFFF                                         ; CKCHAR+8D/s
+FFFFFFFF EXPLOSITION_TARGET_6: = 6               ; XREF: ID+19/s X5/s
+FFFFFFFF EXPLOSITION_TARGET_BOAT: = 7            ; XREF: ID+1D/s
+FFFFFFFF                                         ; X8+17/s ...
+FFFFFFFF EXPLOSITION_TARGET_8: = 8               ; XREF: ID+21/s
+FFFFFFFF                                         ; Y7+11/s
+FFFFFFFF EXPLOSITION_TARGET_AIRPORT_HANGAR: = 9  ; XREF: ID+25/s
+FFFFFFFF                                         ; Z3+63/s
+FFFFFFFF EXPLOSITION_TARGET_10: = 10             ; XREF: ID+29/s
+FFFFFFFF                                         ; Z3:_4/s
+FFFFFFFF EXPLOSITION_TARGET_11: = 11
+FFFFFFFF EXPLOSITION_TARGET_12: = 12
+FFFFFFFF EXPLOSITION_TARGET_13: = 13
+FFFFFFFF EXPLOSITION_TARGET_14: = 14
+FFFFFFFF EXPLOSITION_TARGET_15: = 15             ; XREF: ID+2D/s
+FFFFFFFF                                         ; Z3+3D/s
 FFFFFFFF
 FFFFFFFF ; ---------------------------------------------------------------------------
 FFFFFFFF
@@ -1148,7 +1178,8 @@ VARS_ZP:00C4                                         ; DRP23+2F↓r ...
 VARS_ZP:00C5 byte_C5:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+239↓w
 VARS_ZP:00C5                                         ; CKCOL↓r ...
 VARS_ZP:00C6                 ; 0 .BYTE uninited & unexplored
-VARS_ZP:00C7 off_C7:         .BYTE 0,0 ; (uninited)  ; DATA XREF: V8+14↓w
+VARS_ZP:00C7 PREVIOUS_TILE_ROW_PTR:.BYTE 0,0 ; (uninited)
+VARS_ZP:00C7                                         ; DATA XREF: V8+14↓w
 VARS_ZP:00C7                                         ; V8+19↓w ...
 VARS_ZP:00C9                 .BYTE 0 ; (uninited)
 VARS_ZP:00CA PLANE_HIT_FLASH_COUNTER:.BYTE 0 ; (uninited)
@@ -1198,7 +1229,8 @@ VARS_ZP:00F9                                         ; TURN+8A↓r ...
 VARS_ZP:00F9                                         ; Y-Position of the current bullet from the plane
 VARS_ZP:00FA byte_FA:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+11B↓w
 VARS_ZP:00FA                                         ; TURN+DC↓w ...
-VARS_ZP:00FB off_FB:         .BYTE 0,0 ; (uninited)  ; DATA XREF: XPLSN+15↓w
+VARS_ZP:00FB CURRENT_TILE_ROW_PTR:.BYTE 0,0 ; (uninited)
+VARS_ZP:00FB                                         ; DATA XREF: XPLSN+15↓w
 VARS_ZP:00FB                                         ; XPLSN+33↓r ...
 VARS_ZP:00FD byte_FD:        .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1E2↓w
 VARS_ZP:00FD                                         ; TURN+145↓r ...
@@ -1449,13 +1481,16 @@ VARS:061F byte_61F:       .BYTE 0 ; (uninited)    ; DATA XREF: PC+15↓w
 VARS:061F                                         ; BOMB:TJ↓r ...
 VARS:0620 byte_620:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+DD↓w
 VARS:0620                                         ; TRIG__TRIGGER_MACHINE_GUN+1C↓r ...
-VARS:0621 byte_621:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+10↓w
+VARS:0621 VAR_EXPLOSION_X_POS:.BYTE 0 ; (uninited)
+VARS:0621                                         ; DATA XREF: XPLSN+10↓w
 VARS:0621                                         ; ID+5↓r ...
-VARS:0622 byte_622:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1A0↓w
+VARS:0622 EXPLOSION_TILE_ANIMATION:.BYTE 0 ; (uninited)
+VARS:0622                                         ; DATA XREF: RESET+1A0↓w
 VARS:0622                                         ; AFP+17↓w ...
 VARS:0623 byte_623:       .BYTE 0 ; (uninited)    ; DATA XREF: TURN+D7↓w
 VARS:0623                                         ; PC+7↓w ...
-VARS:0624 byte_624:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+70↓w
+VARS:0624 VAR_EXPLOSION_TARGET:.BYTE 0 ; (uninited)
+VARS:0624                                         ; DATA XREF: XPLSN+70↓w
 VARS:0624                                         ; Y8+2↓w ...
 VARS:0625                 .BYTE 0,0,0,0,0 ; (uninited)
 VARS:062A VBL_DRAW_DOWN_COUNTER:.BYTE 0 ; (uninited)
@@ -1729,14 +1764,12 @@ VARS:06B0 byte_6B0:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+13F↓w
 VARS:06B0                                         ; EB+E5↓w ...
 VARS:06B1 byte_6B1:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+286↓w
 VARS:06B1                                         ; GUNC:TB↓w ...
-VARS:06B2 byte_6B2:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+1E↓w
-VARS:06B2                                         ; DNXP+7↓r
-VARS:06B3 byte_6B3:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+24↓w
-VARS:06B3                                         ; DNXP+C↓r
-VARS:06B4 byte_6B4:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+2A↓w
-VARS:06B4                                         ; UPXP↓r
-VARS:06B5 byte_6B5:       .BYTE 0 ; (uninited)    ; DATA XREF: XPLSN+30↓w
-VARS:06B5                                         ; UPXP+5↓r
+VARS:06B2 TEMP_NEXT_ROW_PTR:.BYTE 0,0 ; (uninited)
+VARS:06B2                                         ; DATA XREF: XPLSN+1E↓w
+VARS:06B2                                         ; DNXP+7↓r ...
+VARS:06B4 TEMP_PREVIOUS_ROW_PTR:.BYTE 0,0 ; (uninited)
+VARS:06B4                                         ; DATA XREF: XPLSN+2A↓w
+VARS:06B4                                         ; UPXP↓r ...
 VARS:06B6 byte_6B6:       .BYTE 0 ; (uninited)    ; DATA XREF: CKLAND+10↓w
 VARS:06B6                                         ; CKLAND+4D↓w ...
 VARS:06B7 byte_6B7:       .BYTE 0 ; (uninited)    ; DATA XREF: FLSH:_1↓w
@@ -2206,7 +2239,7 @@ GAME:0D94                 STA     CAPITAL_Y_POS
 GAME:0D97                 STA     GAME_COMPLETION_MASK
 GAME:0D9A                 STA     byte_6C3
 GAME:0D9D                 STA     byte_6C5
-GAME:0DA0                 STA     byte_622
+GAME:0DA0                 STA     EXPLOSION_TILE_ANIMATION
 GAME:0DA3                 STA     WIND_DURATION   ; Duration during which Wind is in effect
 GAME:0DA5                 STA     SIZEM_SHADOW    ; Shadow Register for SIZEM
 GAME:0DA8                 STA     byte_6A2
@@ -2239,7 +2272,7 @@ GAME:0DEF                 STA     PLANE_GUN_SOUND_TIMER ; Timer for the repeatin
 GAME:0DF2                 STA     PCOLP3          ; P3 COLOR
 GAME:0DF5                 STA     PCOLR1          ; P1 COLOR
 GAME:0DF8                 STA     COLOR4
-GAME:0DFB                 STA     off_FB+1
+GAME:0DFB                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:0DFD                 STA     byte_602
 GAME:0E00                 STA     AUDIO2_DURATION_COUNTER
 GAME:0E03                 LDA     #26
@@ -4443,14 +4476,14 @@ GAME:1A8D AFP:                                    ; CODE XREF: TURN+87↑p
 GAME:1A8D                                         ; TURN+DE↑p
 GAME:1A8D                 LDA     #0
 GAME:1A8F                 LDY     byte_FA
-GAME:1A91                 STY     off_FB+1
+GAME:1A91                 STY     CURRENT_TILE_ROW_PTR+1
 GAME:1A93                 STA     AUDC2           ; Audio 2 Channel Control Register
 GAME:1A96                 STY     TEMP_ADR+1
 GAME:1A98                 STA     MISSLE,Y
 GAME:1A9B                 STA     MISSLE+1,Y
 GAME:1A9E                 STA     MISSLE+2,Y
 GAME:1AA1                 STA     P1PF_HPOSM1     ; Missile 1 Horizontal Position / Player 1 to Playfield Collision
-GAME:1AA4                 STA     byte_622
+GAME:1AA4                 STA     EXPLOSION_TILE_ANIMATION
 GAME:1AA7                 STA     byte_FA
 GAME:1AA9                 LDA     #255
 GAME:1AAB                 STA     byte_620
@@ -4460,7 +4493,7 @@ GAME:1AB3                 LDA     byte_6C3
 GAME:1AB6                 BEQ     _9              ; => Return
 GAME:1AB8                 LDA     #0
 GAME:1ABA                 STA     byte_6C3
-GAME:1ABD                 STA     off_FB+1
+GAME:1ABD                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:1ABF
 GAME:1ABF _9:                                     ; CODE XREF: AFP+29↑j
 GAME:1ABF                 RTS                     ; => Return
@@ -4472,7 +4505,7 @@ GAME:1AC0
 GAME:1AC0
 GAME:1AC0 XPLSN:                                  ; CODE XREF: COMMON+30↑p
 GAME:1AC0                                         ; TURN+124↑p ...
-GAME:1AC0                 LDA     off_FB+1
+GAME:1AC0                 LDA     CURRENT_TILE_ROW_PTR+1
 GAME:1AC2                 BNE     HM
 GAME:1AC4                 RTS
 GAME:1AC5 ; ---------------------------------------------------------------------------
@@ -4482,27 +4515,29 @@ GAME:1AC5                 JMP     ID
 GAME:1AC8 ; ---------------------------------------------------------------------------
 GAME:1AC8
 GAME:1AC8 HM:                                     ; CODE XREF: XPLSN+2↑j
-GAME:1AC8                 LDA     byte_622
+GAME:1AC8                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:1ACB                 BNE     HN
 GAME:1ACD                 JSR     ADA             ; Convert a X/Y position into an address to screen memory
-GAME:1AD0                 STY     byte_621
+GAME:1AD0                 STY     VAR_EXPLOSION_X_POS
 GAME:1AD3
 GAME:1AD3 ADB:
 GAME:1AD3                 LDA     TEMP_ADR
-GAME:1AD5                 STA     off_FB
+GAME:1AD5                 STA     CURRENT_TILE_ROW_PTR
 GAME:1AD7                 LDA     TEMP_ADR+1
-GAME:1AD9                 STA     off_FB+1
+GAME:1AD9                 STA     CURRENT_TILE_ROW_PTR+1
+GAME:1ADB
 GAME:1ADB                 LDA     DL+3,X
-GAME:1ADE                 STA     byte_6B2
+GAME:1ADE                 STA     TEMP_NEXT_ROW_PTR
 GAME:1AE1                 LDA     DL+4,X
-GAME:1AE4                 STA     byte_6B3
+GAME:1AE4                 STA     TEMP_NEXT_ROW_PTR+1
 GAME:1AE7                 LDA     DL-3,X
-GAME:1AEA                 STA     byte_6B4
+GAME:1AEA                 STA     TEMP_PREVIOUS_ROW_PTR
 GAME:1AED                 LDA     DL-2,X
-GAME:1AF0                 STA     byte_6B5
-GAME:1AF3                 LDA     (off_FB),Y
+GAME:1AF0                 STA     TEMP_PREVIOUS_ROW_PTR+1
+GAME:1AF3
+GAME:1AF3                 LDA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1AF5                 JSR     CKCHAR
-GAME:1AF8                 LDA     (off_FB),Y
+GAME:1AF8                 LDA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1AFA                 CMP     #L_BRIDGE_G|L_C_1
 GAME:1AFC                 BEQ     HW
 GAME:1AFE                 CMP     #L_CLIFF_WATER_C|L_C_0
@@ -4532,11 +4567,11 @@ GAME:1B2C                 BEQ     HW
 GAME:1B2E
 GAME:1B2E U3:                                     ; CODE XREF: Z3+87↓j
 GAME:1B2E                 LDA     #1
-GAME:1B30                 STA     byte_624
+GAME:1B30                 STA     VAR_EXPLOSION_TARGET
 GAME:1B33
 GAME:1B33 HY:                                     ; CODE XREF: HU+B↓j
 GAME:1B33                 LDA     #L_EXPLOSION_GRAS_1|L_C_0
-GAME:1B35                 STA     (off_FB),Y
+GAME:1B35                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1B37
 GAME:1B37 Z7:                                     ; CODE XREF: W1+3↓j
 GAME:1B37                                         ; Z3+91↓j ...
@@ -4549,7 +4584,7 @@ GAME:1B42                 LDA     #30
 GAME:1B44
 GAME:1B44 DT:                                     ; CODE XREF: XPLSN+80↑j
 GAME:1B44                                         ; Z3+33↓j
-GAME:1B44                 STA     byte_622
+GAME:1B44                 STA     EXPLOSION_TILE_ANIMATION
 GAME:1B47
 GAME:1B47 AFE:                                    ; CODE XREF: AFF+8↓j
 GAME:1B47                 LDA     #42
@@ -4560,18 +4595,19 @@ GAME:1B4E
 GAME:1B4E HW:                                     ; CODE XREF: XPLSN+3C↑j
 GAME:1B4E                                         ; XPLSN+6C↑j ...
 GAME:1B4E                 LDA     #L_EXPLOSION_WATER_1|L_C_0
-GAME:1B50                 STA     (off_FB),Y
+GAME:1B50                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1B52                 LDA     #18
-GAME:1B54                 STA     byte_622
+GAME:1B54                 STA     EXPLOSION_TILE_ANIMATION
 GAME:1B54 ; End of function XPLSN
 GAME:1B54
 GAME:1B57
 GAME:1B57 ; =============== S U B R O U T I N E =======================================
 GAME:1B57
+GAME:1B57 ; Trigger explosion in water with sound
 GAME:1B57
 GAME:1B57 Y8:                                     ; CODE XREF: X8:Y4↓p
-GAME:1B57                 LDA     #0
-GAME:1B59                 STA     byte_624
+GAME:1B57                 LDA     #EXPLOSITION_TARGET_WATER
+GAME:1B59                 STA     VAR_EXPLOSION_TARGET
 GAME:1B5C
 GAME:1B5C SL:                                     ; CODE XREF: BMBSHP+33↓p
 GAME:1B5C                                         ; SHBT+57↓p
@@ -4595,10 +4631,10 @@ GAME:1B72                                         ; XPLSN+44↑j ...
 GAME:1B72                 INX
 GAME:1B73                 INX
 GAME:1B74                 LDA     DL,X
-GAME:1B77                 STA     off_FB
+GAME:1B77                 STA     CURRENT_TILE_ROW_PTR
 GAME:1B79                 INX
 GAME:1B7A                 LDA     DL,X
-GAME:1B7D                 STA     off_FB+1
+GAME:1B7D                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:1B7F                 JMP     HW
 GAME:1B7F ; End of function HT
 GAME:1B7F
@@ -4608,7 +4644,7 @@ GAME:1B82
 GAME:1B82 ; Attributes: thunk
 GAME:1B82
 GAME:1B82 AFD:                                    ; CODE XREF: ID+B↓j
-GAME:1B82                 JMP     HV
+GAME:1B82                 JMP     HV              ; Explosition in the water
 GAME:1B82 ; End of function AFD
 GAME:1B82
 GAME:1B85
@@ -4617,14 +4653,14 @@ GAME:1B85
 GAME:1B85
 GAME:1B85 HU:                                     ; CODE XREF: XPLSN+4C↑j
 GAME:1B85                                         ; XPLSN+50↑j
-GAME:1B85                 INC     off_FB
+GAME:1B85                 INC     CURRENT_TILE_ROW_PTR
 GAME:1B87                 BNE     HX
-GAME:1B89                 INC     off_FB+1
+GAME:1B89                 INC     CURRENT_TILE_ROW_PTR+1
 GAME:1B8B
 GAME:1B8B HX:                                     ; CODE XREF: XPLSN+54↑j
 GAME:1B8B                                         ; XPLSN+58↑j ...
-GAME:1B8B                 LDA     #2
-GAME:1B8D                 STA     byte_624
+GAME:1B8B                 LDA     #EXPLOSITION_TARGET_2
+GAME:1B8D                 STA     VAR_EXPLOSION_TARGET
 GAME:1B90                 JMP     HY
 GAME:1B90 ; End of function HU
 GAME:1B90
@@ -4633,30 +4669,30 @@ GAME:1B93 ; =============== S U B R O U T I N E ================================
 GAME:1B93
 GAME:1B93
 GAME:1B93 ID:                                     ; CODE XREF: XPLSN:HN↑j
-GAME:1B93                 DEC     byte_622
+GAME:1B93                 DEC     EXPLOSION_TILE_ANIMATION
 GAME:1B96                 BEQ     HQ
-GAME:1B98                 LDY     byte_621
-GAME:1B9B                 LDA     byte_624
+GAME:1B98                 LDY     VAR_EXPLOSION_X_POS
+GAME:1B9B                 LDA     VAR_EXPLOSION_TARGET
 GAME:1B9E                 BEQ     AFD
-GAME:1BA0                 CMP     #3
+GAME:1BA0                 CMP     #EXPLOSITION_TARGET_3
 GAME:1BA2                 BEQ     V7
-GAME:1BA4                 CMP     #4
+GAME:1BA4                 CMP     #EXPLOSITION_TARGET_SKYSCRAPER
 GAME:1BA6                 BEQ     ABF
-GAME:1BA8                 CMP     #5
+GAME:1BA8                 CMP     #EXPLOSITION_TARGET_BUILDING
 GAME:1BAA                 BEQ     ACK
-GAME:1BAC                 CMP     #6
+GAME:1BAC                 CMP     #EXPLOSITION_TARGET_6
 GAME:1BAE                 BEQ     X6
-GAME:1BB0                 CMP     #7
+GAME:1BB0                 CMP     #EXPLOSITION_TARGET_BOAT
 GAME:1BB2                 BEQ     Y5
-GAME:1BB4                 CMP     #8
+GAME:1BB4                 CMP     #EXPLOSITION_TARGET_8
 GAME:1BB6                 BEQ     W5
-GAME:1BB8                 CMP     #9
+GAME:1BB8                 CMP     #EXPLOSITION_TARGET_AIRPORT_HANGAR
 GAME:1BBA                 BEQ     Z4
-GAME:1BBC                 CMP     #10
+GAME:1BBC                 CMP     #EXPLOSITION_TARGET_10
 GAME:1BBE                 BEQ     AEH
-GAME:1BC0                 CMP     #15
+GAME:1BC0                 CMP     #EXPLOSITION_TARGET_15
 GAME:1BC2                 BEQ     BD
-GAME:1BC4                 LDA     byte_622
+GAME:1BC4                 LDA     EXPLOSION_TILE_ANIMATION ; 2x1 gras explosion
 GAME:1BC7                 LSR     A
 GAME:1BC8                 LSR     A
 GAME:1BC9                 LSR     A
@@ -4665,56 +4701,56 @@ GAME:1BCC                 JMP     HP
 GAME:1BCF ; ---------------------------------------------------------------------------
 GAME:1BCF
 GAME:1BCF ABF:                                    ; CODE XREF: ID+13↑j
-GAME:1BCF                 JMP     ABB
+GAME:1BCF                 JMP     ABB             ; Final target phase: skyscraper buildings explosion via tile animation
 GAME:1BD2 ; ---------------------------------------------------------------------------
 GAME:1BD2
 GAME:1BD2 V7:                                     ; CODE XREF: ID+F↑j
-GAME:1BD2                 JMP     V8
+GAME:1BD2                 JMP     V8              ; 2x2 water explosion
 GAME:1BD5 ; ---------------------------------------------------------------------------
 GAME:1BD5
 GAME:1BD5 W5:                                     ; CODE XREF: ID+23↑j
-GAME:1BD5                 JMP     W6
+GAME:1BD5                 JMP     W6              ; 2x2 street tile explosion
 GAME:1BD8 ; ---------------------------------------------------------------------------
 GAME:1BD8
 GAME:1BD8 X6:                                     ; CODE XREF: ID+1B↑j
-GAME:1BD8                 JMP     X7
+GAME:1BD8                 JMP     X7              ; 2x1 street explosion
 GAME:1BDB ; ---------------------------------------------------------------------------
 GAME:1BDB
 GAME:1BDB Y5:                                     ; CODE XREF: ID+1F↑j
-GAME:1BDB                 JMP     Y6
+GAME:1BDB                 JMP     Y6              ; 2x2 water explosion
 GAME:1BDE ; ---------------------------------------------------------------------------
 GAME:1BDE
 GAME:1BDE Z4:                                     ; CODE XREF: ID+27↑j
-GAME:1BDE                 JMP     Z5
+GAME:1BDE                 JMP     Z5              ; Airport hangar explosion via tile animation
 GAME:1BE1 ; ---------------------------------------------------------------------------
 GAME:1BE1
 GAME:1BE1 ACK:                                    ; CODE XREF: ID+17↑j
-GAME:1BE1                 JMP     ACL
+GAME:1BE1                 JMP     ACL             ; Building explosition via tile animation
 GAME:1BE4 ; ---------------------------------------------------------------------------
 GAME:1BE4
 GAME:1BE4 AEH:                                    ; CODE XREF: ID+2B↑j
-GAME:1BE4                 JMP     AEI
+GAME:1BE4                 JMP     AEI             ; 2x1 tile explosion wall
 GAME:1BE7 ; ---------------------------------------------------------------------------
 GAME:1BE7
 GAME:1BE7 BD:                                     ; CODE XREF: ID+2F↑j
-GAME:1BE7                 JMP     XI
+GAME:1BE7                 JMP     XI              ; 2x1 tile explosion in water
 GAME:1BEA ; ---------------------------------------------------------------------------
 GAME:1BEA
 GAME:1BEA HQ:                                     ; CODE XREF: ID+3↑j
 GAME:1BEA                 LDA     #0
-GAME:1BEC                 STA     off_FB+1
+GAME:1BEC                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:1BEE                 RTS
 GAME:1BEF ; ---------------------------------------------------------------------------
 GAME:1BEF
 GAME:1BEF HO:                                     ; CODE XREF: ID+37↑j
-GAME:1BEF                 LDA     #L_3E|L_C_0
-GAME:1BF1                 STA     (off_FB),Y
-GAME:1BF3                 LDA     byte_624
-GAME:1BF6                 CMP     #2
+GAME:1BEF                 LDA     #L_EXPLOSION_GRAS_4|L_C_0
+GAME:1BF1                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1BF3                 LDA     VAR_EXPLOSION_TARGET
+GAME:1BF6                 CMP     #EXPLOSITION_TARGET_2
 GAME:1BF8                 BEQ     HZ              ; => Return
-GAME:1BFA                 JSR     HR
+GAME:1BFA                 JSR     HR              ; Stop bombing, if cliff edge would be hit => return
 GAME:1BFD                 LDA     #L_EXPLOSION_GRAS_2|L_C_0
-GAME:1BFF                 STA     (off_FB),Y
+GAME:1BFF                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C01
 GAME:1C01 HZ:                                     ; CODE XREF: ID+65↑j
 GAME:1C01                                         ; ID+78↓j
@@ -4723,24 +4759,25 @@ GAME:1C02 ; --------------------------------------------------------------------
 GAME:1C02
 GAME:1C02 HP:                                     ; CODE XREF: ID+39↑j
 GAME:1C02                 LDA     #L_EXPLOSION_GRAS_1|L_C_0
-GAME:1C04                 STA     (off_FB),Y
-GAME:1C06                 LDA     byte_624
-GAME:1C09                 CMP     #2
+GAME:1C04                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1C06                 LDA     VAR_EXPLOSION_TARGET
+GAME:1C09                 CMP     #EXPLOSITION_TARGET_2
 GAME:1C0B                 BEQ     HZ              ; => Return
-GAME:1C0D                 JSR     HR
+GAME:1C0D                 JSR     HR              ; Stop bombing, if cliff edge would be hit => return
 GAME:1C10                 LDA     #L_EXPLOSION_GRAS_3|L_C_0
-GAME:1C12                 STA     (off_FB),Y
+GAME:1C12                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C14                 RTS
 GAME:1C14 ; End of function ID
 GAME:1C14
 GAME:1C15
 GAME:1C15 ; =============== S U B R O U T I N E =======================================
 GAME:1C15
+GAME:1C15 ; Stop bombing, if cliff edge would be hit => return
 GAME:1C15
 GAME:1C15 HR:                                     ; CODE XREF: ID+67↑p
 GAME:1C15                                         ; ID+7A↑p
 GAME:1C15                 INY
-GAME:1C16                 LDA     (off_FB),Y
+GAME:1C16                 LDA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C18                 CMP     #L_GRAS_CLIFF_WATER_A|L_C_0
 GAME:1C1A                 BEQ     HS
 GAME:1C1C                 RTS
@@ -4755,9 +4792,10 @@ GAME:1C1F
 GAME:1C20
 GAME:1C20 ; =============== S U B R O U T I N E =======================================
 GAME:1C20
+GAME:1C20 ; Explosition in the water
 GAME:1C20
 GAME:1C20 HV:                                     ; CODE XREF: AFD↑j
-GAME:1C20                 LDA     byte_622
+GAME:1C20                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:1C23                 CMP     #1
 GAME:1C25                 BEQ     IC
 GAME:1C27                 LSR     A
@@ -4769,58 +4807,59 @@ GAME:1C2F ; --------------------------------------------------------------------
 GAME:1C2F
 GAME:1C2F IA:                                     ; CODE XREF: HV+A↑j
 GAME:1C2F                 LDA     #L_EXPLOSION_WATER_2|L_C_0
-GAME:1C31                 STA     (off_FB),Y
+GAME:1C31                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C33                 RTS
 GAME:1C34 ; ---------------------------------------------------------------------------
 GAME:1C34
 GAME:1C34 IB:                                     ; CODE XREF: HV+C↑j
 GAME:1C34                 LDA     #L_EXPLOSION_WATER_1|L_C_0
-GAME:1C36                 STA     (off_FB),Y
+GAME:1C36                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C38                 RTS
 GAME:1C39 ; ---------------------------------------------------------------------------
 GAME:1C39
 GAME:1C39 IC:                                     ; CODE XREF: HV+5↑j
 GAME:1C39                 LDA     #L_WATER|L_C_0
-GAME:1C3B                 STA     (off_FB),Y
+GAME:1C3B                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:1C3D                 RTS
 GAME:1C3D ; End of function HV
 GAME:1C3D
 GAME:1C3E
 GAME:1C3E ; =============== S U B R O U T I N E =======================================
 GAME:1C3E
+GAME:1C3E ; 2x2 water explosion
 GAME:1C3E
 GAME:1C3E V8:                                     ; CODE XREF: ID:V7↑j
-GAME:1C3E                 LDA     byte_622
+GAME:1C3E                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:1C41                 LSR     A
 GAME:1C42                 LSR     A
 GAME:1C43                 LSR     A
 GAME:1C44                 BCC     _1
-GAME:1C46                 LDA     #L_77|L_C_1
-GAME:1C48                 STA     (off_FB),Y
-GAME:1C4A                 LDA     #L_78|L_C_1
+GAME:1C46                 LDA     #L_EXPLOSION_WATER_5|L_C_1
+GAME:1C48                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1C4A                 LDA     #L_EXPLOSION_WATER_6|L_C_1
 GAME:1C4C                 INY
-GAME:1C4D                 STA     (off_FB),Y
-GAME:1C4F                 JSR     CPBT
-GAME:1C52                 STA     (off_C7),Y
+GAME:1C4D                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1C4F                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
+GAME:1C52                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:1C54                 DEY
-GAME:1C55                 LDA     #L_77|L_C_1
-GAME:1C57                 STA     (off_C7),Y
+GAME:1C55                 LDA     #L_EXPLOSION_WATER_5|L_C_1
+GAME:1C57                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:1C59
 GAME:1C59 _2:                                     ; => Return
 GAME:1C59                 RTS
 GAME:1C5A ; ---------------------------------------------------------------------------
 GAME:1C5A
 GAME:1C5A _1:                                     ; CODE XREF: V8+6↑j
-GAME:1C5A                 LDA     #L_75|L_C_1
-GAME:1C5C                 STA     (off_FB),Y
-GAME:1C5E                 LDA     #L_76|L_C_1
+GAME:1C5A                 LDA     #L_EXPLOSION_WATER_3|L_C_1
+GAME:1C5C                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1C5E                 LDA     #L_EXPLOSION_WATER_4|L_C_1
 GAME:1C60                 INY
-GAME:1C61                 STA     (off_FB),Y
-GAME:1C63                 JSR     CPBT
-GAME:1C66                 STA     (off_C7),Y
+GAME:1C61                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:1C63                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
+GAME:1C66                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:1C68                 DEY
-GAME:1C69                 LDA     #L_75|L_C_1
-GAME:1C6B                 STA     (off_C7),Y
+GAME:1C69                 LDA     #L_EXPLOSION_WATER_3|L_C_1
+GAME:1C6B                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:1C6D                 RTS
 GAME:1C6D ; End of function V8
 GAME:1C6D
@@ -6777,7 +6816,7 @@ GAME:26C7                 LDA     #UNKNOWNS_STATE_2
 GAME:26C9                 STA     byte_FD
 GAME:26CB                 STA     VAR_UNKNOWN_STATE
 GAME:26CE                 LDA     CURRENT_GAME_PHASE
-GAME:26D0                 CMP     #GAME_PHASE_3
+GAME:26D0                 CMP     #GAME_PHASE_ROAD_HARD_RIGHT_3
 GAME:26D2                 BCS     OC              ; => Return
 GAME:26D4                 LDA     RTCLOK+2        ; REAL TIME CLOCK (IN 16 MSEC UNITS)
 GAME:26D6                 LSR     A
@@ -7204,7 +7243,7 @@ GAME:2901 QX:                                     ; CODE XREF: QN+16↑j
 GAME:2901                 LDA     #0
 GAME:2903                 STA     byte_B6
 GAME:2905                 STA     byte_676
-GAME:2908                 JSR     DFTNK           ; Final target phase: define tanks
+GAME:2908                 JSR     DFTNK
 GAME:290B                 RTS
 GAME:290C ; ---------------------------------------------------------------------------
 GAME:290C
@@ -7829,7 +7868,7 @@ GAME:2C47                 LDA     ENEMY_RUNWAY_LENGTH ; Length/current line of t
 GAME:2C4A                 CMP     #36             ; first row of the runway appearing?
 GAME:2C4C                 BNE     WX
 GAME:2C4E                 LDA     CURRENT_GAME_PHASE
-GAME:2C50                 CMP     #GAME_PHASE_2   ; not before level 3
+GAME:2C50                 CMP     #GAME_PHASE_DIAGNOAL_ROAD_2 ; not before level 3
 GAME:2C52                 BCS     XE              ; => Return
 GAME:2C54
 GAME:2C54 WX:                                     ; CODE XREF: ENRUN+E↑j
@@ -8172,7 +8211,7 @@ GAME:2DF7 TV:                                     ; CODE XREF: TNKC+3↑j
 GAME:2DF7                 LDA     byte_651
 GAME:2DFA                 BNE     TW
 GAME:2DFC                 LDA     CURRENT_GAME_PHASE
-GAME:2DFE                 CMP     #GAME_PHASE_3
+GAME:2DFE                 CMP     #GAME_PHASE_ROAD_HARD_RIGHT_3
 GAME:2E00                 BCS     TN              ; => Return
 GAME:2E02                 JMP     QS
 GAME:2E05 ; ---------------------------------------------------------------------------
@@ -8509,7 +8548,7 @@ GAME:2FB6 loc_2FB6:                               ; CODE XREF: BLDG+2↑j
 GAME:2FB6                 LDA     byte_674
 GAME:2FB9                 BEQ     loc_2FEA
 GAME:2FBB                 LDA     CURRENT_GAME_PHASE
-GAME:2FBD                 CMP     #GAME_PHASE_3
+GAME:2FBD                 CMP     #GAME_PHASE_ROAD_HARD_RIGHT_3
 GAME:2FBF                 BCS     locret_2FB5     ; => Return
 GAME:2FC1                 LDA     RANDOM          ; Random Number Generator
 GAME:2FC4                 AND     #7
@@ -8568,7 +8607,7 @@ GAME:301F
 GAME:301F loc_301F:                               ; CODE XREF: BLDG+68↑j
 GAME:301F                                         ; BLDG+6E↑j
 GAME:301F                 LDA     CURRENT_GAME_PHASE
-GAME:3021                 CMP     #GAME_PHASE_2
+GAME:3021                 CMP     #GAME_PHASE_DIAGNOAL_ROAD_2
 GAME:3023                 BCS     loc_302B
 GAME:3025                 LDA     RANDOM          ; Random Number Generator
 GAME:3028                 LSR     A
@@ -8800,7 +8839,7 @@ GAME:3166                 JMP     WT              ; Game phase: 6
 GAME:3169 ; ---------------------------------------------------------------------------
 GAME:3169
 GAME:3169 XC:                                     ; CODE XREF: B7-38↑j
-GAME:3169                 LDA     #GAME_PHASE_0
+GAME:3169                 LDA     #GAME_PHASE_RIVER_PHASE_0
 GAME:316B                 STA     CURRENT_GAME_PHASE
 GAME:316D                 LDA     #COLOR_INTENSITY_4|COLOR_LIGHT_BLUE
 GAME:316F                 STA     COLOR1
@@ -8857,9 +8896,9 @@ GAME:31A5                 BNE     WY
 GAME:31A7
 GAME:31A7                 INC     CURRENT_GAME_PHASE
 GAME:31A9                 LDA     CURRENT_GAME_PHASE
-GAME:31AB                 CMP     #GAME_PHASE_2
+GAME:31AB                 CMP     #GAME_PHASE_DIAGNOAL_ROAD_2
 GAME:31AD                 BEQ     WO              ; Game phase: 2
-GAME:31AF                 CMP     #GAME_PHASE_3
+GAME:31AF                 CMP     #GAME_PHASE_ROAD_HARD_RIGHT_3
 GAME:31B1                 BEQ     WP              ; Game phase: 3
 GAME:31B3                 CMP     #GAME_PHASE_4
 GAME:31B5                 BEQ     WQ              ; Game phase: 4
@@ -8876,7 +8915,7 @@ GAME:31C7 ; Game phase: 0 or 1
 GAME:31C7
 GAME:31C7 U7:                                     ; CODE XREF: B7+5E↓j
 GAME:31C7                 JSR     DFGN            ; Restore anti-airgraft gun battery graphics at character $31
-GAME:31CA                 LDY     #GAME_PHASE_1
+GAME:31CA                 LDY     #GAME_PHASE_DIAGNOAL_ROAD_1
 GAME:31CC                 STY     CURRENT_GAME_PHASE
 GAME:31CE                 STY     byte_677
 GAME:31D1                 STY     byte_B6
@@ -8944,7 +8983,7 @@ GAME:3235                 STA     COLOR4
 GAME:3238
 GAME:3238                 JSR     CLEAR           ; Clear one row of playfield with default character
 GAME:323B                 JSR     DFHNGR          ; Define Hangar – restore the font characters for the hangar
-GAME:323E                 JSR     DFTNK           ; Final target phase: define tanks
+GAME:323E                 JSR     DFTNK
 GAME:3241                 JSR     DFBLDG          ; Final target phase: define skyscraper buildings
 GAME:3244
 GAME:3244                 LDX     #7              ; Set new anti-airgraft gun battery graphics at character $31
@@ -9377,7 +9416,7 @@ GAME:3473
 GAME:3473 loc_3473:                               ; CODE XREF: ZE+29↑j
 GAME:3473                 CPX     #6
 GAME:3475                 BEQ     loc_3487
-GAME:3477                 LDA     #$12
+GAME:3477                 LDA     #18
 GAME:3479                 CLC
 GAME:347A                 ADC     byte_681+1
 GAME:347D                 CPX     #5
@@ -9399,7 +9438,7 @@ GAME:3490                 LDX     byte_67C
 GAME:3493                 INX
 GAME:3494                 INX
 GAME:3495                 INX
-GAME:3496                 LDA     #L_60|L_C_0
+GAME:3496                 LDA     #L_WATER_60|L_C_0
 GAME:3498
 GAME:3498 loc_3498:                               ; CODE XREF: ZE+AB↓j
 GAME:3498                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -10592,10 +10631,10 @@ GAME:3AAE                 DEY                     ; x-4 => car is centered on th
 GAME:3AAF                 DEY
 GAME:3AB0                 DEY
 GAME:3AB1                 LDA     CURRENT_GAME_PHASE
-GAME:3AB3                 CMP     #GAME_PHASE_3
+GAME:3AB3                 CMP     #GAME_PHASE_ROAD_HARD_RIGHT_3
 GAME:3AB5                 BEQ     J7
 GAME:3AB7                 BCS     J8              ; => Return
-GAME:3AB9                 CMP     #GAME_PHASE_2
+GAME:3AB9                 CMP     #GAME_PHASE_DIAGNOAL_ROAD_2
 GAME:3ABB                 BEQ     J7
 GAME:3ABD                 LDA     RANDOM          ; Random Number Generator
 GAME:3AC0                 LSR     A
@@ -11078,35 +11117,37 @@ GAME:3D11
 GAME:3D12
 GAME:3D12 ; =============== S U B R O U T I N E =======================================
 GAME:3D12
+GAME:3D12 ; Select previous tile row
 GAME:3D12
 GAME:3D12 UPXP:                                   ; CODE XREF: Y7:Z1↓p
 GAME:3D12                                         ; X8:Y1↓p ...
-GAME:3D12                 LDA     byte_6B4
-GAME:3D15                 STA     off_C7
-GAME:3D17                 LDA     byte_6B5
-GAME:3D1A                 STA     off_C7+1
+GAME:3D12                 LDA     TEMP_PREVIOUS_ROW_PTR
+GAME:3D15                 STA     PREVIOUS_TILE_ROW_PTR
+GAME:3D17                 LDA     TEMP_PREVIOUS_ROW_PTR+1
+GAME:3D1A                 STA     PREVIOUS_TILE_ROW_PTR+1
 GAME:3D1C                 RTS
 GAME:3D1C ; End of function UPXP
 GAME:3D1C
 GAME:3D1D
 GAME:3D1D ; =============== S U B R O U T I N E =======================================
 GAME:3D1D
+GAME:3D1D ; Select next tile row (mark, if there is none)
 GAME:3D1D
 GAME:3D1D DNXP:                                   ; CODE XREF: Y7:Y9↓p
 GAME:3D1D                                         ; X8:X9↓p ...
 GAME:3D1D                 LDA     byte_639
 GAME:3D20                 CMP     #168
 GAME:3D22                 BCS     _1
-GAME:3D24                 LDA     byte_6B2
-GAME:3D27                 STA     off_C7
-GAME:3D29                 LDA     byte_6B3
-GAME:3D2C                 STA     off_C7+1
+GAME:3D24                 LDA     TEMP_NEXT_ROW_PTR
+GAME:3D27                 STA     PREVIOUS_TILE_ROW_PTR
+GAME:3D29                 LDA     TEMP_NEXT_ROW_PTR+1
+GAME:3D2C                 STA     PREVIOUS_TILE_ROW_PTR+1
 GAME:3D2E                 RTS
 GAME:3D2F ; ---------------------------------------------------------------------------
 GAME:3D2F
 GAME:3D2F _1:                                     ; CODE XREF: DNXP+5↑j
-GAME:3D2F                 LDA     #$FF
-GAME:3D31                 STA     off_C7+1
+GAME:3D2F                 LDA     #255
+GAME:3D31                 STA     PREVIOUS_TILE_ROW_PTR+1
 GAME:3D33                 RTS
 GAME:3D33 ; End of function DNXP
 GAME:3D33
@@ -11115,24 +11156,24 @@ GAME:3D34 ; =============== S U B R O U T I N E ================================
 GAME:3D34
 GAME:3D34
 GAME:3D34 Y7:                                     ; CODE XREF: CKCHAR+2↓j
-GAME:3D34                 DEC     byte_621
+GAME:3D34                 DEC     VAR_EXPLOSION_X_POS
 GAME:3D37
 GAME:3D37 Y9:                                     ; CODE XREF: CKCHAR+6↓j
-GAME:3D37                 JSR     DNXP
+GAME:3D37                 JSR     DNXP            ; Select next tile row (mark, if there is none)
 GAME:3D3A                 JMP     Z2
 GAME:3D3D ; ---------------------------------------------------------------------------
 GAME:3D3D
 GAME:3D3D Z0:                                     ; CODE XREF: CKCHAR+A↓j
-GAME:3D3D                 DEC     byte_621
+GAME:3D3D                 DEC     VAR_EXPLOSION_X_POS
 GAME:3D40
 GAME:3D40 Z1:                                     ; CODE XREF: CKCHAR+E↓j
-GAME:3D40                 JSR     UPXP
+GAME:3D40                 JSR     UPXP            ; Select previous tile row
 GAME:3D43
 GAME:3D43 Z2:                                     ; CODE XREF: Y7+6↑j
 GAME:3D43                 PLA
 GAME:3D44                 PLA
-GAME:3D45                 LDA     #8
-GAME:3D47                 STA     byte_624
+GAME:3D45                 LDA     #EXPLOSITION_TARGET_8
+GAME:3D47                 STA     VAR_EXPLOSION_TARGET
 GAME:3D4A                 JSR     S10__SCORE_ADD_10 ; Score: add 10
 GAME:3D4D                 JSR     S50__SCORE_ADD_50 ; Score: add 50
 GAME:3D50                 JMP     W1
@@ -11143,26 +11184,26 @@ GAME:3D53 ; =============== S U B R O U T I N E ================================
 GAME:3D53
 GAME:3D53
 GAME:3D53 X8:                                     ; CODE XREF: CKCHAR+16↓j
-GAME:3D53                 DEC     byte_621
+GAME:3D53                 DEC     VAR_EXPLOSION_X_POS
 GAME:3D56
 GAME:3D56 X9:                                     ; CODE XREF: CKCHAR+12↓j
-GAME:3D56                 JSR     DNXP
+GAME:3D56                 JSR     DNXP            ; Select next tile row (mark, if there is none)
 GAME:3D59                 JMP     Y4
 GAME:3D5C ; ---------------------------------------------------------------------------
 GAME:3D5C
 GAME:3D5C Y0:                                     ; CODE XREF: CKCHAR+1E↓j
-GAME:3D5C                 DEC     byte_621
+GAME:3D5C                 DEC     VAR_EXPLOSION_X_POS
 GAME:3D5F
 GAME:3D5F Y1:                                     ; CODE XREF: CKCHAR+1A↓j
-GAME:3D5F                 JSR     UPXP
+GAME:3D5F                 JSR     UPXP            ; Select previous tile row
 GAME:3D62
 GAME:3D62 Y4:                                     ; CODE XREF: X8+6↑j
-GAME:3D62                 JSR     Y8
+GAME:3D62                 JSR     Y8              ; Trigger explosion in water with sound
 GAME:3D65                 JSR     S50__SCORE_ADD_50 ; Score: add 50
 GAME:3D68                 PLA
 GAME:3D69                 PLA
-GAME:3D6A                 LDA     #7
-GAME:3D6C                 STA     byte_624
+GAME:3D6A                 LDA     #EXPLOSITION_TARGET_BOAT
+GAME:3D6C                 STA     VAR_EXPLOSION_TARGET
 GAME:3D6F                 JMP     W1
 GAME:3D6F ; End of function X8
 GAME:3D6F
@@ -11171,8 +11212,8 @@ GAME:3D72 ; =============== S U B R O U T I N E ================================
 GAME:3D72
 GAME:3D72
 GAME:3D72 X5:                                     ; CODE XREF: CKCHAR+25↓j
-GAME:3D72                 LDA     #6
-GAME:3D74                 STA     byte_624
+GAME:3D72                 LDA     #EXPLOSITION_TARGET_6
+GAME:3D74                 STA     VAR_EXPLOSION_TARGET
 GAME:3D77                 LDA     SC_STATUS_LINE.line_1.speed_digit_100
 GAME:3D7A                 CMP     #_2|_C_BLUE
 GAME:3D7C                 BCC     _1
@@ -11256,8 +11297,8 @@ GAME:3DEE U1:                                     ; CODE XREF: CKCHAR+5A↑j
 GAME:3DEE                 JSR     S50__SCORE_ADD_50 ; Score: add 50
 GAME:3DF1                 PLA
 GAME:3DF2                 PLA
-GAME:3DF3                 LDA     #4
-GAME:3DF5                 STA     byte_624
+GAME:3DF3                 LDA     #EXPLOSITION_TARGET_SKYSCRAPER
+GAME:3DF5                 STA     VAR_EXPLOSION_TARGET
 GAME:3DF8                 JMP     W1
 GAME:3DFB ; ---------------------------------------------------------------------------
 GAME:3DFB
@@ -11274,17 +11315,17 @@ GAME:3E0E _1_0:                                   ; CODE XREF: CKCHAR+7A↑j
 GAME:3E0E                 JSR     S50__SCORE_ADD_50 ; Score: add 50
 GAME:3E11                 PLA
 GAME:3E12                 PLA
-GAME:3E13                 LDA     #5
-GAME:3E15                 STA     byte_624
+GAME:3E13                 LDA     #EXPLOSITION_TARGET_BUILDING
+GAME:3E15                 STA     VAR_EXPLOSION_TARGET
 GAME:3E18                 JMP     W1
 GAME:3E1B ; ---------------------------------------------------------------------------
 GAME:3E1B
 GAME:3E1B T9:                                     ; CODE XREF: CKCHAR+43↑j
-GAME:3E1B                 JSR     UPXP
+GAME:3E1B                 JSR     UPXP            ; Select previous tile row
 GAME:3E1E
 GAME:3E1E loc_3E1E:                               ; CODE XREF: CKCHAR+C3↓j
-GAME:3E1E                 LDA     #3
-GAME:3E20                 STA     byte_624
+GAME:3E1E                 LDA     #EXPLOSITION_TARGET_3
+GAME:3E20                 STA     VAR_EXPLOSION_TARGET
 GAME:3E23                 LDX     byte_6AD
 GAME:3E26                 CPX     #3
 GAME:3E28                 BNE     loc_3E36
@@ -11306,7 +11347,7 @@ GAME:3E43                 JMP     W1
 GAME:3E46 ; ---------------------------------------------------------------------------
 GAME:3E46
 GAME:3E46 V9:                                     ; CODE XREF: CKCHAR+4D↑j
-GAME:3E46                 JSR     DNXP
+GAME:3E46                 JSR     DNXP            ; Select next tile row (mark, if there is none)
 GAME:3E49                 JMP     loc_3E1E
 GAME:3E49 ; End of function CKCHAR
 GAME:3E49
@@ -11380,8 +11421,8 @@ GAME:3E93                 LDA     M1PL            ; Missle to Player 1 Collision
 GAME:3E96                 AND     #1100b
 GAME:3E98                 BEQ     S5              ; => Return
 GAME:3E9A
-GAME:3E9A                 LDA     #0
-GAME:3E9C                 STA     byte_624
+GAME:3E9A                 LDA     #EXPLOSITION_TARGET_WATER
+GAME:3E9C                 STA     VAR_EXPLOSION_TARGET
 GAME:3E9F                 JSR     ABA             ; Save current color palette, because we start the flashing animation
 GAME:3EA2
 GAME:3EA2 Z6:                                     ; CODE XREF: SHP23+24↓j
@@ -12213,7 +12254,7 @@ GAME:42BC                 BEQ     _8              ; Hit a minor target (+30 poin
 GAME:42BE                 DEX
 GAME:42BF                 BNE     _7
 GAME:42C1                 INY
-GAME:42C2                 LDA     (off_FB),Y
+GAME:42C2                 LDA     (CURRENT_TILE_ROW_PTR),Y
 GAME:42C4                 DEC     TEMP_B0
 GAME:42C6                 BNE     _9
 GAME:42C8                 DEY
@@ -12225,7 +12266,7 @@ GAME:42CB _11:                                    ; CODE XREF: Z3+D↑j
 GAME:42CB                 CPX     #1
 GAME:42CD                 BEQ     _12
 GAME:42CF                 LDA     #0
-GAME:42D1                 STA     off_FB+1
+GAME:42D1                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:42D3                 JMP     DT
 GAME:42D6 ; ---------------------------------------------------------------------------
 GAME:42D6
@@ -12233,8 +12274,8 @@ GAME:42D6 _12:                                    ; CODE XREF: Z3+2D↑j
 GAME:42D6                 CMP     #96
 GAME:42D8                 BNE     _13
 GAME:42DA                 JSR     S30__SCORE_ADD_30 ; Score: add 30
-GAME:42DD                 LDA     #15
-GAME:42DF                 STA     byte_624
+GAME:42DD                 LDA     #EXPLOSITION_TARGET_15
+GAME:42DF                 STA     VAR_EXPLOSION_TARGET
 GAME:42E2                 PLA
 GAME:42E3                 PLA
 GAME:42E4                 JMP     W1
@@ -12244,7 +12285,7 @@ GAME:42E7 _13:                                    ; CODE XREF: Z3+38↑j
 GAME:42E7                 PLA
 GAME:42E8                 PLA
 GAME:42E9                 LDA     #0
-GAME:42EB                 STA     off_FB+1
+GAME:42EB                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:42ED                 LDA     AUDIO2_DROPSND_FREQ_SAVED
 GAME:42F0                 STA     AUDIO2_DROPSND_FREQ
 GAME:42F3                 INC     byte_6ED
@@ -12260,8 +12301,8 @@ GAME:42FC                 LDA     #0
 GAME:42FE                 STA     byte_6F9
 GAME:4301                 PLA
 GAME:4302                 PLA
-GAME:4303                 LDA     #9
-GAME:4305                 STA     byte_624
+GAME:4303                 LDA     #EXPLOSITION_TARGET_AIRPORT_HANGAR
+GAME:4305                 STA     VAR_EXPLOSION_TARGET
 GAME:4308                 LDA     COLOR1
 GAME:430B                 CMP     #COLOR_INTENSITY_4|COLOR_LIGHT_BLUE
 GAME:430D                 BNE     _3
@@ -12285,8 +12326,8 @@ GAME:4327                 JMP     U3
 GAME:432A ; ---------------------------------------------------------------------------
 GAME:432A
 GAME:432A _4:                                     ; CODE XREF: Z3+11↑j
-GAME:432A                 LDA     #10
-GAME:432C                 STA     byte_624
+GAME:432A                 LDA     #EXPLOSITION_TARGET_10
+GAME:432C                 STA     VAR_EXPLOSION_TARGET
 GAME:432F                 PLA
 GAME:4330                 PLA
 GAME:4331                 JMP     Z7
@@ -12348,113 +12389,115 @@ GAME:4381
 GAME:4382
 GAME:4382 ; =============== S U B R O U T I N E =======================================
 GAME:4382
+GAME:4382 ; 2x2 water explosion
 GAME:4382
 GAME:4382 Y6:                                     ; CODE XREF: ID:Y5↑j
-GAME:4382                 LDA     byte_622
+GAME:4382                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:4385                 CMP     #1
 GAME:4387                 BEQ     _2
 GAME:4389                 LSR     A
 GAME:438A                 LSR     A
 GAME:438B                 LSR     A
 GAME:438C                 BCC     loc_43A2
-GAME:438E                 LDA     #L_76|L_C_1
-GAME:4390                 STA     (off_FB),Y
+GAME:438E                 LDA     #L_EXPLOSION_WATER_4|L_C_1
+GAME:4390                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:4392                 INY
-GAME:4393                 LDA     #L_75|L_C_1
-GAME:4395                 STA     (off_FB),Y
-GAME:4397                 JSR     CPBT
-GAME:439A                 STA     (off_C7),Y
+GAME:4393                 LDA     #L_EXPLOSION_WATER_3|L_C_1
+GAME:4395                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:4397                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
+GAME:439A                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:439C                 DEY
-GAME:439D                 LDA     #L_79|L_C_1
-GAME:439F                 STA     (off_C7),Y
+GAME:439D                 LDA     #L_EXPLOSION_STREET_2|L_C_1
+GAME:439F                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:43A1                 RTS
 GAME:43A2 ; ---------------------------------------------------------------------------
 GAME:43A2
 GAME:43A2 loc_43A2:                               ; CODE XREF: Y6+A↑j
 GAME:43A2                 LDA     #L_EXPLOSION_WATER_2|L_C_0
-GAME:43A4                 JMP     loc_43D0
+GAME:43A4                 JMP     X3
 GAME:43A7 ; ---------------------------------------------------------------------------
 GAME:43A7
 GAME:43A7 _2:                                     ; CODE XREF: Y6+5↑j
 GAME:43A7                 LDA     #L_WATER|L_C_0
-GAME:43A9                 JMP     loc_43D0
+GAME:43A9                 JMP     X3
 GAME:43AC ; ---------------------------------------------------------------------------
 GAME:43AC
 GAME:43AC X7:                                     ; CODE XREF: ID:X6↑j
-GAME:43AC                 LDA     byte_622
+GAME:43AC                 LDA     EXPLOSION_TILE_ANIMATION ; 2x1 street explosion
 GAME:43AF                 LSR     A
 GAME:43B0                 LSR     A
 GAME:43B1                 LSR     A
 GAME:43B2                 BCC     loc_43BC
-GAME:43B4                 LDA     #L_7B|L_C_1
-GAME:43B6                 STA     (off_FB),Y
+GAME:43B4                 LDA     #L_EXPLOSION_STREET_1|L_C_1
+GAME:43B6                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43B8                 INY
-GAME:43B9                 STA     (off_FB),Y
+GAME:43B9                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43BB                 RTS
 GAME:43BC ; ---------------------------------------------------------------------------
 GAME:43BC
 GAME:43BC loc_43BC:                               ; CODE XREF: Y6+30↑j
-GAME:43BC                 LDA     #L_79|L_C_1
-GAME:43BE                 STA     (off_FB),Y
+GAME:43BC                 LDA     #L_EXPLOSION_STREET_2|L_C_1
+GAME:43BE                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43C0                 INY
-GAME:43C1                 LDA     #L_7A|L_C_1
-GAME:43C3                 STA     (off_FB),Y
+GAME:43C1                 LDA     #L_EXPLOSION_STREET_3|L_C_1
+GAME:43C3                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43C5                 RTS
 GAME:43C6 ; ---------------------------------------------------------------------------
 GAME:43C6
 GAME:43C6 W6:                                     ; CODE XREF: ID:W5↑j
-GAME:43C6                 LDA     byte_622
+GAME:43C6                 LDA     EXPLOSION_TILE_ANIMATION ; 2x2 street tile explosion
 GAME:43C9                 LSR     A
 GAME:43CA                 LSR     A
 GAME:43CB                 LSR     A
-GAME:43CC                 BCC     loc_43DE
-GAME:43CE                 LDA     #L_7B|L_C_1
+GAME:43CC                 BCC     X4
+GAME:43CE                 LDA     #L_EXPLOSION_STREET_1|L_C_1
 GAME:43D0
-GAME:43D0 loc_43D0:                               ; CODE XREF: Y6+22↑j
+GAME:43D0 X3:                                     ; CODE XREF: Y6+22↑j
 GAME:43D0                                         ; Y6+27↑j
-GAME:43D0                 STA     (off_FB),Y
+GAME:43D0                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43D2                 INY
-GAME:43D3                 STA     (off_FB),Y
-GAME:43D5                 JSR     CPBT
-GAME:43D8                 STA     (off_C7),Y
+GAME:43D3                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:43D5                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
+GAME:43D8                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:43DA                 DEY
-GAME:43DB                 STA     (off_C7),Y
+GAME:43DB                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:43DD                 RTS
 GAME:43DE ; ---------------------------------------------------------------------------
 GAME:43DE
-GAME:43DE loc_43DE:                               ; CODE XREF: Y6+4A↑j
+GAME:43DE X4:                                     ; CODE XREF: Y6+4A↑j
 GAME:43DE                 CLC
-GAME:43DF                 LDA     #L_79|L_C_1
-GAME:43E1                 JMP     loc_43E4
+GAME:43DF                 LDA     #L_EXPLOSION_STREET_2|L_C_1
+GAME:43E1                 JMP     _5
 GAME:43E4 ; ---------------------------------------------------------------------------
 GAME:43E4
-GAME:43E4 loc_43E4:                               ; CODE XREF: Y6+5F↑j
-GAME:43E4                 STA     (off_FB),Y
+GAME:43E4 _5:                                     ; CODE XREF: Y6+5F↑j
+GAME:43E4                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:43E6                 ADC     #1
 GAME:43E8                 INY
-GAME:43E9                 STA     (off_FB),Y
-GAME:43EB                 JSR     CPBT
-GAME:43EE                 STA     (off_C7),Y
+GAME:43E9                 STA     (CURRENT_TILE_ROW_PTR),Y
+GAME:43EB                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
+GAME:43EE                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:43F0                 DEY
 GAME:43F1                 SEC
 GAME:43F2                 SBC     #1
-GAME:43F4                 STA     (off_C7),Y
+GAME:43F4                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 GAME:43F6                 RTS
 GAME:43F6 ; End of function Y6
 GAME:43F6
 GAME:43F7
 GAME:43F7 ; =============== S U B R O U T I N E =======================================
 GAME:43F7
+GAME:43F7 ; Check if previous tile row is still visible, exit if not
 GAME:43F7
 GAME:43F7 CPBT:                                   ; CODE XREF: V8+11↑p
 GAME:43F7                                         ; V8+25↑p ...
-GAME:43F7                 LDX     off_C7+1
-GAME:43F9                 CPX     #255
-GAME:43FB                 BNE     locret_43FF     ; => Return
+GAME:43F7                 LDX     PREVIOUS_TILE_ROW_PTR+1
+GAME:43F9                 CPX     #255            ; previous row no longer visible?
+GAME:43FB                 BNE     _1              ; => Return
 GAME:43FD                 PLA
-GAME:43FE                 PLA
+GAME:43FE                 PLA                     ; then leave the subroutine above
 GAME:43FF
-GAME:43FF locret_43FF:                            ; CODE XREF: CPBT+4↑j
+GAME:43FF _1:                                     ; CODE XREF: CPBT+4↑j
 GAME:43FF                 RTS                     ; => Return
 GAME:43FF ; End of function CPBT
 GAME:43FF
@@ -12647,15 +12690,15 @@ GAME:44F7                 BNE     _2              ; => Return
 GAME:44F9                 LDA     #0
 GAME:44FB                 STA     byte_661
 GAME:44FE                 LDA     DL-3,X
-GAME:4501                 STA     off_C7
+GAME:4501                 STA     PREVIOUS_TILE_ROW_PTR
 GAME:4503                 LDA     DL-2,X
-GAME:4506                 STA     off_C7+1
+GAME:4506                 STA     PREVIOUS_TILE_ROW_PTR+1
 GAME:4508                 JSR     S50__SCORE_ADD_50 ; Score: add 50
 GAME:450B                 JSR     SL              ; Trigger explosion sound effect
-GAME:450E                 LDA     #7
+GAME:450E                 LDA     #EXPLOSITION_TARGET_BOAT
 GAME:4510
 GAME:4510 _8:                                     ; CODE XREF: SHBT+73↓j
-GAME:4510                 STA     byte_624
+GAME:4510                 STA     VAR_EXPLOSION_TARGET
 GAME:4513                 JSR     ADP
 GAME:4516                 JMP     Z7
 GAME:4519 ; ---------------------------------------------------------------------------
@@ -12673,7 +12716,7 @@ GAME:4522
 GAME:4522 _7:                                     ; CODE XREF: SHBT+19↑j
 GAME:4522                                         ; SHBT+21↑j ...
 GAME:4522                 JSR     S10__SCORE_ADD_10 ; Score: add 10
-GAME:4525                 LDA     #1
+GAME:4525                 LDA     #EXPLOSITION_TARGET_SINGLE_TILE
 GAME:4527                 JMP     _8
 GAME:4527 ; End of function SHBT
 GAME:4527
@@ -12682,16 +12725,16 @@ GAME:452A ; =============== S U B R O U T I N E ================================
 GAME:452A
 GAME:452A
 GAME:452A ADP:                                    ; CODE XREF: SHBT+5F↑p
-GAME:452A                 STY     byte_621
+GAME:452A                 STY     VAR_EXPLOSION_X_POS
 GAME:452D                 LDA     PLANE_BULLET_Y_POS ; Y-Position of the current bullet from the plane
 GAME:452F                 TAY
 GAME:4530                 ADC     #30
 GAME:4532                 STA     byte_639
 GAME:4535                 JSR     HG              ; Remove plane bullet
 GAME:4538                 LDA     TEMP_ADR
-GAME:453A                 STA     off_FB
+GAME:453A                 STA     CURRENT_TILE_ROW_PTR
 GAME:453C                 LDA     TEMP_ADR+1
-GAME:453E                 STA     off_FB+1
+GAME:453E                 STA     CURRENT_TILE_ROW_PTR+1
 GAME:4540                 JSR     ABA             ; Save current color palette, because we start the flashing animation
 GAME:4543                 RTS
 GAME:4543 ; End of function ADP
@@ -12943,10 +12986,11 @@ GAME:467E
 GAME:4681
 GAME:4681 ; =============== S U B R O U T I N E =======================================
 GAME:4681
+GAME:4681 ; Building explosition via tile animation
 GAME:4681
 GAME:4681 ACL:                                    ; CODE XREF: ID:ACK↑j
 GAME:4681                 LDX     #7
-GAME:4683                 LDA     byte_622
+GAME:4683                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:4686                 LSR     A
 GAME:4687                 LSR     A
 GAME:4688                 BCC     _1
@@ -12958,7 +13002,7 @@ GAME:4691 ; --------------------------------------------------------------------
 GAME:4691
 GAME:4691 _2:                                     ; CODE XREF: ACL+A↑j
 GAME:4691                                         ; ACL+17↓j
-GAME:4691                 LDA     ABC,X
+GAME:4691                 LDA     ABC,X           ; Tile: explosion 1 on gras
 GAME:4694                 JSR     ABV
 GAME:4697                 DEX
 GAME:4698                 BPL     _2
@@ -12967,7 +13011,7 @@ GAME:469B ; --------------------------------------------------------------------
 GAME:469B
 GAME:469B _1:                                     ; CODE XREF: ACL+7↑j
 GAME:469B                                         ; ACL+21↓j
-GAME:469B                 LDA     ABD,X
+GAME:469B                 LDA     ABD,X           ; Tile: explosion 2 on gras
 GAME:469E                 JSR     ABV
 GAME:46A1                 DEX
 GAME:46A2                 BPL     _1
@@ -13031,22 +13075,23 @@ GAME:4705
 GAME:4706
 GAME:4706 ; =============== S U B R O U T I N E =======================================
 GAME:4706
+GAME:4706 ; Final target phase: skyscraper buildings explosion via tile animation
 GAME:4706
 GAME:4706 ABB:                                    ; CODE XREF: ID:ABF↑j
 GAME:4706                 LDX     #7
-GAME:4708                 LDA     byte_622
+GAME:4708                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:470B                 LSR     A
 GAME:470C                 LSR     A
 GAME:470D                 BCC     _1
 GAME:470F                 LSR     A
 GAME:4710                 BCC     _2
-GAME:4712                 JSR     DFTNK           ; Final target phase: define tanks
+GAME:4712                 JSR     DFTNK
 GAME:4715                 RTS
 GAME:4716 ; ---------------------------------------------------------------------------
 GAME:4716
 GAME:4716 _2:                                     ; CODE XREF: ABB+A↑j
 GAME:4716                                         ; ABB+17↓j
-GAME:4716                 LDA     ABC,X
+GAME:4716                 LDA     ABC,X           ; Tile: explosion 1 on gras
 GAME:4719                 JSR     ABK
 GAME:471C                 DEX
 GAME:471D                 BPL     _2
@@ -13055,7 +13100,7 @@ GAME:4720 ; --------------------------------------------------------------------
 GAME:4720
 GAME:4720 _1:                                     ; CODE XREF: ABB+7↑j
 GAME:4720                                         ; ABB+21↓j
-GAME:4720                 LDA     ABD,X
+GAME:4720                 LDA     ABD,X           ; Tile: explosion 2 on gras
 GAME:4723                 JSR     ABK
 GAME:4726                 DEX
 GAME:4727                 BPL     _1
@@ -13075,13 +13120,12 @@ GAME:4733                 STA     ABH,X           ; $49:
 GAME:4736                 STA     ABI,X           ; $4A:
 GAME:4739                 STA     ABJ,X           ; $12: Runway, Road
 GAME:473C                 STA     ABS,X           ; $7F:
-GAME:473F                 RTS                     ; Final target phase: define tanks
+GAME:473F                 RTS
 GAME:473F ; End of function ABK
 GAME:473F
 GAME:4740
 GAME:4740 ; =============== S U B R O U T I N E =======================================
 GAME:4740
-GAME:4740 ; Final target phase: define tanks
 GAME:4740
 GAME:4740 DFTNK:                                  ; CODE XREF: QN+4C↑p
 GAME:4740                                         ; B7+A3↑p ...
@@ -13239,10 +13283,10 @@ GAME:4824                 BNE     AFS
 GAME:4826                 LDA     VVBLKD          ; DEFERRED VERTICAL BLANK NMI VECTOR
 GAME:4829                 CMP     #>VBIR__DEFERRED_VBL_DRAW ; Deferred VBL: scroll the playfield and play sound
 GAME:482B                 BNE     _33
-GAME:482D                 LDA     byte_622
+GAME:482D                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:4830                 BEQ     _3              ; => Return
 GAME:4832                 LDA     #2
-GAME:4834                 STA     byte_622
+GAME:4834                 STA     EXPLOSION_TILE_ANIMATION
 GAME:4837                 RTS
 GAME:4838 ; ---------------------------------------------------------------------------
 GAME:4838
@@ -13311,10 +13355,10 @@ GAME:488E                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of t
 GAME:4890                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
 GAME:4892                 CMP     #20
 GAME:4894                 BCS     _8              ; => Return
-GAME:4896                 LDA     byte_622
+GAME:4896                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:4899                 BEQ     _3_
 GAME:489B                 LDA     #1
-GAME:489D                 STA     byte_622
+GAME:489D                 STA     EXPLOSION_TILE_ANIMATION
 GAME:48A0
 GAME:48A0 _3_:                                    ; CODE XREF: BMBR+80↑j
 GAME:48A0                 JSR     BOMB            ; Trigger bomb drop
@@ -13375,13 +13419,14 @@ GAME:48D9
 GAME:48DC
 GAME:48DC ; =============== S U B R O U T I N E =======================================
 GAME:48DC
+GAME:48DC ; 2x1 tile explosion in water
 GAME:48DC
 GAME:48DC XI:                                     ; CODE XREF: ID:BD↑j
-GAME:48DC                 LDA     byte_622
+GAME:48DC                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:48DF                 LSR     A
 GAME:48E0                 LSR     A
 GAME:48E1                 BCC     loc_48E8
-GAME:48E3                 LDA     #L_60|L_C_0
+GAME:48E3                 LDA     #L_WATER_60|L_C_0
 GAME:48E5                 JMP     loc_48EA
 GAME:48E8 ; ---------------------------------------------------------------------------
 GAME:48E8
@@ -13389,9 +13434,9 @@ GAME:48E8 loc_48E8:                               ; CODE XREF: XI+5↑j
 GAME:48E8                 LDA     #L_EXPLOSION_WATER_1|L_C_0
 GAME:48EA
 GAME:48EA loc_48EA:                               ; CODE XREF: XI+9↑j
-GAME:48EA                 STA     (off_FB),Y
+GAME:48EA                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:48EC                 INY
-GAME:48ED                 STA     (off_FB),Y
+GAME:48ED                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:48EF                 RTS
 GAME:48EF ; End of function XI
 GAME:48EF
@@ -13432,9 +13477,10 @@ GAME:4915
 GAME:4916
 GAME:4916 ; =============== S U B R O U T I N E =======================================
 GAME:4916
+GAME:4916 ; 2x1 tile explosion wall
 GAME:4916
 GAME:4916 AEI:                                    ; CODE XREF: ID:AEH↑j
-GAME:4916                 LDA     byte_622
+GAME:4916                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:4919                 LSR     A
 GAME:491A                 LSR     A
 GAME:491B                 BCC     loc_4922
@@ -13446,42 +13492,43 @@ GAME:4922 loc_4922:                               ; CODE XREF: AEI+5↑j
 GAME:4922                 LDA     #L_5F|L_C_0
 GAME:4924
 GAME:4924 loc_4924:                               ; CODE XREF: AEI+9↑j
-GAME:4924                 STA     (off_FB),Y
+GAME:4924                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:4926                 INY
-GAME:4927                 STA     (off_FB),Y
+GAME:4927                 STA     (CURRENT_TILE_ROW_PTR),Y
 GAME:4929                 RTS
 GAME:4929 ; End of function AEI
 GAME:4929
 GAME:492A
 GAME:492A ; =============== S U B R O U T I N E =======================================
 GAME:492A
+GAME:492A ; Airport hangar explosion via tile animation
 GAME:492A
 GAME:492A Z5:                                     ; CODE XREF: ID:Z4↑j
 GAME:492A                 LDX     #7
-GAME:492C                 LDA     byte_622
+GAME:492C                 LDA     EXPLOSION_TILE_ANIMATION
 GAME:492F                 LSR     A
 GAME:4930                 LSR     A
-GAME:4931                 BCC     loc_4943
+GAME:4931                 BCC     _1
 GAME:4933                 LSR     A
-GAME:4934                 BCC     loc_4939
+GAME:4934                 BCC     _2
 GAME:4936                 JMP     DFHNGR          ; Define Hangar – restore the font characters for the hangar
 GAME:4939 ; ---------------------------------------------------------------------------
 GAME:4939
-GAME:4939 loc_4939:                               ; CODE XREF: Z5+A↑j
+GAME:4939 _2:                                     ; CODE XREF: Z5+A↑j
 GAME:4939                                         ; Z5+16↓j
-GAME:4939                 LDA     ABC,X
+GAME:4939                 LDA     ABC,X           ; Tile: explosion 1 on gras
 GAME:493C                 JSR     ADR             ; Set line X of the the hangar font characters
 GAME:493F                 DEX
-GAME:4940                 BPL     loc_4939
+GAME:4940                 BPL     _2
 GAME:4942                 RTS
 GAME:4943 ; ---------------------------------------------------------------------------
 GAME:4943
-GAME:4943 loc_4943:                               ; CODE XREF: Z5+7↑j
+GAME:4943 _1:                                     ; CODE XREF: Z5+7↑j
 GAME:4943                                         ; Z5+20↓j
-GAME:4943                 LDA     ABD,X
+GAME:4943                 LDA     ABD,X           ; Tile: explosion 2 on gras
 GAME:4946                 JSR     ADR             ; Set line X of the the hangar font characters
 GAME:4949                 DEX
-GAME:494A                 BPL     loc_4943
+GAME:494A                 BPL     _1
 GAME:494C                 RTS
 GAME:494C ; End of function Z5
 GAME:494C
@@ -14259,7 +14306,7 @@ GAME:4CC2                                         ; CNSL__CONSOLE+2C↓p
 GAME:4CC2                 LDA     #<MISSLE
 GAME:4CC4                 STA     byte_FA
 GAME:4CC6                 LDA     #>MISSLE
-GAME:4CC8                 STA     off_FB
+GAME:4CC8                 STA     CURRENT_TILE_ROW_PTR
 GAME:4CCA                 LDX     #5
 GAME:4CCC                 LDA     #0
 GAME:4CCE
@@ -14270,7 +14317,7 @@ GAME:4CD0 _2:                                     ; CODE XREF: CLRPM__CLEAR_PMGR
 GAME:4CD0                 STA     (byte_FA),Y
 GAME:4CD2                 DEY
 GAME:4CD3                 BNE     _2
-GAME:4CD5                 INC     off_FB
+GAME:4CD5                 INC     CURRENT_TILE_ROW_PTR
 GAME:4CD7                 DEX
 GAME:4CD8                 BNE     _1
 GAME:4CDA                 RTS
@@ -15561,9 +15608,11 @@ DATA:54B2
 DATA:54B2 ABC:            .BYTE   4,$11,$40,$11,$40,  4,$40,$41
 DATA:54B2                                         ; DATA XREF: ACL:_2↑r
 DATA:54B2                                         ; ABB:_2↑r ...
+DATA:54B2                                         ; Tile: explosion 1 on gras
 DATA:54BA ABD:            .BYTE $45,$54,$15,$51,$44,$55,$15,$51
 DATA:54BA                                         ; DATA XREF: ACL:_1↑r
 DATA:54BA                                         ; ABB:_1↑r ...
+DATA:54BA                                         ; Tile: explosion 2 on gras
 DATA:54C2 ABL:            .BYTE $3F,$3F,$3F,  3,  3,  3,$3F,$3F
 DATA:54C2                                         ; DATA XREF: DFBLDG+38↑r
 DATA:54C2                                         ; DFTNK:_1↑r

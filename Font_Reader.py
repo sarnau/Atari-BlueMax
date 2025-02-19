@@ -56,7 +56,7 @@ def drawFont(addr,firstChar=0x00,lastChar=0x40,isColor=False):
 		s = ''
 		for o in range(0,lineLen):
 			if o + cindex <= lastChar:
-				st = '$%02x' % (cindex + o)
+				st = '$%04x:%02x' % (addr+o*chheight,cindex + o)
 				s += (st + ' ' * 30)[:width+gap] + ' '
 		print(s)
 		for row in range(0,chheight):
