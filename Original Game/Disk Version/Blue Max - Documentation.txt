@@ -1,0 +1,194 @@
+Protection: $62 (98) (crc), $61 (97) (8 phantoms for timing), timing of disk layout
+More phantom sectors (but only read as normal sectors): $1 (11 phantoms), $12 (18) (5 phantoms)
+
+
+Similar protection:
+	Blue Max (1983)(Ariolasoft - Synapse Software)(DE-US)[a]
+	Blue Max (1983)(Synapse Software)(US)(Side A)[!][OS-B]
+	Drelbs (1983)(Synapse Software)(US)[f][!][OS-B]
+
+
+Cracked by:
+ - put correct data into sectors $61 and $62
+ - ignore the disk status of sector $62
+ - set the number of correct-timed sector reads to the needed value of $4
+
+
+Routine in sector $15 (31) at offset $a30:
+----------------------------------------------------------
+
+0880: A9 70             LDA #$70	# buffer $7000
+0882: 8D 05 03          STA DBUFHI
+0885: A9 12             LDA #$12	# sector $12
+0887: 8D 0A 03          STA DAUX1
+088A: A9 00             LDA #$00
+088C: 8D 0B 03          STA DAUX2
+088F: 8D 04 03          STA DBUFLO
+0892: 20 53 E4          JSR DSKINV
+0895: 20 00 70          JSR $7000
+0898: A9 04             LDA #$04
+089A: 85 FA             STA $FA
+089C: A9 09             LDA #$09
+089E: 8D 05 03          STA DBUFHI
+08A1: A9 CD             LDA #$CD	# sector $2cd + next 3
+08A3: 8D 0A 03          STA DAUX1
+08A6: A9 02             LDA #$02
+08A8: 8D 0B 03          STA DAUX2
+08AB: 20 53 E4          JSR DSKINV
+08AE: EE 0A 03          INC DAUX1
+08B1: AD 04 03          LDA DBUFLO
+08B4: 18                CLC
+08B5: 69 80             ADC #$80
+08B7: 8D 04 03          STA DBUFLO
+08BA: 90 03             BCC $08BF
+08BC: EE 05 03          INC DBUFHI
+08BF: C6 FA             DEC $FA
+08C1: D0 E8             BNE $08AB
+08C3: 6C FF 08          JMP ($08FF)
+08C6: 6C 52 70          JMP ($7052)
+
+
+Protection routine in sector $b0 (176) at offset $5790:
+----------------------------------------------------------
+
+0900: A9 00             LDA #$00
+0902: 8D 04 03          STA DBUFLO
+0905: A9 08             LDA #$08	# buffer $800
+0907: 8D 05 03          STA DBUFHI
+090A: 80 A9             NOP #$A9
+090C: 82 A9             NOP #$A9
+090E: A9 00             LDA #$00
+0910: 8D 0B 03          STA DAUX2
+0913: 1C 85 09          NOP $0985,X
+0916: 04 10             NOP POKMSK
+0918: A9 62             LDA #$62	# sector $62
+091A: 1A                NOP
+091B: C2 6C             NOP #$6C
+091D: 8D 0A 03          STA DAUX1
+0920: 20 53 E4          JSR DSKINV
+
+0923: 10 08             BPL $092D	# must be bad
+----------------------------------------------------------
+0923: 24 08             BIT $08		# ignore disk status (for correct checksum BIT $F4)
+
+0925: 80 29             NOP #$29
+0927: EE FC 06          INC $06FC
+092A: EE FB 06          INC $06FB
+
+092D: A9 50             LDA #$50	# sector $50
+092F: 8D 0A 03          STA DAUX1
+0932: 20 53 E4          JSR DSKINV
+0935: 82 0D             NOP #$0D
+0937: A9 61             LDA #$61	# sector $61
+0939: 80 A9             NOP #$A9
+093B: 8D 0A 03          STA DAUX1
+093E: A9 80             LDA #$80	# buffer $880
+0940: 8D 04 03          STA DBUFLO
+0943: 20 53 E4          JSR DSKINV
+0946: 04 2E             NOP ICAX5Z
+0948: AD A0 08          LDA $08A0	# atx=$69
+094B: C9 69             CMP #$69
+094D: D0 05             BNE $0954
+094F: 80 EE             NOP #$EE
+0951: EE FD 06          INC $06FD
+0954: A9 06             LDA #$06
+0956: A2 E4             LDX #$E4
+0958: A0 5F             LDY #$5F
+095A: 20 5C E4          JSR SETVBV
+095D: AD 14 D0          LDA PAL		# check PAL-flag
+0960: 80 A9             NOP #$A9
+0962: 29 0E             AND #$0E
+0964: D0 07             BNE $096D
+0966: A9 04             LDA #$04	# pre-set alignment counter with $4
+0968: 82 6C             NOP #$6C
+096A: 8D FA 06          STA $06FA
+096D: 60                RTS
+
+
+Routine to check for sector alignment in sector $2ce (718) at offset $16690:
+----------------------------------------------------------
+
+A certain number of reads has each to take less than $0C or more than $0F jiffies.
+
+0980: A5 FD             LDA $FD		# if timer is running
+0982: D0 1B             BNE $099F	# then check for time
+0984: AD 0A 03          LDA DAUX1
+0987: C9 D5             CMP #$D5	# if one of these sectors (plus $100) is read then start timer
+0989: F0 0D             BEQ $0998
+098B: C9 E7             CMP #$E7
+098D: F0 09             BEQ $0998
+098F: C9 F9             CMP #$F9
+0991: F0 05             BEQ $0998
+0993: C9 0B             CMP #$0B
+0995: F0 01             BEQ $0998
+0997: 60                RTS
+
+0998: A9 00             LDA #$00	# start timer
+099A: 85 14             STA RTCLOK+2
+099C: E6 FD             INC $FD		# and set "timer-runs" flag
+099E: 60                RTS
+
+099F: C6 FD             DEC $FD		# reset flag
+09A1: A5 14             LDA RTCLOK+2
+09A3: 80 A9             NOP #$A9
+09A5: C9 0C             CMP #$0C	# less than $0C jiffies?
+09A7: 90 05             BCC $09AE
+09A9: C9 10             CMP #$10	# OR more than $0F jiffies?
+09AB: B0 01             BCS $09AE
+09AD: 60                RTS
+09AE: EE FA 06          INC $06FA	# then increment counter
+09B1: 60                RTS
+
+
+Protection routine in sector $7c (124) at offset $3d90:
+----------------------------------------------------------
+
+136D: AD FA 06          LDA $06FA	# get alignment-timing counter
+1370: C9 04             CMP #$04	# atx=4, atr=0
+1372: F0 03             BEQ $1377	# must be $4
+----------------------------------------------------------
+136D: A9 04             LDA #$04	# set counter to $04
+136F: 8D FA 06          STA $06FA	# to make possible second routine happy
+1372: D0 03             BNE $1377
+
+1374: 4C 34 FB          JMP $FB34	# bad things
+1377: 60                RTS
+
+
+DISKMAP - 40 TRACKS - 18 SECTORS
+
+ 1 **,,,|,*** ,,,,|||,,, .,.||,**** .,,,,,,,,,
+ 2 **,,,|**** ,,,,|||,,, .*.,,,**** .,,,,,,,,,
+ 3 |*,c,|**** ,,,,|||,,, .**||,**** .,,,,,,,,,
+ 4 |,,,,,**** ,,,,|||,,, .**||***** ,,,,*,,,,,
+ 5 |,,,,|**** ,,,,|||,,, .**||***** ,,,,*,,,,,
+ 6 |,,,,|**** ,,,,|||,,, .**||***** ,,,,,,,,,,
+ 7 |,,,,***** ,,,,|||,,, .**||***** ,,,,,,,,,,
+ 8 |,,,*c**** ,,,,|||,,, .**||***** ,,,,,,,,,,
+ 9 |,,,,|**** ,,,,|||,,, .**||****. ,,,,,,,,,,
+10 |,,,,|**** ,,,,|||,,, ..*||****. ,,,,,,,,,,
+
+11 |,,|,|**** ,,,,|||,,, ..,||****. ,,,,,,,,,,
+12 |,,|,|***, ,,,,|||,,, .*,||****. ,,,,,,,,,,
+13 |,,,,|***, ,,,,|||,,, .*,||****. ,,,,,,,,,,
+14 |*,|,|**** ,,,,|||,,, .*,||****. ,,,,,,,,,,
+15 |,,|,|***, ,,,,|||,,, ,*,||****. ,,,,,,,,,*
+16 |,,|,|***, ,,,,|||,,, ,*,||****. ,,,,,,,,,*
+17 |,,|,|***, ,,,,|||,,, ,.,||****. ,,,,,,,,,*
+18 *,,,,,***, ,,,,|||,,* ,.,||****. ,,,,,,,,,,
+
+* OK/DATA  .,;: OK/EMPTY ($00, $1A, $FF, other)
+| MISSING  d DELETED  C BAD CRC  l/L LONG/l+DELETED
+
+
+crack.rup
+NINJA1T
+raw 7fffffff 5340fdab7ed05c99cae1a7d4e3caec58 3251a3ae8cd5d6da7af8ca009082d51e30b72810
+3dfd a9048dfa06d0
+57b3 24
+
+uncrack.rup
+NINJA1T
+raw 22663f88 3dcd352433cbab90a105aeba93c3466f dfb6e3434e4a396e525c042665573af13b1b210e
+3dfd adfa06c904f0
+57b3 10
