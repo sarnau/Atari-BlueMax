@@ -35,6 +35,7 @@ def loadATX(atxFilename,selectedTrack=None):
 			return False
 		if not selectedTrack or (selectedTrack and selectedTrack == track_number):
 			track = data[offset+0:offset+th_record_size]
+			sector_lookup = {}
 
 			# read sector list header
 			record_size,record_type = struct.unpack('<lB3x', track[th_size+0:th_size+8])
@@ -71,29 +72,38 @@ def loadATX(atxFilename,selectedTrack=None):
 				# read sector data as well
 				sno = track_number * 18 + sector_number
 				spos = sector_position / 26042
-				print('Sector #%3d, Track #%2d Sector #%2d / %s / %7.3f%%' % (sno, track_number, sector_number,sstr,spos),end='')
+				print('Sector @ $%04x #%3d, Track #%2d Sector #%2d / %s / %7.3f%%' % (start_data, sno, track_number, sector_number,sstr,spos),end='')
 
 				if True:
-					lc = track[start_data+0]
+					sdata = track[start_data:start_data+SECTOR_SIZE]
+					lc = sdata[0]
 					for i in range(1,SECTOR_SIZE):
-						if lc != track[start_data+i]:
+						if lc != sdata[i]:
 							lc = -1
 							break
 					if lc >= 0:
 						print(' / $%02x * %d' % (lc, SECTOR_SIZE))
 					else:
-						print()
-						for l in range(0,SECTOR_SIZE,16):
-							print('%02x: ' % l,end='')
-							for p in range(0,16):
-								print('%02x ' % track[start_data + l + p],end='')
-							print(' ',end='')
-							for p in range(0,16):
-								c = track[start_data + l + p]
-								if c < 0x20 or c >= 0x7F:
-									c = ord('.')
-								print('%c' % c,end='')
+						foundDup = False
+						for sd_start in sector_lookup:
+							if sector_lookup[sd_start] == sdata:
+								print(' / sector copy @ $%04x' % (sd_start))
+								foundDup = True
+								break
+						sector_lookup[start_data] = sdata
+						if not foundDup:
 							print()
+							for l in range(0,SECTOR_SIZE,16):
+								print('%02x: ' % l,end='')
+								for p in range(0,16):
+									print('%02x ' % sdata[l + p],end='')
+								print(' ',end='')
+								for p in range(0,16):
+									c = sdata[l + p]
+									if c < 0x20 or c >= 0x7F:
+										c = ord('.')
+									print('%c' % c,end='')
+								print()
 				else:
 					print()
 
