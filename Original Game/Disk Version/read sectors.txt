@@ -1,7 +1,7 @@
 This is the sector read-order
 
 $$$ READ SECTOR ADDR:$0580 SECTOR:  1 Bootsector
-$$$ READ SECTOR ADDR:$0100 SECTOR: 19
+$$$ READ SECTOR ADDR:$0100 SECTOR: 19 Read at the beginning of the STACK (for RTS obfustication)
 $$$ READ SECTOR ADDR:$0700 SECTOR: 20
 $$$ READ SECTOR ADDR:$0800 SECTOR: 32
 $$$ READ SECTOR ADDR:$0880 SECTOR: 21
@@ -13,7 +13,7 @@ $$$ READ SECTOR $0C00…$2bff Sector 110-173 (64 Sectors) from $0b0f
 $$$ READ SECTOR $2C00…$58ff Sector 454-543 (90 Sectors) from $0b80
 $$$ READ SECTOR $5280…$5fff Sector 380-406 (27 Sectors) from $0b96
 $$$ READ SECTOR ADDR:$0900 SECTOR:176 from $0bb5
-$$$ READ SECTOR ADDR:$0800 BYTES:$0080 SECTOR: 98 => STATUS = $08
+$$$ READ SECTOR ADDR:$0800 BYTES:$0080 SECTOR: 98 => STATUS = $08 copy protection (read error)
 
 $0BCD => JMP $0C00 (this is where the main game start)
 

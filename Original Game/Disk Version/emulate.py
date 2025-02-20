@@ -349,6 +349,16 @@ class DebugMMU(MMU):
 		global showOutput
 		if self.addr_visible(addr) and showOutput == 0:
 			print('### W %s <= $%02x' % (self.addr_label(addr,readMode=False), value))
+		if False and addr >= 0x00F0 and addr < 0x0200: # print variables and stack
+			showOutput += 1
+			LINEWIDTH = 16
+			for r in range(0x00F0,0x0200,LINEWIDTH):
+				print('$%04x: ' % r,end='')
+				for r2 in range(0,LINEWIDTH):
+					print('%02x ' % self.read(r + r2),end='')
+				print()
+			print()
+			showOutput -= 1
 
 	def read(self, addr):
 		self.reads.add(addr)
@@ -962,4 +972,4 @@ def emulateAtari(filename,showOutputFlag=False,showROMAccessFlag=False):
 		printAddrRanges(mmu.writes)
 
 print('\33c',end='') # clear terminal
-emulateAtari('Blue Max (1983)(Synapse Software)(US)(Side A)[!][OS-B].atx', showOutputFlag=False, showROMAccessFlag=True)
+emulateAtari('Blue Max (1983)(Synapse Software)(US)(Side A)[!][OS-B].atx', showOutputFlag=True, showROMAccessFlag=True)
