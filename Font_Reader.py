@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageShow, ImageFont
 PIXEL_SET = '█︎'
 PIXEL_CLEAR = ' '
 
-data = bytearray(0x0C00)+open('BlueMax.xex','rb').read()[6:]
+data = bytearray(0x0C00)+open('./Original Game/Tape Version/BlueMax.xex','rb').read()[6:]
 
 class bcolors:
 	BLACK = '\033[38;5;0m'
