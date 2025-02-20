@@ -19,7 +19,7 @@ $$$ READ SECTOR ADDR:$0900 SECTOR:176 from $0bb5 copy protection code at the beg
 
 $0BCD => JMP $0C00 (this is where the main game start)
 
-It now immediately JSR $900 to check the protection
+It now immediately JSR $900 to check the other two protections:
 
 $$$ READ SECTOR ADDR:$0800 BYTES:$0080 SECTOR: 98 => copy protection
 
