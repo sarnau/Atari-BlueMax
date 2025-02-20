@@ -971,5 +971,4 @@ def emulateAtari(filename,showOutputFlag=False,showROMAccessFlag=False):
 		print('WRITE:')
 		printAddrRanges(mmu.writes)
 
-print('\33c',end='') # clear terminal
 emulateAtari('Blue Max (1983)(Synapse Software)(US)(Side A)[!][OS-B].atx', showOutputFlag=True, showROMAccessFlag=True)
