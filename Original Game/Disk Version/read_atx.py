@@ -113,4 +113,4 @@ def loadATX(atxFilename,selectedTrack=None):
 
 	return True
 
-loadATX('Blue Max (1983)(Synapse Software)(US)(Side A)[!][OS-B].atx')
+loadATX('Blue Max.atx')
