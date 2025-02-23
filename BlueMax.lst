@@ -42,20 +42,20 @@
 00000003
 00000000 ; ---------------------------------------------------------------------------
 00000000
-00000000 DIFF_STRUCT     struc ; (sizeof=0x7)    ; XREF: VARS:DIFF/r
+00000000 DIFFICULTY_STRUCT struc ; (sizeof=0x7)  ; XREF: VARS:DIFF/r
 00000000                                         ; DATA:EAS0/r ...
 00000000 wind_probability:.BYTE ?                ; XREF: EB:_5/r
 00000000                                         ; EB+39/w ... ; Wind triggered, if RANDOM < value
 00000001 wind_minimum_duration:.BYTE ?           ; XREF: WIND+18/r ; Minimum duration during which wind is active
-00000002 field_2:        .BYTE ?                 ; XREF: TRIGB+14/r
-00000002                                         ; TRIGF+E/r
+00000002 bomb_probability:.BYTE ?                ; XREF: TRIGB+14/r
+00000002                                         ; TRIGF+E/r ; Probability (0-255) for a bomb to be dropped
 00000003 field_3:        .BYTE ?                 ; XREF: COLM30+15/r
 00000003                                         ; CLG20+1F/r
 00000004 field_4:        .BYTE ?                 ; XREF: COLM30+1B/r
 00000004                                         ; CLG20:J5/r
-00000005 field_5:        .BYTE ?                 ; XREF: COLM20+E/r
-00000006 field_6:        .BYTE ?                 ; XREF: COLM20+1B/r
-00000007 DIFF_STRUCT     ends
+00000005 plane_height:   .BYTE ?                 ; XREF: COLM20+E/r ; Height of the plane for the player (for collision detection)
+00000006 plane_vertical_crash_distance:.BYTE ?   ; XREF: COLM20+1B/r ; minimun vertical distance to detect a crash
+00000007 DIFFICULTY_STRUCT ends
 00000007
 00000000 ; ---------------------------------------------------------------------------
 00000000
@@ -84,7 +84,7 @@
 00000006                                         ; FUEL+49/w ...
 00000007 fuel_digit_1:   .BYTE ?                 ; XREF: FUEL+1E/w
 00000007                                         ; FUEL+21/r ...
-00000008 field_8:        .BYTE ?
+00000008 char_SPACE:     .BYTE ?
 00000009 bomb_B:         .BYTE ?                 ; XREF: REFUEL+F/w
 00000009                                         ; INCBMB+7/w
 0000000A bomb_colon:     .BYTE ?
@@ -92,8 +92,8 @@
 0000000B                                         ; BOMB+4B/w ...
 0000000C bomb_digit_1:   .BYTE ?                 ; XREF: BOMB+2E/r
 0000000C                                         ; BOMB:PB/w ...
-0000000D field_D:        .BYTE ?
-0000000E field_E:        .BYTE ?
+0000000D empty_3:        .BYTE ?
+0000000E empty_4:        .BYTE ?
 0000000F fuel_leak:      .BYTE ?                 ; XREF: FUEL+5/r
 0000000F                                         ; COLM20:RW/r ... ; "F" character
 00000010 bomb_gear_damaged:.BYTE ?               ; XREF: BOMB+C/r
@@ -102,12 +102,12 @@
 00000011                                         ; COLM20:RY/r ... ; "M" character
 00000012 machine_gun_damaged:.BYTE ?             ; XREF: TRIG__TRIGGER_MACHINE_GUN+8/r
 00000012                                         ; COLM20+59/r ... ; "G" character
-00000013 field_13:       .BYTE ?
+00000013 empty_5:        .BYTE ?
 00000014 enemy_above_warning:.BYTE ?             ; XREF: ASTRSK+11/w
 00000014                                         ; AEL+2/w ... ; red "*" character
-00000015 field_15:       .BYTE ?
-00000016 field_16:       .BYTE ?
-00000017 field_17:       .BYTE ?
+00000015 empty_6:        .BYTE ?
+00000016 empty_7:        .BYTE ?
+00000017 empty_8:        .BYTE ?
 00000018 CONTROL_DISPLAY_LINE_0 ends
 00000018
 00000000 ; ---------------------------------------------------------------------------
@@ -117,12 +117,12 @@
 00000000 empty_0:        .BYTE ?
 00000001 empty_1:        .BYTE ?
 00000002 empty_2:        .BYTE ?
-00000003 field_3:        .BYTE ?
-00000004 field_4:        .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+13/w
+00000003 char_S:         .BYTE ?
+00000004 char_P:         .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+13/w
 00000004                                         ; SQLD__PRINT_SQUADRON_LEADER+5/w ...
-00000005 field_5:        .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+10/w
+00000005 char_D:         .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+10/w
 00000005                                         ; RNKX__PRINT_RANK_CLASS+AD/w
-00000006 field_6:        .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+7/w
+00000006 char_COLLON:    .BYTE ?                 ; XREF: BLMX__PRINT_BLUE_MAX+7/w
 00000006                                         ; BLMX__PRINT_BLUE_MAX+D/w
 00000007 speed_digit_100:.BYTE ?                 ; XREF: EB+C8/w
 00000007                                         ; TURN:_20/r ...
@@ -130,24 +130,24 @@
 00000008                                         ; TURN+EB/w ...
 00000009 speed_digit_1:  .BYTE ?                 ; XREF: EB+CE/w
 00000009                                         ; TURN+EE/w ...
-0000000A field_A:        .BYTE ?
-0000000B field_B:        .BYTE ?
-0000000C field_C:        .BYTE ?
-0000000D field_D:        .BYTE ?
-0000000E field_E:        .BYTE ?
+0000000A char_SPACE:     .BYTE ?
+0000000B char_A:         .BYTE ?
+0000000C char_L:         .BYTE ?
+0000000D char_T:         .BYTE ?
+0000000E char_COLLON_2:  .BYTE ?
 0000000F altitude_digit_100:.BYTE ?              ; XREF: ALT__ALTITUDE_DISPLAY_FIXUP+23/w
 0000000F                                         ; ALT__ALTITUDE_DISPLAY_FIXUP+3F/w
 00000010 altitude_digit_10:.BYTE ?               ; XREF: ALT__ALTITUDE_DISPLAY_FIXUP+11/w
 00000010                                         ; ALT__ALTITUDE_DISPLAY_FIXUP+14/r ...
 00000011 altitude_digit_1:.BYTE ?                ; XREF: KK/w UP+6/w ...
-00000012 field_12:       .BYTE ?
-00000013 field_13:       .BYTE ?
+00000012 char_SPACE_1:   .BYTE ?
+00000013 char_SPACE_2:   .BYTE ?
 00000014 enemy_plane_warning:.BYTE ?             ; XREF: PLFWD+184/w
 00000014                                         ; PLFWD+18D/w ... ; "P" character
 00000015 wind_factor_warning:.BYTE ?             ; XREF: CKLAND+45/w
 00000015                                         ; WIND+1F/w ... ; "W" character
-00000016 field_16:       .BYTE ?
-00000017 field_17:       .BYTE ?
+00000016 empty_3:        .BYTE ?
+00000017 empty_4:        .BYTE ?
 00000018 CONTROL_DISPLAY_LINE_1 ends
 00000018
 00000000 ; ---------------------------------------------------------------------------
@@ -157,33 +157,33 @@
 00000000 empty_0:        .BYTE ?
 00000001 empty_1:        .BYTE ?
 00000002 empty_2:        .BYTE ?
-00000003 field_3:        .BYTE ?
-00000004 field_4:        .BYTE ?
-00000005 field_5:        .BYTE ?
-00000006 field_6:        .BYTE ?
-00000007 field_7:        .BYTE ?
-00000008 field_8:        .BYTE ?
-00000009 score_digit_1000:.BYTE ?                ; XREF: S100__SCORE_ADD_100+20/r
+00000003 char_S:         .BYTE ?
+00000004 char_C:         .BYTE ?
+00000005 char_O:         .BYTE ?
+00000006 char_R:         .BYTE ?
+00000007 char_E:         .BYTE ?
+00000008 char_COLLON:    .BYTE ?
+00000009 score_digit_10000:.BYTE ?               ; XREF: S100__SCORE_ADD_100+20/r
 00000009                                         ; S100__SCORE_ADD_100+27/w ...
-0000000A score_digit_100:.BYTE ?                 ; XREF: S100__SCORE_ADD_100:S1000__SCORE_ADD_1000/w
+0000000A score_digit_1000:.BYTE ?                ; XREF: S100__SCORE_ADD_100:S1000__SCORE_ADD_1000/w
 0000000A                                         ; S100__SCORE_ADD_100+13/r ...
-0000000B score_digit_10: .BYTE ?                 ; XREF: S100__SCORE_ADD_100/w
+0000000B score_digit_100:.BYTE ?                 ; XREF: S100__SCORE_ADD_100/w
 0000000B                                         ; S100__SCORE_ADD_100+3/r ...
-0000000C score_digit_1:  .BYTE ?                 ; XREF: S10__SCORE_ADD_10/w
+0000000C score_digit_10: .BYTE ?                 ; XREF: S10__SCORE_ADD_10/w
 0000000C                                         ; S10__SCORE_ADD_10+3/r ...
-0000000D field_D:        .BYTE ?
-0000000E field_E:        .BYTE ?
-0000000F field_F:        .BYTE ?
-00000010 field_10:       .BYTE ?
+0000000D score_digit_1:  .BYTE ?                 ; always 0
+0000000E empty_3:        .BYTE ?
+0000000F empty_4:        .BYTE ?
+00000010 empty_5:        .BYTE ?
 00000011 landing_flag:   .BYTE ?                 ; XREF: CKLAND+D/w
 00000011                                         ; CKLAND+2E/r ... ; "L" character
-00000012 field_12:       .BYTE ?
-00000013 field_13:       .BYTE ?
-00000014 field_14:       .BYTE ?                 ; XREF: TURN+F3/w
-00000014                                         ; ASTRSK:_1/w ... ; "*" character
-00000015 field_15:       .BYTE ?
-00000016 field_16:       .BYTE ?
-00000017 field_17:       .BYTE ?
+00000012 empty_6:        .BYTE ?
+00000013 empty_7:        .BYTE ?
+00000014 enemy_below_warning:.BYTE ?             ; XREF: TURN+F3/w
+00000014                                         ; ASTRSK:_1/w ... ; red "*" character
+00000015 empty_8:        .BYTE ?
+00000016 empty_9:        .BYTE ?
+00000017 empty_10:       .BYTE ?
 00000018 CONTROL_DISPLAY_LINE_2 ends
 00000018
 00000000 ; ---------------------------------------------------------------------------
@@ -588,7 +588,7 @@ FFFFFFFF
 0000003F _CLOSE_BRACKET:  = 9                    ; XREF: DATA:DEMI/s
 0000003F _ASTERIX:        = $A                   ; XREF: ASTRSK+7/s
 0000003F                                         ; CNSL__CONSOLE:_12/s ...
-0000003F _MINUS:          = $D
+0000003F _MINUS:          = $D                   ; XREF: TAPE_LOADER:TEXT_LINE/s
 0000003F _QUESTIONMARK:   = $F                   ; XREF: READ_BLOCK+17/s
 0000003F                                         ; ALT__ALTITUDE_DISPLAY_FIXUP+33/s ...
 0000003F _0:              = $10                  ; XREF: EB+C6/s
@@ -1065,7 +1065,7 @@ FFFFFFFF UNKNOWNS_STATE_3: = 3                   ; XREF: DRP23+13/s
 FFFFFFFF                                         ; DRP23+72/s ...
 FFFFFFFF UNKNOWNS_STATE_4: = 4                   ; XREF: DRP23+17/s
 FFFFFFFF                                         ; DRP23+99/s ...
-FFFFFFFF UNKNOWNS_STATE_5: = 5                   ; XREF: PLBCK+1C/s
+FFFFFFFF UNKNOWNS_STATE_SHOOT_BOMB: = 5          ; XREF: PLBCK+1C/s
 FFFFFFFF                                         ; L6+F/s ...
 FFFFFFFF UNKNOWNS_STATE_6: = 6                   ; XREF: DRP23+F/s
 FFFFFFFF                                         ; DRBR__DRAW_BRIDGE+177/s
@@ -1598,9 +1598,9 @@ VARS:0654 byte_654:       .BYTE 0 ; (uninited)    ; DATA XREF: CKCOL+38↓w
 VARS:0654                                         ; TURN+9D↓r ...
 VARS:0655 byte_655:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+142↓w
 VARS:0655                                         ; TURN+B7↓r ...
-VARS:0656 byte_656:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1DC↓w
+VARS:0656 ENEMY_BOMB_Y_POS:.BYTE 0 ; (uninited)   ; DATA XREF: RESET+1DC↓w
 VARS:0656                                         ; TRIGB↓r ...
-VARS:0657 byte_657:       .BYTE 0 ; (uninited)    ; DATA XREF: TRIGB+25↓w
+VARS:0657 ENEMY_BOMB_X_POS:.BYTE 0 ; (uninited)   ; DATA XREF: TRIGB+25↓w
 VARS:0657                                         ; TRIGB+3F↓r ...
 VARS:0658 byte_658:       .BYTE 0 ; (uninited)    ; DATA XREF: COLM20+11↓w
 VARS:0658                                         ; COLM20+18↓r
@@ -1820,7 +1820,7 @@ VARS:06C6                                         ; XCPTL+44↓w
 VARS:06C7 REQUIRED_TARGETS:.BYTE 0 ; (uninited)   ; DATA XREF: RESET+256↓w
 VARS:06C7                                         ; EB+FA↓r ...
 VARS:06C7                                         ; Number of required primary targets to progress (8 or 9 by random)
-VARS:06C8 DIFF:           DIFF_STRUCT <?>         ; DATA XREF: EB+39↓w
+VARS:06C8 DIFF:           DIFFICULTY_STRUCT <?>   ; DATA XREF: EB+39↓w
 VARS:06C8                                         ; EB+4F↓w ...
 VARS:06C8                                         ; Difficulty for the level
 VARS:06CF byte_6CF:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+44↓w
@@ -2026,22 +2026,21 @@ TAPE_LOADER:077F                 .WORD $8004             ; DSECTOR
 TAPE_LOADER:078B
 TAPE_LOADER:078B DISPLAY_LIST:   .BYTE $70               ; DATA XREF: BOOT_CONTINUE+B↑t
 TAPE_LOADER:078B                                         ; BOOT_CONTINUE+10↑t ...
-TAPE_LOADER:078C                 .BYTE $70
-TAPE_LOADER:078D                 .BYTE $70
-TAPE_LOADER:078E                 .BYTE $47
-TAPE_LOADER:078F                 .WORD TEXT_LINE
-TAPE_LOADER:0791                 .BYTE $70
-TAPE_LOADER:0792                 .BYTE $70
-TAPE_LOADER:0793                 .BYTE $70
-TAPE_LOADER:0794                 .BYTE 6
-TAPE_LOADER:0795                 .BYTE $41
-TAPE_LOADER:0796                 .WORD DISPLAY_LIST
+TAPE_LOADER:078B                                         ; DL_BLK8
+TAPE_LOADER:078C                 .BYTE $70               ; DL_BLK8
+TAPE_LOADER:078D                 .BYTE $70               ; DL_BLK8
+TAPE_LOADER:078E                 .BYTE $47               ; DL_CHR20x16x2
+TAPE_LOADER:078F                 .WORD TEXT_LINE         ; <adr>
+TAPE_LOADER:0791                 .BYTE $70               ; DL_BLK8
+TAPE_LOADER:0792                 .BYTE $70               ; DL_BLK8
+TAPE_LOADER:0793                 .BYTE $70               ; DL_BLK8
+TAPE_LOADER:0794                 .BYTE 6                 ; DL_CHR20x8x2
+TAPE_LOADER:0795                 .BYTE $41               ; DL_JVB
+TAPE_LOADER:0796                 .WORD DISPLAY_LIST      ; <adr>
 TAPE_LOADER:0798
-TAPE_LOADER:0798 TEXT_LINE:      .BYTE _SPACE|_C_BLACK,_SPACE|_C_BLACK,_L|_C_BLACK,_O|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_I|_C_BLACK,_N|_C_BLACK,_G|_C_BLACK,_SPACE|_C_BLACK
+TAPE_LOADER:0798 TEXT_LINE:      .BYTE _SPACE|_C_BLACK,_SPACE|_C_BLACK,_L|_C_BLACK,_O|_C_BLACK,_A|_C_BLACK,_D|_C_BLACK,_I|_C_BLACK,_N|_C_BLACK,_G|_C_BLACK,_SPACE|_C_BLACK,_B|_C_BLACK,_L|_C_BLACK,_U|_C_BLACK,_E|_C_BLACK,_SPACE|_C_BLACK,_M|_C_BLACK,_A|_C_BLACK,_X|_C_BLACK,_SPACE|_C_BLACK,_SPACE|_C_BLACK
 TAPE_LOADER:0798                                         ; DATA XREF: TAPE_LOADER:078F↑o
-TAPE_LOADER:0798                 .BYTE _B|_C_BLACK,_L|_C_BLACK,_U|_C_BLACK,_E|_C_BLACK,_SPACE|_C_BLACK,_M|_C_BLACK,_A|_C_BLACK,_X|_C_BLACK,_SPACE|_C_BLACK,_SPACE|_C_BLACK
-TAPE_LOADER:0798                 .BYTE _B|_C_BLUE,_L|_C_BLUE,_O|_C_BLUE,_C|_C_BLUE,_K|_C_BLUE,_S|_C_BLUE,_SPACE|_C_BLACK,_T|_C_BLUE,_O|_C_BLUE,_SPACE|_C_BLACK
-TAPE_LOADER:0798                 .BYTE _L|_C_BLUE,_O|_C_BLUE,_A|_C_BLUE,_D|_C_BLUE,_SPACE|_C_BLACK,_MINUS|_C_BLUE,_SPACE|_C_BLACK,_2|_C_ORANGE,_2|_C_ORANGE,_SPACE|_C_BLACK
+TAPE_LOADER:0798                 .BYTE _B|_C_BLUE,_L|_C_BLUE,_O|_C_BLUE,_C|_C_BLUE,_K|_C_BLUE,_S|_C_BLUE,_SPACE|_C_BLACK,_T|_C_BLUE,_O|_C_BLUE,_SPACE|_C_BLACK,_L|_C_BLUE,_O|_C_BLUE,_A|_C_BLUE,_D|_C_BLUE,_SPACE|_C_BLACK,_MINUS|_C_BLUE,_SPACE|_C_BLACK,_2|_C_ORANGE,_2|_C_ORANGE,_SPACE|_C_BLACK
 TAPE_LOADER:07C0                 .BYTE   0,$4C,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 TAPE_LOADER:07C0                 .BYTE   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 TAPE_LOADER:07C0 ; end of 'TAPE_LOADER'
@@ -2097,11 +2096,11 @@ GAME:0C42                 JSR     STOP_SN         ; Sound: Stop
 GAME:0C45                 STA     SDMCTL          ; SAVE DMACTL REGISTER
 GAME:0C48                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
 GAME:0C4B
-GAME:0C4B                 LDA     #$50 ; 'P'      ; Display List: 6 VBLANK
+GAME:0C4B                 LDA     #$50 ; 'P'      ; Display List: DL_LMS + DL_HSCROL
 GAME:0C4D                 STA     DL
 GAME:0C50                 STA     DL+1
 GAME:0C53
-GAME:0C53                 LDA     #$74 ; 't'      ; Display List: LMS <adr> VSCROL HSCROL MODE 4
+GAME:0C53                 LDA     #$74 ; 't'      ; Display List: DL_CHR40x8x4 + DL_HSCROL + DL_VSCROL + DL_LMS
 GAME:0C55                 LDX     #66
 GAME:0C57
 GAME:0C57 A_:                                     ; CODE XREF: RESET+5D↓j
@@ -2131,13 +2130,13 @@ GAME:0C7D                 DEY
 GAME:0C7E                 DEY
 GAME:0C7F                 BNE     B
 GAME:0C81
-GAME:0C81                 LDA     #$80            ; Display List: DLI 1 BLANK (trigger an interrupt)
+GAME:0C81                 LDA     #$80            ; Display List: DL_BLK1 + DL_DLI
 GAME:0C83                 STA     DL+71
-GAME:0C86                 LDA     #$54 ; 'T'      ; Display List: LMS <adr> HSCROL MODE 4
+GAME:0C86                 LDA     #$54 ; 'T'      ; Display List: DL_CHR40x8x4 + DL_HSCROL + DL_LMS <adr>
 GAME:0C88                 STA     DL+68
-GAME:0C8B                 LDA     #$20 ; ' '      ; Display List: 3 BLANK
+GAME:0C8B                 LDA     #$20 ; ' '      ; Display List: DL_BLK3
 GAME:0C8D                 STA     DL+72
-GAME:0C90                 LDA     #$46 ; 'F'      ; Display List: LMS <adr> MODE 6
+GAME:0C90                 LDA     #$46 ; 'F'      ; Display List: DL_CHR20x8x2 + DL_LMS <adr>
 GAME:0C92                 STA     DL+73
 GAME:0C95
 GAME:0C95                 LDA     DEMO_IS_ACTIVE  ; 0:normal game play, 1=demo mode active
@@ -2154,10 +2153,10 @@ GAME:0CA8                 LDA     #>SC_STATUS_LINE
 GAME:0CAA
 GAME:0CAA AGA:                                    ; CODE XREF: RESET+A1↑j
 GAME:0CAA                 STA     DL+75
-GAME:0CAD                 LDA     #6              ; Display List: MODE 6
+GAME:0CAD                 LDA     #6              ; Display List: DL_CHR20x8x2
 GAME:0CAF                 STA     DL+76
 GAME:0CB2                 STA     DL+77
-GAME:0CB5                 LDA     #$41 ; 'A'      ; Display List: JVB <adr>
+GAME:0CB5                 LDA     #$41 ; 'A'      ; Display List: DL_JVB <adr>
 GAME:0CB7                 STA     DL+78
 GAME:0CBA                 LDA     #<DL
 GAME:0CBC                 STA     DL+79
@@ -2277,7 +2276,7 @@ GAME:0DD0                 STA     byte_65F
 GAME:0DD3                 STA     M2PL_SIZEP2     ; Missle to Player 2 Collision / Player 2 Size
 GAME:0DD6                 STA     M3PL_SIZEP3     ; Missle to Player 3 Collision / Player 3 Size
 GAME:0DD9                 STA     VAR_PRIMARY_TARGET_SUBTYPE
-GAME:0DDC                 STA     byte_656
+GAME:0DDC                 STA     ENEMY_BOMB_Y_POS
 GAME:0DDF                 STA     byte_6ED
 GAME:0DE2                 STA     byte_FD
 GAME:0DE4                 STA     GRAVITY_COUNT   ; When enabled, this counter pulls the plane down every 40 ticks
@@ -2382,7 +2381,7 @@ GAME:0EC0                 BEQ     _6              ; Setup level: intermediate
 GAME:0EC2                 LDX     #6              ; Setup level: advanced
 GAME:0EC4
 GAME:0EC4 _5:                                     ; CODE XREF: EB+3D↓j
-GAME:0EC4                 LDA     EAS9,X          ; Advanced level variables
+GAME:0EC4                 LDA     EAS9,X          ; Difficulty for a score above 8999 points or Advanced
 GAME:0EC7                 STA     DIFF,X          ; Difficulty for the level
 GAME:0ECA                 DEX
 GAME:0ECB                 BPL     _5
@@ -2396,7 +2395,7 @@ GAME:0ED8 _2:                                     ; CODE XREF: EB+2E↑j
 GAME:0ED8                 LDX     #7              ; Setup level: novice
 GAME:0EDA
 GAME:0EDA _1:                                     ; CODE XREF: EB+53↓j
-GAME:0EDA                 LDA     EAS0,X          ; Novice level variables
+GAME:0EDA                 LDA     EAS0,X          ; Base Difficulty for Novice
 GAME:0EDD                 STA     DIFF,X          ; Difficulty for the level
 GAME:0EE0                 DEX
 GAME:0EE1                 BPL     _1
@@ -2407,7 +2406,7 @@ GAME:0EE6 _6:                                     ; CODE XREF: EB+32↑j
 GAME:0EE6                 LDX     #6              ; Setup level: intermediate
 GAME:0EE8
 GAME:0EE8 _7:                                     ; CODE XREF: EB+61↓j
-GAME:0EE8                 LDA     EAS6,X          ; Intermediate level variables
+GAME:0EE8                 LDA     EAS6,X          ; Difficulty for a score below 6000 points or Intermediate
 GAME:0EEB                 STA     DIFF,X          ; Difficulty for the level
 GAME:0EEE                 DEX
 GAME:0EEF                 BPL     _7
@@ -2603,10 +2602,10 @@ GAME:1070                 JSR     FTNKGN
 GAME:1073                 JSR     M2GPOS
 GAME:1076                 JSR     FM2GN
 GAME:1079                 JSR     ALT__ALTITUDE_DISPLAY_FIXUP ; Fixup Altitude display to make sure that all digits are correct. This can be necessary, because the last digit can over/underflow when in/decremented somewhere else.
-GAME:107C                 JSR     GGNSND          ; Play gound sound, if enabled
+GAME:107C                 JSR     GGNSND          ; Play gun sound, if enabled
 GAME:107F                 JSR     COLRDM__COLOR_DAMAGE ; Flash background of control display to signal damage
 GAME:1082                 JSR     XFLSH           ; Flash the screen colors after e.g. a crash
-GAME:1085                 JSR     CKSC
+GAME:1085                 JSR     CKSC            ; Check and update difficulty variables depending on the progress/score
 GAME:1088                 JSR     CNSL__CONSOLE   ; Console for option selection and to start the game
 GAME:108B                 JSR     SHCOL
 GAME:108E                 JSR     TRGTP2          ; Flicker PCOLR2
@@ -3879,7 +3878,7 @@ GAME:173E                 STA     SC_STATUS_LINE.line_1.speed_digit_100
 GAME:1741                 STA     SC_STATUS_LINE.line_1.speed_digit_10
 GAME:1744                 STA     SC_STATUS_LINE.line_1.speed_digit_1
 GAME:1747                 LDA     #_SPACE|_C_BLACK
-GAME:1749                 STA     SC_STATUS_LINE.line_2.field_14 ; "*" character
+GAME:1749                 STA     SC_STATUS_LINE.line_2.enemy_below_warning ; red "*" character
 GAME:174C                 STA     AUDC1           ; Audio 1 Channel Control Register
 GAME:174F                 STA     AUDC4           ; Audio 4 Channel Control Register
 GAME:1752                 CPX     #0
@@ -5736,7 +5735,7 @@ GAME:20D4                 BNE     KU
 GAME:20D6                 INC     VAR_UNKNOWN_STATE
 GAME:20D9                 LDA     RANDOM          ; Random Number Generator
 GAME:20DC                 AND     #11111b
-GAME:20DE                 ORA     #$C
+GAME:20DE                 ORA     #1100b
 GAME:20E0                 ADC     #3
 GAME:20E2                 STA     byte_62F
 GAME:20E5                 RTS
@@ -6773,7 +6772,7 @@ GAME:2672                 BCC     L6
 GAME:2674                 JSR     XP2
 GAME:2677                 JSR     TRIGB
 GAME:267A                 LDA     VAR_UNKNOWN_STATE
-GAME:267D                 CMP     #UNKNOWNS_STATE_5
+GAME:267D                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:267F                 BCC     _1              ; => Return
 GAME:2681                 JSR     COLM02          ; If Player is at the same altitude as the enemey plane, check if that one got hit
 GAME:2684
@@ -6798,7 +6797,7 @@ GAME:268C                 CMP     #UNKNOWNS_STATE_3
 GAME:268E                 BEQ     OG
 GAME:2690                 CMP     #UNKNOWNS_STATE_4
 GAME:2692                 BEQ     OI
-GAME:2694                 CMP     #UNKNOWNS_STATE_5
+GAME:2694                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:2696                 BEQ     OJ
 GAME:2698                 JMP     OR
 GAME:269B ; ---------------------------------------------------------------------------
@@ -6968,7 +6967,7 @@ GAME:2791                 STA     P3+9,Y          ; Enemy (second color)
 GAME:2794                 DEY
 GAME:2795                 DEX
 GAME:2796                 BNE     OM
-GAME:2798                 JSR     AEL
+GAME:2798                 JSR     AEL             ; Remove enemy approaching warnings
 GAME:279B                 INC     VAR_UNKNOWN_STATE
 GAME:279E                 JMP     OR
 GAME:27A1 ; ---------------------------------------------------------------------------
@@ -7013,7 +7012,7 @@ GAME:27DA OQ:                                     ; CODE XREF: L6+131↑j
 GAME:27DA                                         ; L6+148↑j
 GAME:27DA                 DEC     ENEMY_Y_POS     ; Enemy Y position
 GAME:27DC                 LDA     VAR_UNKNOWN_STATE
-GAME:27DF                 CMP     #UNKNOWNS_STATE_5
+GAME:27DF                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:27E1                 BNE     OV
 GAME:27E3
 GAME:27E3 OR:                                     ; CODE XREF: L6+13↑j
@@ -7377,12 +7376,12 @@ GAME:299E
 GAME:299E RS:                                     ; CODE XREF: COLM20+7↑j
 GAME:299E                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
 GAME:29A0                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
-GAME:29A2                 SBC     DIFF.field_5    ; Difficulty for the level
+GAME:29A2                 SBC     DIFF.plane_height ; Difficulty for the level
 GAME:29A5                 STA     byte_658
 GAME:29A8                 LDA     byte_C2
 GAME:29AA                 SBC     ENEMY_Y_POS     ; Enemy Y position
 GAME:29AC                 SBC     byte_658
-GAME:29AF                 CMP     DIFF.field_6    ; Difficulty for the level
+GAME:29AF                 CMP     DIFF.plane_vertical_crash_distance ; Difficulty for the level
 GAME:29B2                 BCS     RU              ; => Return
 GAME:29B4
 GAME:29B4 DAMAGE:
@@ -7460,7 +7459,7 @@ GAME:2A19                                         ; L6+F2↑p
 GAME:2A19
 GAME:2A19 ; FUNCTION CHUNK AT GAME:2A54 SIZE 0000001C BYTES
 GAME:2A19
-GAME:2A19                 LDY     byte_656
+GAME:2A19                 LDY     ENEMY_BOMB_Y_POS
 GAME:2A1C                 BNE     RR
 GAME:2A1E                 LDA     byte_C2
 GAME:2A20                 SBC     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
@@ -7469,15 +7468,15 @@ GAME:2A24                 LDA     ENEMY_X_POS     ; Enemy X position
 GAME:2A26                 CMP     #170
 GAME:2A28                 BCS     RM              ; => Return
 GAME:2A2A                 LDA     RANDOM          ; Random Number Generator
-GAME:2A2D                 CMP     DIFF.field_2    ; Difficulty for the level
+GAME:2A2D                 CMP     DIFF.bomb_probability ; Difficulty for the level
 GAME:2A30                 BCS     RM              ; => Return
 GAME:2A32                 LDA     VAR_UNKNOWN_STATE
-GAME:2A35                 CMP     #UNKNOWNS_STATE_5
+GAME:2A35                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:2A37                 BNE     RM              ; => Return
 GAME:2A39                 LDA     ENEMY_X_POS     ; Enemy X position
 GAME:2A3B                 CLC
 GAME:2A3C                 ADC     #6
-GAME:2A3E                 STA     byte_657
+GAME:2A3E                 STA     ENEMY_BOMB_X_POS
 GAME:2A41                 STA     P2PF_HPOSM2     ; Missile 2 Horizontal Position / Player 2 to Playfield Collision
 GAME:2A44                 LDY     ENEMY_Y_POS     ; Enemy Y position
 GAME:2A46                 INY
@@ -7487,7 +7486,7 @@ GAME:2A47
 GAME:2A48 ; START OF FUNCTION CHUNK FOR TRIGF
 GAME:2A48
 GAME:2A48 RN:                                     ; CODE XREF: TRIGF+22↓j
-GAME:2A48                 STY     byte_656
+GAME:2A48                 STY     ENEMY_BOMB_Y_POS
 GAME:2A4B                 LDA     #110000b
 GAME:2A4D                 STA     MISSLE,Y
 GAME:2A50                 STA     PLANE_GUN_SOUND_TIMER ; Timer for the repeating gun sound from the plane
@@ -7502,12 +7501,12 @@ GAME:2A54
 GAME:2A54 RR:                                     ; CODE XREF: TRIGB+3↑j
 GAME:2A54                 CPY     #30
 GAME:2A56                 BCC     RO
-GAME:2A58                 LDA     byte_657
+GAME:2A58                 LDA     ENEMY_BOMB_X_POS
 GAME:2A5B                 CMP     #205
 GAME:2A5D                 BCS     RO
 GAME:2A5F                 CLC
 GAME:2A60                 ADC     #3
-GAME:2A62                 STA     byte_657
+GAME:2A62                 STA     ENEMY_BOMB_X_POS
 GAME:2A65                 STA     P2PF_HPOSM2     ; Missile 2 Horizontal Position / Player 2 to Playfield Collision
 GAME:2A68                 LDA     #0
 GAME:2A6A                 STA     MISSLE,Y
@@ -7518,7 +7517,7 @@ GAME:2A6F ; END OF FUNCTION CHUNK FOR TRIGB
 GAME:2A70 ; START OF FUNCTION CHUNK FOR TRIGF
 GAME:2A70
 GAME:2A70 RP:                                     ; CODE XREF: TRIGF+42↓j
-GAME:2A70                 STY     byte_656
+GAME:2A70                 STY     ENEMY_BOMB_Y_POS
 GAME:2A73                 LDA     #110000b
 GAME:2A75                 STA     MISSLE,Y
 GAME:2A78                 JSR     COLM20
@@ -7531,7 +7530,7 @@ GAME:2A7C
 GAME:2A7C RO:                                     ; CODE XREF: COLM20:DAMAGE↑p
 GAME:2A7C                                         ; TRIGB+3D↑j ...
 GAME:2A7C                 LDA     #0
-GAME:2A7E                 STA     byte_656
+GAME:2A7E                 STA     ENEMY_BOMB_Y_POS
 GAME:2A81                 STA     MISSLE,Y
 GAME:2A84                 LDX     #255
 GAME:2A86                 STX     PLANE_GUN_SOUND_TIMER ; Timer for the repeating gun sound from the plane
@@ -7550,17 +7549,17 @@ GAME:2A8A
 GAME:2A8A ; FUNCTION CHUNK AT GAME:2A48 SIZE 0000000C BYTES
 GAME:2A8A ; FUNCTION CHUNK AT GAME:2A70 SIZE 0000000C BYTES
 GAME:2A8A
-GAME:2A8A                 LDY     byte_656
+GAME:2A8A                 LDY     ENEMY_BOMB_Y_POS
 GAME:2A8D                 BNE     loc_2AAF
 GAME:2A8F                 LDA     byte_C2
 GAME:2A91                 CMP     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
 GAME:2A93                 BCS     SG              ; => Return
 GAME:2A95                 LDA     RANDOM          ; Random Number Generator
-GAME:2A98                 CMP     DIFF.field_2    ; Difficulty for the level
+GAME:2A98                 CMP     DIFF.bomb_probability ; Difficulty for the level
 GAME:2A9B                 BCS     SG              ; => Return
 GAME:2A9D                 LDA     ENEMY_X_POS     ; Enemy X position
 GAME:2A9F                 SBC     #2
-GAME:2AA1                 STA     byte_657
+GAME:2AA1                 STA     ENEMY_BOMB_X_POS
 GAME:2AA4                 STA     P2PF_HPOSM2     ; Missile 2 Horizontal Position / Player 2 to Playfield Collision
 GAME:2AA7                 LDA     ENEMY_Y_POS     ; Enemy Y position
 GAME:2AA9                 ADC     #11
@@ -7571,12 +7570,12 @@ GAME:2AAF
 GAME:2AAF loc_2AAF:                               ; CODE XREF: TRIGF+3↑j
 GAME:2AAF                 CPY     #185
 GAME:2AB1                 BCS     RO
-GAME:2AB3                 LDA     byte_657
+GAME:2AB3                 LDA     ENEMY_BOMB_X_POS
 GAME:2AB6                 CMP     #55
 GAME:2AB8                 BCC     RO
 GAME:2ABA                 CLC
 GAME:2ABB                 SBC     #2
-GAME:2ABD                 STA     byte_657
+GAME:2ABD                 STA     ENEMY_BOMB_X_POS
 GAME:2AC0                 STA     P2PF_HPOSM2     ; Missile 2 Horizontal Position / Player 2 to Playfield Collision
 GAME:2AC3                 LDA     #0
 GAME:2AC5                 STA     MISSLE,Y
@@ -8271,6 +8270,7 @@ GAME:2E3F
 GAME:2E42
 GAME:2E42 ; =============== S U B R O U T I N E =======================================
 GAME:2E42
+GAME:2E42 ; Show a warning, if an enemy is approaching above/below the placer
 GAME:2E42
 GAME:2E42 ASTRSK:                                 ; CODE XREF: LINE:_1↓p
 GAME:2E42                 LDY     SC_STATUS_LINE.line_1.speed_digit_100
@@ -8288,19 +8288,20 @@ GAME:2E56                 RTS                     ; => Return
 GAME:2E57 ; ---------------------------------------------------------------------------
 GAME:2E57
 GAME:2E57 _1:                                     ; CODE XREF: ASTRSK+F↑j
-GAME:2E57                 STY     SC_STATUS_LINE.line_2.field_14 ; "*" character
+GAME:2E57                 STY     SC_STATUS_LINE.line_2.enemy_below_warning ; red "*" character
 GAME:2E5A                 RTS
 GAME:2E5A ; End of function ASTRSK
 GAME:2E5A
 GAME:2E5B
 GAME:2E5B ; =============== S U B R O U T I N E =======================================
 GAME:2E5B
+GAME:2E5B ; Remove enemy approaching warnings
 GAME:2E5B
 GAME:2E5B AEL:                                    ; CODE XREF: L6+113↑p
 GAME:2E5B                                         ; LINE+4↓j
 GAME:2E5B                 LDA     #_SPACE|_C_BLACK
 GAME:2E5D                 STA     SC_STATUS_LINE.line_0.enemy_above_warning ; red "*" character
-GAME:2E60                 STA     SC_STATUS_LINE.line_2.field_14 ; "*" character
+GAME:2E60                 STA     SC_STATUS_LINE.line_2.enemy_below_warning ; red "*" character
 GAME:2E63                 JMP     UO
 GAME:2E63 ; End of function AEL
 GAME:2E63
@@ -8313,7 +8314,7 @@ GAME:2E66 LINE:                                   ; CODE XREF: PLFWD+DE↑p
 GAME:2E66                                         ; L6+1C↑p
 GAME:2E66                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
 GAME:2E68                 CMP     byte_C2
-GAME:2E6A                 BCC     AEL
+GAME:2E6A                 BCC     AEL             ; Remove enemy approaching warnings
 GAME:2E6C                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
 GAME:2E6E                 SBC     #7
 GAME:2E70                 STA     TEMP_B0
@@ -8325,7 +8326,7 @@ GAME:2E7A                 BCS     _1
 GAME:2E7C
 GAME:2E7C                 LDA     #_SPACE|_C_BLACK
 GAME:2E7E                 STA     SC_STATUS_LINE.line_0.enemy_above_warning ; red "*" character
-GAME:2E81                 STA     SC_STATUS_LINE.line_2.field_14 ; "*" character
+GAME:2E81                 STA     SC_STATUS_LINE.line_2.enemy_below_warning ; red "*" character
 GAME:2E84                 LDA     #COLOR_INTENSITY_2|COLOR_LIGHT_BLUE ; at same altitude as enemy plane - can now be destroyed
 GAME:2E86                 STA     DL_IRQ_BACKGROUND_COLOR ; Background color set in the DL IRQ
 GAME:2E89
@@ -8350,7 +8351,7 @@ GAME:2EAD                 RTS
 GAME:2EAE ; ---------------------------------------------------------------------------
 GAME:2EAE
 GAME:2EAE _1:                                     ; CODE XREF: LINE+14↑j
-GAME:2EAE                 JSR     ASTRSK
+GAME:2EAE                 JSR     ASTRSK          ; Show a warning, if an enemy is approaching above/below the placer
 GAME:2EAE ; End of function LINE
 GAME:2EAE
 GAME:2EB1
@@ -8433,7 +8434,7 @@ GAME:2F0F                 BNE     VB
 GAME:2F11                 JSR     DG
 GAME:2F14                 LDA     #100
 GAME:2F16                 STA     PCOLR2_FLASH_COUNTER ; Duration for PCOLR2 flash (enemy got hit)
-GAME:2F19                 LDY     byte_656
+GAME:2F19                 LDY     ENEMY_BOMB_Y_POS
 GAME:2F1C                 JSR     RO
 GAME:2F1F                 PLA
 GAME:2F20                 PLA
@@ -11812,7 +11813,7 @@ GAME:407F
 GAME:407F
 GAME:407F TRACK:                                  ; CODE XREF: BTURN+5↑p
 GAME:407F                 LDA     VAR_UNKNOWN_STATE
-GAME:4082                 CMP     #UNKNOWNS_STATE_5
+GAME:4082                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:4084                 BEQ     _1
 GAME:4086
 GAME:4086 _2:                                     ; CODE XREF: TRACK+B↓j
@@ -11987,8 +11988,8 @@ GAME:4180 ; Score: add 10
 GAME:4180
 GAME:4180 S10__SCORE_ADD_10:                      ; CODE XREF: Y7__HIT_RW_PLANE_TR+16↑p
 GAME:4180                                         ; X5+C↑p ...
-GAME:4180                 INC     SC_STATUS_LINE.line_2.score_digit_1
-GAME:4183                 LDA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:4180                 INC     SC_STATUS_LINE.line_2.score_digit_10
+GAME:4183                 LDA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:4186                 CMP     #KEYCODE_9+1
 GAME:4188                 BEQ     _1
 GAME:418A                 RTS
@@ -11996,7 +11997,7 @@ GAME:418B ; --------------------------------------------------------------------
 GAME:418B
 GAME:418B _1:                                     ; CODE XREF: S10__SCORE_ADD_10+8↑j
 GAME:418B                 LDA     #_0|_C_BLUE
-GAME:418D                 STA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:418D                 STA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:418D ; End of function S10__SCORE_ADD_10
 GAME:418D
 GAME:4190
@@ -12006,8 +12007,8 @@ GAME:4190 ; Score: add 100
 GAME:4190
 GAME:4190 S100__SCORE_ADD_100:                    ; CODE XREF: TURN+C2↑p
 GAME:4190                                         ; COLM02+23↑p ...
-GAME:4190                 INC     SC_STATUS_LINE.line_2.score_digit_10
-GAME:4193                 LDA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:4190                 INC     SC_STATUS_LINE.line_2.score_digit_100
+GAME:4193                 LDA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:4196                 CMP     #KEYCODE_9+1
 GAME:4198                 BEQ     _1
 GAME:419A                 RTS
@@ -12015,11 +12016,11 @@ GAME:419B ; --------------------------------------------------------------------
 GAME:419B
 GAME:419B _1:                                     ; CODE XREF: S100__SCORE_ADD_100+8↑j
 GAME:419B                 LDA     #_0|_C_BLUE
-GAME:419D                 STA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:419D                 STA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:41A0
 GAME:41A0 S1000__SCORE_ADD_1000:                  ; CODE XREF: S500__SCORE_ADD_500+14↓j
-GAME:41A0                 INC     SC_STATUS_LINE.line_2.score_digit_100
-GAME:41A3                 LDA     SC_STATUS_LINE.line_2.score_digit_100
+GAME:41A0                 INC     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:41A3                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
 GAME:41A6                 CMP     #KEYCODE_9+1
 GAME:41A8                 BEQ     S10000__SCORE_ADD_10000
 GAME:41AA                 RTS
@@ -12027,14 +12028,14 @@ GAME:41AB ; --------------------------------------------------------------------
 GAME:41AB
 GAME:41AB S10000__SCORE_ADD_10000:                ; CODE XREF: S100__SCORE_ADD_100+18↑j
 GAME:41AB                 LDA     #_0|_C_BLUE
-GAME:41AD                 STA     SC_STATUS_LINE.line_2.score_digit_100
-GAME:41B0                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:41AD                 STA     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:41B0                 LDA     SC_STATUS_LINE.line_2.score_digit_10000
 GAME:41B3                 BNE     _1_
 GAME:41B5                 LDA     #_0|_C_BLUE
-GAME:41B7                 STA     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:41B7                 STA     SC_STATUS_LINE.line_2.score_digit_10000
 GAME:41BA
 GAME:41BA _1_:                                    ; CODE XREF: S100__SCORE_ADD_100+23↑j
-GAME:41BA                 INC     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:41BA                 INC     SC_STATUS_LINE.line_2.score_digit_10000
 GAME:41BD                 RTS
 GAME:41BD ; End of function S100__SCORE_ADD_100
 GAME:41BD
@@ -12044,19 +12045,19 @@ GAME:41BE
 GAME:41BE ; Score: add 500
 GAME:41BE
 GAME:41BE S500__SCORE_ADD_500:                    ; CODE XREF: BMCPTL+33↓p
-GAME:41BE                 LDA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:41BE                 LDA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:41C1                 CLC
 GAME:41C2                 ADC     #5
 GAME:41C4                 CMP     #KEYCODE_9+1
 GAME:41C6                 BCS     _1
-GAME:41C8                 STA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:41C8                 STA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:41CB                 RTS
 GAME:41CC ; ---------------------------------------------------------------------------
 GAME:41CC
 GAME:41CC _1:                                     ; CODE XREF: S500__SCORE_ADD_500+8↑j
 GAME:41CC                 SEC
 GAME:41CD                 SBC     #10
-GAME:41CF                 STA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:41CF                 STA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:41D2                 JMP     S1000__SCORE_ADD_1000
 GAME:41D2 ; End of function S500__SCORE_ADD_500
 GAME:41D2
@@ -12067,12 +12068,12 @@ GAME:41D5 ; Score: add 50
 GAME:41D5
 GAME:41D5 S50__SCORE_ADD_50:                      ; CODE XREF: Y7__HIT_RW_PLANE_TR+19↑p
 GAME:41D5                                         ; X8__HIT_BOAT_TR+12↑p ...
-GAME:41D5                 LDA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:41D5                 LDA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:41D8                 CLC
 GAME:41D9                 ADC     #5
 GAME:41DB                 CMP     #KEYCODE_9+1
 GAME:41DD                 BCS     Z8
-GAME:41DF                 STA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:41DF                 STA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:41E2                 RTS
 GAME:41E3 ; ---------------------------------------------------------------------------
 GAME:41E3
@@ -12080,7 +12081,7 @@ GAME:41E3 Z8:                                     ; CODE XREF: S50__SCORE_ADD_50
 GAME:41E3                                         ; S30__SCORE_ADD_30+8↓j
 GAME:41E3                 SEC
 GAME:41E4                 SBC     #10
-GAME:41E6                 STA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:41E6                 STA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:41E9                 JMP     S100__SCORE_ADD_100 ; Score: add 100
 GAME:41E9 ; End of function S50__SCORE_ADD_50
 GAME:41E9
@@ -12091,12 +12092,12 @@ GAME:41EC ; Score: add 30
 GAME:41EC
 GAME:41EC S30__SCORE_ADD_30:                      ; CODE XREF: Z3+3A↓p
 GAME:41EC                                         ; Z3:_8↓p
-GAME:41EC                 LDA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:41EC                 LDA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:41EF                 CLC
 GAME:41F0                 ADC     #3
 GAME:41F2                 CMP     #KEYCODE_9+1
 GAME:41F4                 BCS     Z8
-GAME:41F6                 STA     SC_STATUS_LINE.line_2.score_digit_1
+GAME:41F6                 STA     SC_STATUS_LINE.line_2.score_digit_10
 GAME:41F9                 RTS
 GAME:41F9 ; End of function S30__SCORE_ADD_30
 GAME:41F9
@@ -12800,82 +12801,83 @@ GAME:4568
 GAME:4569
 GAME:4569 ; =============== S U B R O U T I N E =======================================
 GAME:4569
+GAME:4569 ; Check and update difficulty variables depending on the progress/score
 GAME:4569
 GAME:4569 CKSC:                                   ; CODE XREF: COMMON+66↑p
 GAME:4569                 LDY     MODE_LEVEL      ; Level: 0=Novice, 1=Intermediate, 2=Advanced
 GAME:456C                 CPY     #GAME_LEVEL_ADVANCED
-GAME:456E                 BEQ     locret_45A4     ; => Return
+GAME:456E                 BEQ     _2              ; => Return
 GAME:4570
 GAME:4570                 LDA     PRIMARY_TARGETS_HIT ; Number of primary targets hit
 GAME:4573                 LDX     #6
 GAME:4575                 CMP     REQUIRED_TARGETS ; Number of required primary targets to progress (8 or 9 by random)
-GAME:4578                 BCS     loc_459B
-GAME:457A                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
-GAME:457D                 BNE     loc_459B
-GAME:457F                 LDA     SC_STATUS_LINE.line_2.score_digit_100
+GAME:4578                 BCS     _1              ; => primary targets reached => max. difficulty
+GAME:457A                 LDA     SC_STATUS_LINE.line_2.score_digit_10000 ; => over 9999 points => max. difficulty
+GAME:457D                 BNE     _1              ; Difficulty for a score above 8999 points
+GAME:457F                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
 GAME:4582                 SEC
 GAME:4583                 SBC     #_0|_C_BLUE
 GAME:4585                 CLC
 GAME:4586                 ADC     PRIMARY_TARGETS_HIT ; Number of primary targets hit
-GAME:4589                 BEQ     locret_45A4     ; => Return
+GAME:4589                 BEQ     _2              ; => Return
 GAME:458B                 CMP     #3
-GAME:458D                 BCC     loc_45A5
+GAME:458D                 BCC     _3              ; Difficulty for a score below 3000 points
 GAME:458F                 CMP     #5
-GAME:4591                 BCC     loc_45B3
+GAME:4591                 BCC     _4              ; Difficulty for a score below 4000 points
 GAME:4593                 CMP     #7
-GAME:4595                 BCC     loc_45C1
+GAME:4595                 BCC     _5              ; Difficulty for a score below 6000 points
 GAME:4597                 CMP     #9
-GAME:4599                 BCC     loc_45CB
+GAME:4599                 BCC     _6              ; Difficulty for a score below 8000 points
 GAME:459B
-GAME:459B loc_459B:                               ; CODE XREF: CKSC+F↑j
+GAME:459B _1:                                     ; CODE XREF: CKSC+F↑j
 GAME:459B                                         ; CKSC+14↑j ...
-GAME:459B                 LDA     EAS9,X          ; Advanced level variables
+GAME:459B                 LDA     EAS9,X          ; Difficulty for a score above 8999 points
 GAME:459E                 STA     DIFF,X          ; Difficulty for the level
 GAME:45A1                 DEX
-GAME:45A2                 BPL     loc_459B
+GAME:45A2                 BPL     _1              ; Difficulty for a score above 8999 points
 GAME:45A4
-GAME:45A4 locret_45A4:                            ; CODE XREF: CKSC+5↑j
+GAME:45A4 _2:                                     ; CODE XREF: CKSC+5↑j
 GAME:45A4                                         ; CKSC+20↑j ...
 GAME:45A4                 RTS                     ; => Return
 GAME:45A5 ; ---------------------------------------------------------------------------
 GAME:45A5
-GAME:45A5 loc_45A5:                               ; CODE XREF: CKSC+24↑j
+GAME:45A5 _3:                                     ; CODE XREF: CKSC+24↑j
 GAME:45A5                                         ; CKSC+47↓j
-GAME:45A5                 CPY     #0
-GAME:45A7                 BNE     locret_45A4     ; => Return
-GAME:45A9                 LDA     EAS2,X          ; Wind triggered, if RANDOM < value
+GAME:45A5                 CPY     #0              ; Difficulty for a score below 3000 points
+GAME:45A7                 BNE     _2              ; => Return
+GAME:45A9                 LDA     EAS2,X          ; Difficulty for a score below 2000 points
 GAME:45AC                 STA     DIFF,X          ; Difficulty for the level
 GAME:45AF                 DEX
-GAME:45B0                 BPL     loc_45A5
+GAME:45B0                 BPL     _3              ; Difficulty for a score below 3000 points
 GAME:45B2                 RTS
 GAME:45B3 ; ---------------------------------------------------------------------------
 GAME:45B3
-GAME:45B3 loc_45B3:                               ; CODE XREF: CKSC+28↑j
+GAME:45B3 _4:                                     ; CODE XREF: CKSC+28↑j
 GAME:45B3                                         ; CKSC+55↓j
-GAME:45B3                 CPY     #0
-GAME:45B5                 BNE     locret_45A4     ; => Return
-GAME:45B7                 LDA     EAS4,X          ; Wind triggered, if RANDOM < value
+GAME:45B3                 CPY     #0              ; Difficulty for a score below 4000 points
+GAME:45B5                 BNE     _2              ; => Return
+GAME:45B7                 LDA     EAS4,X          ; Difficulty for a score below 4000 points
 GAME:45BA                 STA     DIFF,X          ; Difficulty for the level
 GAME:45BD                 DEX
-GAME:45BE                 BPL     loc_45B3
+GAME:45BE                 BPL     _4              ; Difficulty for a score below 4000 points
 GAME:45C0                 RTS
 GAME:45C1 ; ---------------------------------------------------------------------------
 GAME:45C1
-GAME:45C1 loc_45C1:                               ; CODE XREF: CKSC+2C↑j
+GAME:45C1 _5:                                     ; CODE XREF: CKSC+2C↑j
 GAME:45C1                                         ; CKSC+5F↓j
-GAME:45C1                 LDA     EAS6,X          ; Intermediate level variables
+GAME:45C1                 LDA     EAS6,X          ; Difficulty for a score below 6000 points
 GAME:45C4                 STA     DIFF,X          ; Difficulty for the level
 GAME:45C7                 DEX
-GAME:45C8                 BPL     loc_45C1
+GAME:45C8                 BPL     _5              ; Difficulty for a score below 6000 points
 GAME:45CA                 RTS
 GAME:45CB ; ---------------------------------------------------------------------------
 GAME:45CB
-GAME:45CB loc_45CB:                               ; CODE XREF: CKSC+30↑j
+GAME:45CB _6:                                     ; CODE XREF: CKSC+30↑j
 GAME:45CB                                         ; CKSC+69↓j
-GAME:45CB                 LDA     EAS8,X          ; Wind triggered, if RANDOM < value
+GAME:45CB                 LDA     EAS8,X          ; Difficulty for a score below 8000 points
 GAME:45CE                 STA     DIFF,X          ; Difficulty for the level
 GAME:45D1                 DEX
-GAME:45D2                 BPL     loc_45CB
+GAME:45D2                 BPL     _6              ; Difficulty for a score below 8000 points
 GAME:45D4                 RTS
 GAME:45D4 ; End of function CKSC
 GAME:45D4
@@ -13320,7 +13322,7 @@ GAME:4838                 LDA     ENEMY_X_POS     ; Enemy X position
 GAME:483A                 CMP     #170
 GAME:483C                 BCS     _3              ; => Return
 GAME:483E                 LDA     VAR_UNKNOWN_STATE
-GAME:4841                 CMP     #UNKNOWNS_STATE_5
+GAME:4841                 CMP     #UNKNOWNS_STATE_SHOOT_BOMB
 GAME:4843                 BNE     _3              ; => Return
 GAME:4845                 LDA     TRIGGER_COUNT   ; Increment with each button/trigger press
 GAME:4848                 CMP     #2
@@ -13803,7 +13805,7 @@ GAME:4A72
 GAME:4A73
 GAME:4A73 ; =============== S U B R O U T I N E =======================================
 GAME:4A73
-GAME:4A73 ; Play gound sound, if enabled
+GAME:4A73 ; Play gun sound, if enabled
 GAME:4A73
 GAME:4A73 GGNSND:                                 ; CODE XREF: COMMON+5D↑p
 GAME:4A73                 LDA     AUDIO4_GUN_SND_COUNTER
@@ -13892,11 +13894,11 @@ GAME:4AD3 ; Read score from screen memory digits (range: 000-199 in tenths)
 GAME:4AD3
 GAME:4AD3 CLCSC__READ_SCORE_VALUE:                ; CODE XREF: RNK__DISPLAY_RANK+E↓p
 GAME:4AD3                                         ; RNKX__PRINT_RANK_CLASS+11↓p
-GAME:4AD3                 LDA     SC_STATUS_LINE.line_2.score_digit_10
+GAME:4AD3                 LDA     SC_STATUS_LINE.line_2.score_digit_100
 GAME:4AD6                 SEC
 GAME:4AD7                 SBC     #_0|_C_BLUE     ; Tenth-digit of the screen
 GAME:4AD9                 STA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
-GAME:4ADB                 LDA     SC_STATUS_LINE.line_2.score_digit_100
+GAME:4ADB                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
 GAME:4ADE                 SBC     #_0|_C_BLUE     ; Hundreds-digit of the screen
 GAME:4AE0                 ASL     A
 GAME:4AE1                 STA     TEMP_B0
@@ -13906,7 +13908,7 @@ GAME:4AE5                 CLC
 GAME:4AE6                 ADC     TEMP_B0
 GAME:4AE8                 ADC     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
 GAME:4AEA                 STA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
-GAME:4AEC                 LDA     SC_STATUS_LINE.line_2.score_digit_1000
+GAME:4AEC                 LDA     SC_STATUS_LINE.line_2.score_digit_10000
 GAME:4AEF                 BEQ     _3              ; Thousands-digit of the screen
 GAME:4AF1                 CMP     #_1|_C_BLUE
 GAME:4AF3                 BEQ     _2
@@ -14076,12 +14078,12 @@ GAME:4BBF
 GAME:4BBF _1:                                     ; CODE XREF: BLMX__PRINT_BLUE_MAX+B↓j
 GAME:4BBF                 LDA     DEMI-1,X        ; "BLUE MAX" / "  BY BOB POLIN" / "    (C)SYNSOFT 1983"
 GAME:4BC2                 ORA     #_SPACE|_C_LBLUE
-GAME:4BC4                 STA     SC_STATUS_LINE.line_1.field_6,X
+GAME:4BC4                 STA     SC_STATUS_LINE.line_1.char_COLLON,X
 GAME:4BC7                 DEX
 GAME:4BC8                 BNE     _1
-GAME:4BCA                 STX     SC_STATUS_LINE.line_1.field_6
-GAME:4BCD                 STX     SC_STATUS_LINE.line_1.field_5
-GAME:4BD0                 STX     SC_STATUS_LINE.line_1.field_4
+GAME:4BCA                 STX     SC_STATUS_LINE.line_1.char_COLLON
+GAME:4BCD                 STX     SC_STATUS_LINE.line_1.char_D
+GAME:4BD0                 STX     SC_STATUS_LINE.line_1.char_P
 GAME:4BD3                 RTS
 GAME:4BD3 ; End of function BLMX__PRINT_BLUE_MAX
 GAME:4BD3
@@ -14113,7 +14115,7 @@ GAME:4BE2                 LDX     #14
 GAME:4BE4
 GAME:4BE4 _1:                                     ; CODE XREF: SQLD__PRINT_SQUADRON_LEADER+9↓j
 GAME:4BE4                 LDA     SQLDI,X         ; "SQUADRON LEADER"
-GAME:4BE7                 STA     SC_STATUS_LINE.line_1.field_4,X
+GAME:4BE7                 STA     SC_STATUS_LINE.line_1.char_P,X
 GAME:4BEA                 DEX
 GAME:4BEB                 BPL     _1
 GAME:4BED                 RTS
@@ -14166,7 +14168,7 @@ GAME:4C20                 LDX     #15
 GAME:4C22
 GAME:4C22 _2:                                     ; CODE XREF: RNKX__PRINT_RANK_CLASS+2D↓j
 GAME:4C22                 LDA     KMKZI,X         ; "KAMIKAZE TRAINEE"
-GAME:4C25                 STA     SC_STATUS_LINE.line_1.field_4,X
+GAME:4C25                 STA     SC_STATUS_LINE.line_1.char_P,X
 GAME:4C28                 DEX
 GAME:4C29                 BPL     _2
 GAME:4C2B                 RTS
@@ -14255,7 +14257,7 @@ GAME:4C98                 LDX     #13             ; Print "RUNWAY SWEEPER" to sc
 GAME:4C9A
 GAME:4C9A _1_1:                                   ; CODE XREF: RNKX__PRINT_RANK_CLASS+A5↓j
 GAME:4C9A                 LDA     RSWI,X          ; "RUNWAY SWEEPER"
-GAME:4C9D                 STA     SC_STATUS_LINE.line_1.field_4,X
+GAME:4C9D                 STA     SC_STATUS_LINE.line_1.char_P,X
 GAME:4CA0                 DEX
 GAME:4CA1                 BPL     _1_1
 GAME:4CA3                 RTS
@@ -14267,7 +14269,7 @@ GAME:4CA4                 LDX     #11             ; Print "FLYING TIGER" to scre
 GAME:4CA6
 GAME:4CA6 _1_2:                                   ; CODE XREF: RNKX__PRINT_RANK_CLASS+B1↓j
 GAME:4CA6                 LDA     FTGI,X          ; "FLYING TIGER"
-GAME:4CA9                 STA     SC_STATUS_LINE.line_1.field_5,X
+GAME:4CA9                 STA     SC_STATUS_LINE.line_1.char_D,X
 GAME:4CAC                 DEX
 GAME:4CAD                 BPL     _1_2
 GAME:4CAF                 RTS
@@ -14446,6 +14448,7 @@ GAME:4D68                 LDA     #>DLIR1__DLIST_DURING_MENU ; Display List IRQ 
 GAME:4D6A                 STA     VDSLST          ; DISPLAY LIST NMI VECTOR
 GAME:4D6D                 LDA     #<DLIR1__DLIST_DURING_MENU ; Display List IRQ during the menu
 GAME:4D6F                 STA     VDSLST+1        ; DISPLAY LIST NMI VECTOR
+GAME:4D72
 GAME:4D72                 LDA     #COLOR_INTENSITY_0|COLOR_RED_PINK_PURPLE
 GAME:4D74                 STA     COLOR4
 GAME:4D77                 LDA     #COLOR_INTENSITY_14|COLOR_GRAY
@@ -15681,24 +15684,27 @@ DATA:54F2                 .BYTE   111011b
 DATA:54F2                 .BYTE 11010101b
 DATA:54F2                 .BYTE 10100010b
 DATA:5504
-DATA:5504 EAS0:           DIFF_STRUCT <  4,   2, $10, $14, $28,   9, $12>
+DATA:5504 EAS0:           DIFFICULTY_STRUCT <  4,   2, $10, $14, $28,   9, $12>
 DATA:5504                                         ; DATA XREF: EB:_1↑r
-DATA:5504                                         ; Novice level variables
+DATA:5504                                         ; Base Difficulty for Novice
 DATA:550B                 .BYTE $A5
-DATA:550C EAS2:           DIFF_STRUCT <  4,   4, $40, $19, $32,  $A, $14>
+DATA:550C EAS2:           DIFFICULTY_STRUCT <  4,   4, $40, $19, $32,  $A, $14>
 DATA:550C                                         ; DATA XREF: CKSC+40↑r
-DATA:5513 EAS4:           DIFF_STRUCT <  5,   6, $80, $1E, $3C,  $B, $16>
+DATA:550C                                         ; Difficulty for a score below 2000 points
+DATA:5513 EAS4:           DIFFICULTY_STRUCT <  5,   6, $80, $1E, $3C,  $B, $16>
 DATA:5513                                         ; DATA XREF: CKSC+4E↑r
-DATA:551A EAS6:           DIFF_STRUCT <  6,   8, $B0, $23, $46,  $C, $18>
+DATA:5513                                         ; Difficulty for a score below 4000 points
+DATA:551A EAS6:           DIFFICULTY_STRUCT <  6,   8, $B0, $23, $46,  $C, $18>
 DATA:551A                                         ; DATA XREF: EB:_7↑r
-DATA:551A                                         ; CKSC:loc_45C1↑r
-DATA:551A                                         ; Intermediate level variables
-DATA:5521 EAS8:           DIFF_STRUCT <  6,   8, $E0, $28, $50,  $D, $1A>
-DATA:5521                                         ; DATA XREF: CKSC:loc_45CB↑r
-DATA:5528 EAS9:           DIFF_STRUCT <  7,  $C, $FF, $30, $60,  $E, $1C>
+DATA:551A                                         ; CKSC:_5↑r
+DATA:551A                                         ; Difficulty for a score below 6000 points or Intermediate
+DATA:5521 EAS8:           DIFFICULTY_STRUCT <  6,   8, $E0, $28, $50,  $D, $1A>
+DATA:5521                                         ; DATA XREF: CKSC:_6↑r
+DATA:5521                                         ; Difficulty for a score below 8000 points
+DATA:5528 EAS9:           DIFFICULTY_STRUCT <  7,  $C, $FF, $30, $60,  $E, $1C>
 DATA:5528                                         ; DATA XREF: EB:_5↑r
-DATA:5528                                         ; CKSC:loc_459B↑r
-DATA:5528                                         ; Advanced level variables
+DATA:5528                                         ; CKSC:_1↑r
+DATA:5528                                         ; Difficulty for a score above 8999 points or Advanced
 DATA:552F
 DATA:552F ADI:            .BYTE $51,$51,$51,$51,$40, $C,$34,  0
 DATA:552F                                         ; DATA XREF: DFGN:_1↑r

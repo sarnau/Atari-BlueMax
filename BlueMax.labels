@@ -465,6 +465,14 @@
           Name: BUILDING_X_START_POS
         },
         {
+          Address: 0x0656
+          Name: ENEMY_BOMB_Y_POS
+        },
+        {
+          Address: 0x0657
+          Name: ENEMY_BOMB_X_POS
+        },
+        {
           Address: 0x0659
           Name: WORKING_PARTS
           Comment: # of working part (4): fuel, bomb, maneuverabiity, gun
@@ -732,6 +740,7 @@
         {
           Address: 0x078b
           Name: DISPLAY_LIST
+          Comment: DL_BLK8
         },
         {
           Address: 0x0798
@@ -4933,29 +4942,32 @@
         {
           Address: 0x5504
           Name: EAS0
-          Comment: Novice level variables
+          Comment: Base Difficulty for Novice
         },
         {
           Address: 0x550c
           Name: EAS2
+          Comment: Difficulty for a score below 2000 points
         },
         {
           Address: 0x5513
           Name: EAS4
+          Comment: Difficulty for a score below 4000 points
         },
         {
           Address: 0x551a
           Name: EAS6
-          Comment: Intermediate level variables
+          Comment: Difficulty for a score below 6000 points or Intermediate
         },
         {
           Address: 0x5521
           Name: EAS8
+          Comment: Difficulty for a score below 8000 points
         },
         {
           Address: 0x5528
           Name: EAS9
-          Comment: Advanced level variables
+          Comment: Difficulty for a score above 8999 points or Advanced
         },
         {
           Address: 0x552f
