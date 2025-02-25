@@ -788,8 +788,8 @@ L_ROAD_DIAG_LEFT_A: = $7D               ; XREF: DATA:ROADR/s
                                         ; DATA:AAE/s
 L_SOLID_WALL:    = $7E                  ; XREF: CLEAR+10/s AEI+7/s ...
 L_BUILDING_ROOF_TOP_LEFT: = $7F         ; XREF: QN+98/s DATA:AAA/s
-L_C_0:           = 0                    ; XREF: DRAW+7/s DRAW+8C/s ...
-L_C_1:           = $80                  ; XREF: DRBT__DRAW_BOAT+35/s
+L_PF2:           = 0                    ; XREF: DRAW+7/s DRAW+8C/s ...
+L_PF3:           = $80                  ; XREF: DRBT__DRAW_BOAT+35/s
                                         ; DRBT__DRAW_BOAT+3A/s ...
 
 ; ---------------------------------------------------------------------------
@@ -1049,7 +1049,7 @@ STRIG0_COPY:    .BYTE 0 ; (uninited)    ; DATA XREF: RESET+237↓w
 DISABLE_MAP_GENERATION:.BYTE 0 ; (uninited) ; DATA XREF: RESET+61↓w
                                         ; RESET:B↓r ...
                                         ; !=0 Disable generation of new map data. Reset during VBL scrolling
-SCROLL_OFFSET_F1:.BYTE 0 ; (uninited)   ; DATA XREF: RESET+65↓w
+SCROLL_HSCROL_SHADOW:.BYTE 0 ; (uninited) ; DATA XREF: RESET+65↓w
                                         ; RESET+73↓r ...
                                         ; HSCROL and VSCROL shadow during gameplay
 VBL_NEXT_ROW_PTR:.BYTE 0,0 ; (uninited) ; DATA XREF: VBIR__DEFERRED_VBL_DRAW+64↓w
@@ -1364,7 +1364,7 @@ VAR_UNKNOWN_STATE:.BYTE 0 ; (uninited)  ; DATA XREF: DRP23+C↓r
 AUDC1_SHADOW:   .BYTE 0 ; (uninited)    ; DATA XREF: EB+91↓w KMKZ+A↓r ...
 AUDIO2_DROPSND_FREQ:.BYTE 0 ; (uninited) ; DATA XREF: RESET+1B3↓w
                                         ; PC+22↓w ...
-byte_643:       .BYTE 0 ; (uninited)    ; DATA XREF: RESET+274↓w
+SND_ROAR_COUNTER:.BYTE 0 ; (uninited)   ; DATA XREF: RESET+274↓w
                                         ; KMKZ↓w ...
 AUDIO3_SOUND_COUNTER:.BYTE 0 ; (uninited) ; DATA XREF: RESET+1EC↓w
                                         ; XSND↓r ...
@@ -1477,7 +1477,7 @@ byte_675:       .BYTE 0 ; (uninited)    ; DATA XREF: BLDG+93↓w
 byte_676:       .BYTE 0 ; (uninited)    ; DATA XREF: QS+9↓w QN+18↓r ...
 byte_677:       .BYTE 0 ; (uninited)    ; DATA XREF: EB+13E↓w B7:WY↓w ...
                 ; 0 .BYTE uninited & unexplored
-DIRECTION_A:    .BYTE 0 ; (uninited)    ; DATA XREF: RESET+A↓w
+JOYSTICK_DIR_BACKWARD:.BYTE 0 ; (uninited) ; DATA XREF: RESET+A↓w
                                         ; JOYST+26↓r ...
 byte_67A:       .BYTE 0 ; (uninited)    ; DATA XREF: BLDGL:ZH↓r
                                         ; BLDGL+6C↓w ...
@@ -1485,7 +1485,7 @@ byte_67B:       .BYTE 0 ; (uninited)    ; DATA XREF: ZE+12↓w YI↓r ...
 byte_67C:       .BYTE 0 ; (uninited)    ; DATA XREF: ZE+9F↓r ZE+F6↓r ...
 byte_67D:       .BYTE 0 ; (uninited)    ; DATA XREF: B7+67↓w ZE↓r ...
                 .BYTE 0,0 ; (uninited)
-DIRECTION_B:    .BYTE 0 ; (uninited)    ; DATA XREF: RESET+F↓w
+JOYSTICK_DIR_FORWARD:.BYTE 0 ; (uninited) ; DATA XREF: RESET+F↓w
                                         ; JOYST+11↓r ...
 byte_681:       .BYTE 0,0,0 ; (uninited) ; DATA XREF: BLDGL:ZG↓r
                                         ; BLDGL+5B↓w ...
@@ -1573,10 +1573,12 @@ TEMP_NEXT_ROW_PTR:.BYTE 0,0 ; (uninited) ; DATA XREF: XPLSN+1E↓w
                                         ; DNXP+7↓r ...
 TEMP_PREVIOUS_ROW_PTR:.BYTE 0,0 ; (uninited) ; DATA XREF: XPLSN+2A↓w
                                         ; UPXP↓r ...
-byte_6B6:       .BYTE 0 ; (uninited)    ; DATA XREF: CKLAND+10↓w
+LANDING_CHARACTER:.BYTE 0 ; (uninited)  ; DATA XREF: CKLAND+10↓w
                                         ; CKLAND+4D↓w ...
-byte_6B7:       .BYTE 0 ; (uninited)    ; DATA XREF: FLSH:_1↓w
+                                        ; "L" or "R" character for landing
+LANDING_FLASH_COUNTER:.BYTE 0 ; (uninited) ; DATA XREF: FLSH:_1↓w
                                         ; FLSH+C↓r
+                                        ; Counter to control the speed of the flashing "L" for landing
                 ; 0 .BYTE uninited & unexplored
 COLOR_FLASHING: .BYTE 0 ; (uninited)    ; DATA XREF: RESET+1CD↓w
                                         ; TURN+84↓w ...
@@ -1840,9 +1842,9 @@ RESET:                                  ; CODE XREF: BOOT_CONTINUE+4B↑j
                 STA     CASINI+1        ; CASSETTE INIT LOCATION
 
                 LDA     #JOYSTICK_DOWN
-                STA     DIRECTION_A
+                STA     JOYSTICK_DIR_BACKWARD
                 LDA     #JOYSTICK_UP
-                STA     DIRECTION_B
+                STA     JOYSTICK_DIR_FORWARD
                 LDX     #95
 
 X0:                                     ; CODE XREF: RESET+1B↓j
@@ -1890,7 +1892,7 @@ A_:                                     ; CODE XREF: RESET+5D↓j
                 LDA     #<SC_TOP_PLAYSCREEN
                 STA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
                 LDA     #>SC_TOP_PLAYSCREEN
-                STA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                STA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 LDY     #69
 
 B:                                      ; CODE XREF: RESET+7F↓j
@@ -1899,10 +1901,10 @@ B:                                      ; CODE XREF: RESET+7F↓j
                 SBC     #65             ; each line has 65 bytes RAM
                 STA     DL,Y
                 STA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
-                LDA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                LDA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 SBC     #0
                 STA     DL+1,Y
-                STA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                STA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 DEY
                 DEY
                 DEY
@@ -1919,9 +1921,9 @@ B:                                      ; CODE XREF: RESET+7F↓j
 
                 LDA     DEMO_IS_ACTIVE  ; 0:normal game play, 1=demo mode active
                 BEQ     AFZ
-                LDA     #<SC_STATUS_TITLE
+                LDA     #<SC_STATUS_TITLE ; 3 text lines during attract mode
                 STA     DL+74
-                LDA     #>SC_STATUS_TITLE
+                LDA     #>SC_STATUS_TITLE ; 3 text lines during attract mode
                 BNE     AGA
 
 AFZ:                                    ; CODE XREF: RESET+98↑j
@@ -1987,7 +1989,7 @@ EU:                                     ; CODE XREF: RESET+114↓j
                 STA     byte_FE
                 LDA     RANDOM          ; Random Number Generator
                 AND     #$1F
-                ADC     #$F
+                ADC     #15
                 STA     RIVER_BOAT_NEXT_COUNTER ; how many rows, till the next boat might show up? (15 = default, 16-31 after the first one)
                 LDA     #$40 ; '@'
                 STA     CH              ; GLOBAL VARIABLE FOR KEYBOARD
@@ -2113,7 +2115,7 @@ L5:                                     ; CODE XREF: RESET+159↓j
                 LDA     #DIR_RIVER_LEFT
                 STA     byte_637
                 STA     MAP_RIVER_DIR   ; Direction of the river
-                STA     byte_643
+                STA     SND_ROAR_COUNTER
                 JSR     DFHNGR          ; Define Hangar – restore the font characters for the hangar
                 LDA     #<EB
                 STA     EE__JMP_PATCH+1
@@ -2124,7 +2126,7 @@ L5:                                     ; CODE XREF: RESET+159↓j
                 STA     RIVER_BRIDGE_ROW
 
 EA:                                     ; CODE XREF: EB+B↓j
-                JMP     J
+                JMP     J               ; Move lines in the DL list down and left
 ; End of function RESET
 
 
@@ -2134,16 +2136,18 @@ EA:                                     ; CODE XREF: EB+B↓j
 EB:                                     ; DATA XREF: RESET+27A↑t
                                         ; RESET+27F↑t
                 JSR     DRAW            ; Draw river/gras on the map
-                JSR     MB
+                JSR     MB              ; Draw the runway at the beginning of the game, when plane is waiting
                 JSR     DRTR__DRAW_TREE ; Draw trees into the map. Needs to be the last draw function to be called.
+
                 DEC     RIVER_BRIDGE_ROW
                 BNE     EA
+
                 LDA     #>XSND          ; Deferred interrupt for sound
                 STA     EE__JMP_PATCH+2
                 LDA     #<XSND          ; Deferred interrupt for sound
                 STA     EE__JMP_PATCH+1
                 LDA     #3
-                STA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                STA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 LDA     #255
                 STA     byte_B6
                 LDA     #130
@@ -2214,6 +2218,7 @@ AFX:                                    ; CODE XREF: EB+6B↑j
                 LDA     #AUDIO_CONTROL_VOL_1|AUDIO_CONTROL_DIST_6
                 STA     AUDC1_SHADOW
                 STA     AUDC1           ; Audio 1 Channel Control Register
+
                 LDX     #150
 
 CW:                                     ; CODE XREF: EB+B3↓j
@@ -2224,7 +2229,7 @@ CW:                                     ; CODE XREF: EB+B3↓j
                 JSR     FUEL            ; Use fuel, update the display as well
                 JSR     DFLSH__DEMO_FLASH_BLUEMAX ; Demo: Pulsate "BLUE MAX" in blue
                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
-                JSR     ROAR
+                JSR     ROAR            ; Update plane engine sound
                 LDX     RIVER_BRIDGE_ROW
                 DEX
                 BNE     CW
@@ -2237,11 +2242,13 @@ MZ:                                     ; CODE XREF: REFUEL:_1↓j
                 LDA     #$C0
                 STA     NMIEN           ; $80: DL IRQ enabled, $40: VBL IRQ enabled
                 STA     HITCLR          ; write to HITCLR clears all of the collision registers.
+
                 LDA     #_0|_C_ORANGE
                 STA     SC_STATUS_LINE.line_1.speed_digit_100
                 STA     SC_STATUS_LINE.line_1.speed_digit_10
                 STA     SC_STATUS_LINE.line_1.speed_digit_1
                 JSR     TAKOF__TAKEOFF_LOOP ; Loop to manage takeoff
+
                 LDA     byte_6CF
                 STA     QUAKE_ANIMATION_COUNTER ; Quake, shake via the scroll register, timer
                 CMP     #220
@@ -2364,7 +2371,7 @@ NQ:                                     ; CODE XREF: COMMON+22↑j
 NR:                                     ; CODE XREF: COMMON+27↑j
                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
                 JSR     XPLSN
-                JSR     ROAR
+                JSR     ROAR            ; Update plane engine sound
                 JSR     TRIG__TRIGGER_MACHINE_GUN ; Trigger machine gun
                 JSR     BOMB            ; Trigger bomb drop
                 JSR     GUNSND          ; Gun sound from the plane
@@ -2433,11 +2440,11 @@ SCROL:                                  ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+7�
                 DEC     VBL_DRAW_DOWN_COUNTER ; VBL: 30Hz down counter whenever the level scrolls a pixel
 
 JR:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+F↑j
-                LDA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
-                BEQ     J
+                LDA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
+                BEQ     J               ; Move lines in the DL list down and left
                 SEC
                 SBC     #1
-                STA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                STA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 STA     HSCROL          ; Horizontal Scroll Register
                 ASL     A
                 STA     VSCROL          ; Vertical Scroll Register
@@ -2446,7 +2453,7 @@ JR:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+F�
 
 J:                                      ; CODE XREF: RESET:EA↑j
                                         ; VBIR__DEFERRED_VBL_DRAW+16↑j
-                LDA     byte_FE
+                LDA     byte_FE         ; Move lines in the DL list down and left
                 BEQ     GN
                 DEC     byte_FE
                 BNE     GN
@@ -2460,8 +2467,9 @@ GN:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+29�
                                         ; VBIR__DEFERRED_VBL_DRAW+2D↑j
                 LDA     #0
                 STA     DISABLE_MAP_GENERATION ; !=0 Disable generation of new map data. Reset during VBL scrolling
+
                 LDA     #3
-                STA     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                STA     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 STA     HSCROL          ; Horizontal Scroll Register
                 ASL     A
                 STA     VSCROL          ; Vertical Scroll Register
@@ -2473,6 +2481,7 @@ GN:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+29�
                 LDA     BOTM+1          ; Last byte of the screen level memory
                 SBC     #0
                 STA     BUF+1
+
                 LDA     BOTSCREN
                 STA     BOTM            ; Last byte of the screen level memory
                 SEC
@@ -2484,6 +2493,7 @@ GN:                                     ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+29�
                 PLP
                 SBC     #0
                 STA     VBL_NEXT_ROW_PTR+1 ; new row to be draw. Set inside the VBL.
+
                 LDY     #66
 
 K:                                      ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+88↓j
@@ -2498,6 +2508,7 @@ K:                                      ; CODE XREF: VBIR__DEFERRED_VBL_DRAW+88�
                 DEY
                 DEY
                 BNE     K
+
                 LDA     TOP             ; First byte of the screen level memory
                 CLC
                 ADC     #1
@@ -2528,7 +2539,7 @@ DRAW:                                   ; CODE XREF: EB↑p SRT↑p ...
 
 M:                                      ; CODE XREF: DRAW+2↑j
                 LDY     #64
-                LDA     #L_GRAS|L_C_0
+                LDA     #L_GRAS|L_PF2
 
 N:                                      ; CODE XREF: DRAW+C↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; Fill whole line with gras
@@ -2617,13 +2628,13 @@ P:                                      ; CODE XREF: DRAW+81↑j
                 LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #65
                 BCS     AF
-                LDA     #L_WATER_GRAS_A|L_C_0
+                LDA     #L_WATER_GRAS_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AF:                                     ; CODE XREF: DRAW+8A↑j
                 DEY
                 BEQ     U
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
                 LDX     #19
 
 Q:                                      ; CODE XREF: DRAW+A1↓j
@@ -2638,7 +2649,7 @@ AG:                                     ; CODE XREF: DRAW+99↑j
                 BNE     Q
                 CPY     #65
                 BCS     AH
-                LDA     #L_CLIFF_WATER_A|L_C_0
+                LDA     #L_CLIFF_WATER_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AH:                                     ; CODE XREF: DRAW+A5↑j
@@ -2648,17 +2659,17 @@ AH:                                     ; CODE XREF: DRAW+A5↑j
                 BCS     U
                 LDA     byte_606
                 BEQ     BN
-                LDA     #L_CLIFF_GRAS_A|L_C_0
+                LDA     #L_CLIFF_GRAS_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
 BN:                                     ; CODE XREF: DRAW+B5↑j
-                LDA     #L_CLIFF_GRAS_B2|L_C_0
+                LDA     #L_CLIFF_GRAS_B2|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     U
-                LDA     #L_CLIFF_GRAS_B1|L_C_0
+                LDA     #L_CLIFF_GRAS_B1|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 U:                                      ; CODE XREF: DRAW+91↑j
@@ -2685,13 +2696,13 @@ R:                                      ; CODE XREF: DRAW+D0↑j
                 BEQ     W
                 CPY     #65
                 BCS     AL
-                LDA     #L_WATER_GRAS_C2|L_C_0
+                LDA     #L_WATER_GRAS_C2|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AL:                                     ; CODE XREF: DRAW+E6↑j
                 DEY
                 BEQ     V
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
                 LDX     #19
 
 X_:                                     ; CODE XREF: DRAW+FD↓j
@@ -2709,7 +2720,7 @@ AM:                                     ; CODE XREF: DRAW+F5↑j
                 LDA     MAP_RIVER_LENGTH ; Length of a certain river feature to continue (straight, turn left/right)
                 CMP     #1
                 BEQ     AZ
-                LDA     #L_GRAS_CLIFF_WATER_A|L_C_0
+                LDA     #L_GRAS_CLIFF_WATER_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 V:                                      ; CODE XREF: DRAW+ED↑j
@@ -2719,7 +2730,7 @@ V:                                      ; CODE XREF: DRAW+ED↑j
 ; ---------------------------------------------------------------------------
 
 AZ:                                     ; CODE XREF: DRAW+108↑j
-                LDA     #L_GRAS_CLIFF_WATER_B|L_C_0
+                LDA     #L_GRAS_CLIFF_WATER_B|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
@@ -2734,13 +2745,13 @@ S:                                      ; CODE XREF: DRAW+D9↑j
                 LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #65
                 BCS     BB
-                LDA     #L_WATER_GRAS_C1|L_C_0
+                LDA     #L_WATER_GRAS_C1|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 BB:                                     ; CODE XREF: DRAW+123↑j
                 DEY
                 BEQ     V
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
                 LDX     #19
 
 T:                                      ; CODE XREF: DRAW+13A↓j
@@ -2755,7 +2766,7 @@ AJ:                                     ; CODE XREF: DRAW+132↑j
                 BNE     T
                 CPY     #65
                 BCS     AK
-                LDA     #L_CLIFF_WATER_C|L_C_0
+                LDA     #L_CLIFF_WATER_C|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AK:                                     ; CODE XREF: DRAW+13E↑j
@@ -2766,7 +2777,7 @@ AK:                                     ; CODE XREF: DRAW+13E↑j
                 LDA     byte_603
                 CMP     #$FF
                 BNE     Y_
-                LDA     #L_CLIFF_GRAS_A|L_C_0
+                LDA     #L_CLIFF_GRAS_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEC     byte_603
                 LDA     #$FF
@@ -2775,7 +2786,7 @@ AK:                                     ; CODE XREF: DRAW+13E↑j
 ; ---------------------------------------------------------------------------
 
 Y_:                                     ; CODE XREF: DRAW+150↑j
-                LDA     #L_GRASS_CLIFF_D|L_C_0
+                LDA     #L_GRASS_CLIFF_D|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 TL:                                     ; CODE XREF: DRAW+149↑j
@@ -2808,7 +2819,7 @@ Z:                                      ; CODE XREF: DRAW+167↑j
 AA:                                     ; CODE XREF: DRAW+178↑j
                 CPY     #65
                 BCS     AB
-                LDA     #L_WATER_GRAS_B2|L_C_0
+                LDA     #L_WATER_GRAS_B2|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AB:                                     ; CODE XREF: DRAW+18B↑j
@@ -2816,14 +2827,14 @@ AB:                                     ; CODE XREF: DRAW+18B↑j
                 BEQ     AI
                 CPY     #65
                 BCS     AC
-                LDA     #L_WATER_GRAS_B1|L_C_0
+                LDA     #L_WATER_GRAS_B1|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AC:                                     ; CODE XREF: DRAW+196↑j
                 DEY
                 BEQ     AI
                 LDX     #18
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
 
 AD:                                     ; CODE XREF: DRAW+1AD↓j
                 CPY     #65
@@ -2837,7 +2848,7 @@ AE:                                     ; CODE XREF: DRAW+1A5↑j
                 BNE     AD
                 CPY     #65
                 BCS     AN
-                LDA     #L_CLIFF_WATER_B2|L_C_0
+                LDA     #L_CLIFF_WATER_B2|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AN:                                     ; CODE XREF: DRAW+1B1↑j
@@ -2845,7 +2856,7 @@ AN:                                     ; CODE XREF: DRAW+1B1↑j
                 BEQ     AI
                 CPY     #65
                 BCS     AO
-                LDA     #L_CLIFF_WATER_B1|L_C_0
+                LDA     #L_CLIFF_WATER_B1|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 AO:                                     ; CODE XREF: DRAW+1BC↑j
@@ -2856,7 +2867,7 @@ AO:                                     ; CODE XREF: DRAW+1BC↑j
                 LDA     byte_603
                 CMP     #$FF
                 BNE     AP
-                LDA     #L_CLIFF_GRAS_A|L_C_0
+                LDA     #L_CLIFF_GRAS_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEC     byte_603
                 LDA     #$FF
@@ -2869,11 +2880,11 @@ AI:                                     ; CODE XREF: DRAW+192↑j
 ; ---------------------------------------------------------------------------
 
 AP:                                     ; CODE XREF: DRAW+1CE↑j
-                LDA     #L_CLIFF_GRAS_B2|L_C_0
+                LDA     #L_CLIFF_GRAS_B2|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 BEQ     AI
-                LDA     #L_CLIFF_GRAS_B1|L_C_0
+                LDA     #L_CLIFF_GRAS_B1|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function DRAW
@@ -3144,7 +3155,7 @@ JOYST:                                  ; CODE XREF: COMMON:NQ↑p
 SE:                                     ; CODE XREF: JOYST+3↑j
                                         ; JOYST+C↑j
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
-                CMP     DIRECTION_B
+                CMP     JOYSTICK_DIR_FORWARD
                 BEQ     UP              ; Move Plane up, if possible
                 CMP     #JOYSTICK_RIGHT
                 BEQ     PI
@@ -3154,7 +3165,7 @@ SE:                                     ; CODE XREF: JOYST+3↑j
                 BEQ     CO
                 CMP     #JOYSTICK_DOWN_LEFT
                 BEQ     PM
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BEQ     KK              ; Move Plane down, if possible
                 CMP     #JOYSTICK_UP_LEFT
                 BEQ     CE
@@ -3333,7 +3344,7 @@ CC:                                     ; CODE XREF: CD+21↓j
                 BNE     CC
                 INC     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
-                CMP     DIRECTION_B
+                CMP     JOYSTICK_DIR_FORWARD
                 BEQ     MO
                 JMP     DN
 ; ---------------------------------------------------------------------------
@@ -3767,13 +3778,13 @@ EO:                                     ; CODE XREF: DRTR__DRAW_TREE+37↓j
                 LDA     RANDOM          ; Set random top-right part of a tree at Y
                 LSR     A
                 BCC     EQ
-                LDA     #L_TREE_TOP_RIGHT_A|L_C_0
+                LDA     #L_TREE_TOP_RIGHT_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     ER              ; Set random top-left part of a tree at Y-1
 ; ---------------------------------------------------------------------------
 
 EQ:                                     ; CODE XREF: DRTR__DRAW_TREE+17↑j
-                LDA     #L_TREE_TOP_RIGHT_B|L_C_0
+                LDA     #L_TREE_TOP_RIGHT_B|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 ER:                                     ; CODE XREF: DRTR__DRAW_TREE+1D↑j
@@ -3781,13 +3792,13 @@ ER:                                     ; CODE XREF: DRTR__DRAW_TREE+1D↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     ES
-                LDA     #L_TREE_TOP_LEFT_B|L_C_0
+                LDA     #L_TREE_TOP_LEFT_B|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EP
 ; ---------------------------------------------------------------------------
 
 ES:                                     ; CODE XREF: DRTR__DRAW_TREE+29↑j
-                LDA     #L_TREE_TOP_LEFT_A|L_C_0
+                LDA     #L_TREE_TOP_LEFT_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EP:                                     ; CODE XREF: DRTR__DRAW_TREE+C↑j
@@ -3849,7 +3860,7 @@ EF:                                     ; CODE XREF: DRTR__DRAW_TREE+72↓j
 EG:                                     ; CODE XREF: DRTR__DRAW_TREE+77↑j
                                         ; DRTR__DRAW_TREE+7C↑j
                 TAY                     ; Found a position A
-                LDA     #L_GRAS|L_C_0
+                LDA     #L_GRAS|L_PF2
                 CMP     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 BNE     EF              ; search for next spot for a tree
                 INY
@@ -3862,13 +3873,13 @@ EG:                                     ; CODE XREF: DRTR__DRAW_TREE+77↑j
                 LDA     RANDOM          ; Set random bottom-right part of a tree at Y
                 LSR     A
                 BCC     EH
-                LDA     #L_TREE_BOTTOM_RIGHT_A|L_C_0
+                LDA     #L_TREE_BOTTOM_RIGHT_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EI              ; Set random bottom-left part of a tree at Y-1
 ; ---------------------------------------------------------------------------
 
 EH:                                     ; CODE XREF: DRTR__DRAW_TREE+96↑j
-                LDA     #L_TREE_BOTTOM_RIGHT_B|L_C_0
+                LDA     #L_TREE_BOTTOM_RIGHT_B|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EI:                                     ; CODE XREF: DRTR__DRAW_TREE+9C↑j
@@ -3876,13 +3887,13 @@ EI:                                     ; CODE XREF: DRTR__DRAW_TREE+9C↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     EJ
-                LDA     #L_TREE_BOTTOM_LEFT_A|L_C_0
+                LDA     #L_TREE_BOTTOM_LEFT_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     EK
 ; ---------------------------------------------------------------------------
 
 EJ:                                     ; CODE XREF: DRTR__DRAW_TREE+A8↑j
-                LDA     #L_TREE_BOTTOM_LEFT_B|L_C_0
+                LDA     #L_TREE_BOTTOM_LEFT_B|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 EK:                                     ; CODE XREF: DRTR__DRAW_TREE+AE↑j
@@ -4009,10 +4020,10 @@ GY:                                     ; CODE XREF: DRBT__DRAW_BOAT+17↑j
                 CLC
                 ADC     #6
                 JSR     A2
-                LDA     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
+                LDA     #L_FIXED_BOAT_BOTTOM_RIGHT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
+                LDA     #L_FIXED_BOAT_BOTTOM_LEFT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 STY     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
                 STA     byte_BF
@@ -4022,10 +4033,10 @@ GY:                                     ; CODE XREF: DRBT__DRAW_BOAT+17↑j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 HB:                                     ; CODE XREF: DRBT__DRAW_BOAT+8↑j
-                LDA     #L_FIXED_BOAT_TOP_RIGHT|L_C_1 ; Draw 2nd row of the river boat (the top one)
+                LDA     #L_FIXED_BOAT_TOP_RIGHT|L_PF3 ; Draw 2nd row of the river boat (the top one)
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_FIXED_BOAT_TOP_LEFT|L_C_1
+                LDA     #L_FIXED_BOAT_TOP_LEFT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #0
                 STA     RIVER_BOAT_ROW_FLAG ; !=0 boat top row drawn, ==0 boat bottom row drawn
@@ -4063,7 +4074,7 @@ HH:                                     ; CODE XREF: TRIG__TRIGGER_MACHINE_GUN+6
 HF:                                     ; CODE XREF: TRIG__TRIGGER_MACHINE_GUN+B↑j
                                         ; TRIG__TRIGGER_MACHINE_GUN+12↑j
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BEQ     HH              ; => Return
                 LDA     byte_620
                 BPL     HH              ; => Return
@@ -4161,7 +4172,7 @@ HJ:                                     ; CODE XREF: BOMB+F↑j
 
 _1:                                     ; CODE XREF: BOMB+22↑j
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BNE     HK              ; => Return
                 LDA     SC_STATUS_LINE.line_0.bomb_digit_1
                 CMP     #_0|_C_BLUE
@@ -4324,31 +4335,31 @@ ADB:
                 LDA     (CURRENT_TILE_ROW_PTR),Y
                 JSR     CKCHAR          ; Check if a tile based target in A was hit
                 LDA     (CURRENT_TILE_ROW_PTR),Y
-                CMP     #L_BRIDGE_G|L_C_1
+                CMP     #L_BRIDGE_G|L_PF3
                 BEQ     HW
-                CMP     #L_CLIFF_WATER_C|L_C_0
+                CMP     #L_CLIFF_WATER_C|L_PF2
                 BEQ     HT
-                CMP     #L_CLIFF_WATER_B2|L_C_0
+                CMP     #L_CLIFF_WATER_B2|L_PF2
                 BEQ     HT
-                CMP     #L_CLIFF_WATER_A|L_C_0
+                CMP     #L_CLIFF_WATER_A|L_PF2
                 BEQ     HT
-                CMP     #L_WATER_GRAS_B1|L_C_0
+                CMP     #L_WATER_GRAS_B1|L_PF2
                 BEQ     HU
-                CMP     #L_WATER_GRAS_C2|L_C_0
+                CMP     #L_WATER_GRAS_C2|L_PF2
                 BEQ     HU
-                CMP     #L_CLIFF_GRAS_A|L_C_0
+                CMP     #L_CLIFF_GRAS_A|L_PF2
                 BEQ     HX
-                CMP     #L_CLIFF_GRAS_B2|L_C_0
+                CMP     #L_CLIFF_GRAS_B2|L_PF2
                 BEQ     HX
-                CMP     #L_CLIFF_WATER_B1|L_C_0
+                CMP     #L_CLIFF_WATER_B1|L_PF2
                 BEQ     HX
-                CMP     #L_GRAS_CLIFF_WATER_B|L_C_0
+                CMP     #L_GRAS_CLIFF_WATER_B|L_PF2
                 BEQ     HX
-                CMP     #L_GRASS_CLIFF_D|L_C_0
+                CMP     #L_GRASS_CLIFF_D|L_PF2
                 BEQ     HX
-                CMP     #L_GRAS_CLIFF_WATER_A|L_C_0
+                CMP     #L_GRAS_CLIFF_WATER_A|L_PF2
                 BEQ     HX
-                CMP     #L_WATER|L_C_0
+                CMP     #L_WATER|L_PF2
                 BEQ     HW
 
 U3:                                     ; CODE XREF: Z3+87↓j
@@ -4356,7 +4367,7 @@ U3:                                     ; CODE XREF: Z3+87↓j
                 STA     VAR_EXPLOSION_TARGET
 
 HY:                                     ; CODE XREF: HU+B↓j
-                LDA     #L_EXPLOSION_GRAS_1|L_C_0
+                LDA     #L_EXPLOSION_GRAS_1|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
 
 Z7:                                     ; CODE XREF: W1+3↓j Z3+91↓j ...
@@ -4379,7 +4390,7 @@ AFE:                                    ; CODE XREF: AFF+8↓j
 
 HW:                                     ; CODE XREF: XPLSN+3C↑j
                                         ; XPLSN+6C↑j ...
-                LDA     #L_EXPLOSION_WATER_1|L_C_0
+                LDA     #L_EXPLOSION_WATER_1|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 LDA     #18
                 STA     EXPLOSION_TILE_ANIMATION
@@ -4528,13 +4539,13 @@ HQ:                                     ; CODE XREF: ID+3↑j
 ; ---------------------------------------------------------------------------
 
 HO:                                     ; CODE XREF: ID+37↑j
-                LDA     #L_EXPLOSION_GRAS_4|L_C_0
+                LDA     #L_EXPLOSION_GRAS_4|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 LDA     VAR_EXPLOSION_TARGET
                 CMP     #EXPLOSITION_TARGET_2
                 BEQ     HZ              ; => Return
                 JSR     HR              ; Stop bombing, if cliff edge would be hit => return
-                LDA     #L_EXPLOSION_GRAS_2|L_C_0
+                LDA     #L_EXPLOSION_GRAS_2|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
 
 HZ:                                     ; CODE XREF: ID+65↑j ID+78↓j
@@ -4542,13 +4553,13 @@ HZ:                                     ; CODE XREF: ID+65↑j ID+78↓j
 ; ---------------------------------------------------------------------------
 
 HP:                                     ; CODE XREF: ID+39↑j
-                LDA     #L_EXPLOSION_GRAS_1|L_C_0
+                LDA     #L_EXPLOSION_GRAS_1|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 LDA     VAR_EXPLOSION_TARGET
                 CMP     #EXPLOSITION_TARGET_2
                 BEQ     HZ              ; => Return
                 JSR     HR              ; Stop bombing, if cliff edge would be hit => return
-                LDA     #L_EXPLOSION_GRAS_3|L_C_0
+                LDA     #L_EXPLOSION_GRAS_3|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 RTS
 ; End of function ID
@@ -4561,7 +4572,7 @@ HP:                                     ; CODE XREF: ID+39↑j
 HR:                                     ; CODE XREF: ID+67↑p ID+7A↑p
                 INY
                 LDA     (CURRENT_TILE_ROW_PTR),Y
-                CMP     #L_GRAS_CLIFF_WATER_A|L_C_0
+                CMP     #L_GRAS_CLIFF_WATER_A|L_PF2
                 BEQ     HS
                 RTS
 ; ---------------------------------------------------------------------------
@@ -4589,19 +4600,19 @@ HV:                                     ; CODE XREF: AFD↑j
 ; ---------------------------------------------------------------------------
 
 IA:                                     ; CODE XREF: HV+A↑j
-                LDA     #L_EXPLOSION_WATER_2|L_C_0
+                LDA     #L_EXPLOSION_WATER_2|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 RTS
 ; ---------------------------------------------------------------------------
 
 IB:                                     ; CODE XREF: HV+C↑j
-                LDA     #L_EXPLOSION_WATER_1|L_C_0
+                LDA     #L_EXPLOSION_WATER_1|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 RTS
 ; ---------------------------------------------------------------------------
 
 IC:                                     ; CODE XREF: HV+5↑j
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 RTS
 ; End of function HV
@@ -4617,15 +4628,15 @@ V8:                                     ; CODE XREF: ID:V7↑j
                 LSR     A
                 LSR     A
                 BCC     _1
-                LDA     #L_EXPLOSION_WATER_5|L_C_1
+                LDA     #L_EXPLOSION_WATER_5|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
-                LDA     #L_EXPLOSION_WATER_6|L_C_1
+                LDA     #L_EXPLOSION_WATER_6|L_PF3
                 INY
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
                 DEY
-                LDA     #L_EXPLOSION_WATER_5|L_C_1
+                LDA     #L_EXPLOSION_WATER_5|L_PF3
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
 
 _2:                                     ; => Return
@@ -4633,15 +4644,15 @@ _2:                                     ; => Return
 ; ---------------------------------------------------------------------------
 
 _1:                                     ; CODE XREF: V8+6↑j
-                LDA     #L_EXPLOSION_WATER_3|L_C_1
+                LDA     #L_EXPLOSION_WATER_3|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
-                LDA     #L_EXPLOSION_WATER_4|L_C_1
+                LDA     #L_EXPLOSION_WATER_4|L_PF3
                 INY
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
                 DEY
-                LDA     #L_EXPLOSION_WATER_3|L_C_1
+                LDA     #L_EXPLOSION_WATER_3|L_PF3
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
                 RTS
 ; End of function V8
@@ -4655,7 +4666,7 @@ QUAKE:                                  ; CODE XREF: COMMON+19↑p
                 LDA     QUAKE_ANIMATION_COUNTER ; Quake, shake via the scroll register, timer
                 BMI     _1              ; => Return
                 DEC     QUAKE_ANIMATION_COUNTER ; Quake, shake via the scroll register, timer
-                LDX     SCROLL_OFFSET_F1 ; HSCROL and VSCROL shadow during gameplay
+                LDX     SCROLL_HSCROL_SHADOW ; HSCROL and VSCROL shadow during gameplay
                 BEQ     _1              ; => Return
                 DEX
                 STX     HSCROL          ; Horizontal Scroll Register
@@ -5136,7 +5147,7 @@ A2:                                     ; CODE XREF: DRBT__DRAW_BOAT+32↑p
 FR:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+4A↑j
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_617
-                LDA     #L_RUNWAY_CENTER|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_PF3
 
 FW:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+BE↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5145,7 +5156,7 @@ FW:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+BE↓j
                 BNE     FW
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_618
-                LDA     #L_BRIDGE_M|L_C_1
+                LDA     #L_BRIDGE_M|L_PF3
 
 FY:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D0↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5154,7 +5165,7 @@ FY:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D0↓j
                 BEQ     FX
                 DEX
                 BNE     FY
-                LDA     #L_BRIDGE_N|L_C_1
+                LDA     #L_BRIDGE_N|L_PF3
 
 FZ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+D9↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5175,7 +5186,7 @@ GA:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+E7↓j
                 BNE     GA
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_619
-                LDA     #L_RUNWAY_CENTER|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_PF3
 
 GB:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+F5↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5184,7 +5195,7 @@ GB:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+F5↓j
                 BNE     GB
                 JSR     RND7            ; Return random number 3 or 7 into register X
                 STX     byte_61A
-                LDA     #L_BRIDGE_M|L_C_1
+                LDA     #L_BRIDGE_M|L_PF3
 
 GC:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+105↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5192,7 +5203,7 @@ GC:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+105↓j
                 BEQ     GD              ; => Return
                 DEX
                 BNE     GC
-                LDA     #L_BRIDGE_N|L_C_1
+                LDA     #L_BRIDGE_N|L_PF3
 
 GE:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+10C↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5208,7 +5219,7 @@ FQ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:FO↑j
                 CLC
                 ADC     byte_617
                 TAY
-                LDA     #L_BRIDGE_K|L_C_1
+                LDA     #L_BRIDGE_K|L_PF3
                 LDX     byte_618
 
 GF:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+122↓j
@@ -5218,7 +5229,7 @@ GF:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+122↓j
                 BEQ     GR
                 DEX
                 BNE     GF
-                LDA     #L_BRIDGE_L|L_C_1
+                LDA     #L_BRIDGE_L|L_PF3
 
 GG:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+12B↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5241,7 +5252,7 @@ GH:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+138↓j
                 SBC     byte_619
                 TAY
                 LDX     byte_61A
-                LDA     #L_BRIDGE_K|L_C_1
+                LDA     #L_BRIDGE_K|L_PF3
 
 GJ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+14B↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5249,7 +5260,7 @@ GJ:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+14B↓j
                 BEQ     GI              ; => Return
                 DEX
                 BNE     GJ
-                LDA     #L_BRIDGE_L|L_C_1
+                LDA     #L_BRIDGE_L|L_PF3
 
 GK:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+152↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5263,7 +5274,7 @@ GI:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+148↑j
 GS:                                     ; CODE XREF: DRBR__DRAW_BRIDGE:FP↑j
                                         ; DRBR__DRAW_BRIDGE+16E↓j ...
                 LDY     #64
-                LDA     #L_RUNWAY_CENTER|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_PF3
 
 GT:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+15C↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5272,7 +5283,7 @@ GT:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+15C↓j
                 LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 DEY
                 LDX     #20
-                LDA     #L_SKYSCRAPER_B_5B|L_C_1
+                LDA     #L_SKYSCRAPER_B_5B|L_PF3
 
 T4:                                     ; CODE XREF: DRBR__DRAW_BRIDGE+169↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -5419,9 +5430,9 @@ GRAV__APPLY_GRAVITY:                    ; CODE XREF: COMMON+42↑p
                 LDA     MODE_GRAVITY_FLAG ; Gravity? 0=No, 1=Yes
                 BEQ     FK              ; => Return
                 LDA     STICK0          ; JOYSTICK 0 RAM CELL
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BEQ     FK              ; => Return
-                CMP     DIRECTION_B
+                CMP     JOYSTICK_DIR_FORWARD
                 BNE     HD
 
 FK:                                     ; CODE XREF: GRAV__APPLY_GRAVITY+3↑j
@@ -5753,18 +5764,18 @@ loc_220E:                               ; CODE XREF: PLFWD+180↑j
 
 
 KMKZ:                                   ; CODE XREF: COMMON+24↑p
-                DEC     byte_643
+                DEC     SND_ROAR_COUNTER
                 BNE     PP
                 LDA     #20
-                STA     byte_643
+                STA     SND_ROAR_COUNTER
                 LDA     AUDC1_SHADOW
                 CMP     #AUDIO_CONTROL_DIST_6
                 BEQ     PP
-                JSR     PO
+                JSR     PO              ; Decrement AUDC1 engine sound
 
 PP:                                     ; CODE XREF: KMKZ+3↑j KMKZ+F↑j
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BNE     NC
                 JSR     KK              ; Move Plane down, if possible
 
@@ -5842,7 +5853,7 @@ MR:                                     ; CODE XREF: FUEL+26↑j
                 LDX     #0
                 STX     IS_DEMO_MODE    ; 0=Demo Mode active
                 INX
-                STX     byte_643
+                STX     SND_ROAR_COUNTER
                 RTS
 ; ---------------------------------------------------------------------------
 
@@ -5931,7 +5942,7 @@ NA:                                     ; CODE XREF: REFUEL+78↓j
                 JSR     PROP            ; Update the propeller graphics for rotation
                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
                 JSR     PBMB
-                JSR     ROAR
+                JSR     ROAR            ; Update plane engine sound
                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
                 DEC     RIVER_BRIDGE_ROW
                 BNE     NA
@@ -6108,7 +6119,7 @@ MF:                                     ; CODE XREF: CKLAND+3↑j
 MG:                                     ; CODE XREF: CKLAND+8↑j
                 LDY     #_L|_C_LBLUE
                 STY     SC_STATUS_LINE.line_2.landing_flag ; "L" character
-                STY     byte_6B6
+                STY     LANDING_CHARACTER ; "L" or "R" character for landing
 
 LAND:                                   ; CODE XREF: CKLAND+3B↓j
                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
@@ -6138,7 +6149,7 @@ MK:                                     ; CODE XREF: CKLAND+31↑j
                 STA     SC_STATUS_LINE.line_1.wind_factor_warning ; "W" character
                 STA     WIND_DURATION   ; Duration during which Wind is in effect
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
-                STA     byte_6B6
+                STA     LANDING_CHARACTER ; "L" or "R" character for landing
 
                 LDA     P1PF_HPOSM1     ; Missile 1 Horizontal Position / Player 1 to Playfield Collision
                 CMP     #1000b          ; Player hit the playfield
@@ -6172,7 +6183,7 @@ GROUND:                                 ; CODE XREF: STOPL:_1↑j
                 LDA     AUDC1_SHADOW
                 CMP     #AUDIO_CONTROL_VOL_2|AUDIO_CONTROL_DIST_6
                 BCC     GROUND
-                JSR     PO
+                JSR     PO              ; Decrement AUDC1 engine sound
                 JMP     GROUND
 ; END OF FUNCTION CHUNK FOR STOPL
 
@@ -6191,7 +6202,8 @@ TAKOF__TAKEOFF_LOOP:                    ; CODE XREF: EB+D1↑p
                 JSR     FUEL            ; Use fuel, update the display as well
                 JSR     CNSL__CONSOLE   ; Console for option selection and to start the game
                 JSR     DTKOF__DEMO_TAKE_OFF ; Demo: plane take-off at speed 100
-                JSR     ROAR
+                JSR     ROAR            ; Update plane engine sound
+
                 LDA     SC_STATUS_LINE.line_1.speed_digit_1
                 CMP     #_D|_C_BLUE
                 BCS     _8
@@ -6201,6 +6213,7 @@ TAKOF__TAKEOFF_LOOP:                    ; CODE XREF: EB+D1↑p
 
 _8:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+23↑j
                 JSR     TKOSPD__INCREMENT_SPEED ; Increment Speed
+
                 LDA     byte_6B0
                 BNE     _1
                 LDA     SC_STATUS_LINE.line_1.speed_digit_100
@@ -6217,7 +6230,7 @@ _1:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+28↑j
                 LDA     STICK0          ; JOYSTICK 0 RAM CELL
                 CMP     #JOYSTICK_NOTHING
                 BEQ     DI
-                CMP     DIRECTION_B
+                CMP     JOYSTICK_DIR_FORWARD
                 BEQ     DJ
 
 DK:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+5A↓j
@@ -6227,15 +6240,15 @@ DK:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+5A↓j
 
 DI:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+4B↑j
                 LDA     P0PF_HPOSM0     ; Player Machine Gun Bullet (Horizontal Position)
-                AND     #1
-                BNE     DK
+                AND     #1              ; Plane collision with environment?
+                BNE     DK              ; Plane was crashed
                 JMP     TAKOF__TAKEOFF_LOOP ; Loop to manage takeoff
 ; ---------------------------------------------------------------------------
 
 DJ:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+50↑j
                 LDA     SC_STATUS_LINE.line_1.speed_digit_100
-                CMP     #_D|_C_BLUE
-                BCS     DK
+                CMP     #_D|_C_BLUE     ; Plane speed too low?
+                BCS     DK              ; Plane was crashed
                 RTS
 ; End of function TAKOF__TAKEOFF_LOOP
 
@@ -6370,28 +6383,31 @@ QD:                                     ; CODE XREF: GUNSND+19↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Update plane engine sound
 
 ROAR:                                   ; CODE XREF: EB+AD↑p
                                         ; COMMON+33↑p ...
 
 ; FUNCTION CHUNK AT 25CC SIZE 0000001B BYTES
 
-                DEC     byte_643
+                DEC     SND_ROAR_COUNTER
                 BNE     PQ              ; => Return
                 LDA     #20
-                STA     byte_643
+                STA     SND_ROAR_COUNTER
+
                 LDA     STICK0_COPY     ; JOYSTICK 0 copy
                 CMP     #JOYSTICK_UP_RIGHT
-                BEQ     PR
+                BEQ     PR              ; Increment AUDC1 till max value
                 LDA     AUDC1_SHADOW
                 CMP     #AUDIO_CONTROL_VOL_4|AUDIO_CONTROL_DIST_6
                 BEQ     PQ              ; => Return
-                BCC     PS
+                BCC     PS              ; Increment AUDC1 engine sound
 ; End of function ROAR
 
 
 ; =============== S U B R O U T I N E =======================================
 
+; Decrement AUDC1 engine sound
 
 PO:                                     ; CODE XREF: KMKZ+11↑p
                                         ; STOPL+F3↑p
@@ -6405,7 +6421,7 @@ PO:                                     ; CODE XREF: KMKZ+11↑p
 ; START OF FUNCTION CHUNK FOR ROAR
 
 PS:                                     ; CODE XREF: ROAR+17↑j
-                INC     AUDC1_SHADOW
+                INC     AUDC1_SHADOW    ; Increment AUDC1 engine sound
                 LDA     AUDC1_SHADOW
                 STA     AUDC1           ; Audio 1 Channel Control Register
 
@@ -6415,7 +6431,7 @@ PQ:                                     ; CODE XREF: ROAR+3↑j
 ; ---------------------------------------------------------------------------
 
 PR:                                     ; CODE XREF: ROAR+E↑j
-                LDA     AUDC1_SHADOW
+                LDA     AUDC1_SHADOW    ; Increment AUDC1 till max value
                 CMP     #AUDIO_CONTROL_VOL_8|AUDIO_CONTROL_DIST_6
                 BEQ     PQ              ; => Return
                 INC     AUDC1_SHADOW
@@ -6944,7 +6960,7 @@ QS:                                     ; CODE XREF: DRTNK+36↑j
 ; ---------------------------------------------------------------------------
 
 QT:                                     ; CODE XREF: QS+10↑j
-                LDA     #L_GRAS|L_C_1
+                LDA     #L_GRAS|L_PF3
                 STA     BUILDING_COLOR_OFFSET
                 RTS
 ; End of function QS
@@ -6983,17 +6999,17 @@ QW:                                     ; CODE XREF: QN+3C↓j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     QU
-                LDA     #L_TANK_LEFT_A|L_C_1
+                LDA     #L_TANK_LEFT_A|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
-                LDA     #L_TANK_RIGHT_A|L_C_1
+                LDA     #L_TANK_RIGHT_A|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 JMP     QV
 ; ---------------------------------------------------------------------------
 
 QU:                                     ; CODE XREF: QN+28↑j
                 INY
-                LDA     #L_GRAS_BEFORE_BUILDING|L_C_0
+                LDA     #L_GRAS_BEFORE_BUILDING|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 QV:                                     ; CODE XREF: QN+33↑j
@@ -7028,7 +7044,7 @@ QY__BUILDING_ROW_2:                     ; CODE XREF: QN+12↑j
 
 RD:                                     ; CODE XREF: QN+91↓j
                 LDX     #5
-                LDA     #L_BUILDING_WINDOW|L_C_0
+                LDA     #L_BUILDING_WINDOW|L_PF2
                 CLC
                 ADC     BUILDING_COLOR_OFFSET
 
@@ -7040,7 +7056,7 @@ QZ:                                     ; CODE XREF: QN+64↓j
                 PLA
                 CMP     #1
                 BEQ     RA
-                LDA     #L_BUILDING_WALL_A|L_C_0
+                LDA     #L_BUILDING_WALL_A|L_PF2
                 CLC
                 ADC     BUILDING_COLOR_OFFSET
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -7048,7 +7064,7 @@ QZ:                                     ; CODE XREF: QN+64↓j
                 LDA     #11
                 STA     byte_6A3
                 JSR     B5
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
                 LDY     BUILDING_X_START_POS
                 DEY                     ; anti-aircraft gun to the left of the building
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -7056,7 +7072,7 @@ QZ:                                     ; CODE XREF: QN+64↓j
 ; ---------------------------------------------------------------------------
 
 RA:                                     ; CODE XREF: QN+69↑j
-                LDA     #L_RUNWAY_CENTER_12|L_C_0
+                LDA     #L_RUNWAY_CENTER_12|L_PF2
                 CLC
                 ADC     BUILDING_COLOR_OFFSET
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -7072,18 +7088,18 @@ RC:                                     ; CODE XREF: QN:RB__BUILDING_ROW_1↑j
 RF:                                     ; CODE XREF: QN:RE__BUILDING_ROW_0↑j
                 LDY     BUILDING_X_START_POS ; Building create roof
                 DEY
-                LDA     #L_BUILDING_ROOF_TOP_LEFT|L_C_1
+                LDA     #L_BUILDING_ROOF_TOP_LEFT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 LDX     #4
-                LDA     #L_BUILDING_ROOF_CENTER|L_C_1
+                LDA     #L_BUILDING_ROOF_CENTER|L_PF3
 
 RG:                                     ; CODE XREF: QN+A5↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
                 DEX
                 BNE     RG
-                LDA     #L_BUILDING_ROOF_TOP_RIGHT|L_C_0
+                LDA     #L_BUILDING_ROOF_TOP_RIGHT|L_PF2
                 CLC
                 ADC     BUILDING_COLOR_OFFSET
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -7156,7 +7172,7 @@ SV:                                     ; CODE XREF: COLM30+23↓p
                 BNE     RV              ; Damage a random part in the plane
                 STX     IS_DEMO_MODE    ; Disable demo mode, when plane is completely damaged – to allow it to crash
                 INX
-                STX     byte_643
+                STX     SND_ROAR_COUNTER
                 INX
                 STX     PCOLR0          ; P0 COLOR
                 RTS
@@ -7682,10 +7698,10 @@ UA:                                     ; CODE XREF: ENRUN+4A↓j
                 INY
                 LDA     ENEMY_RUNWAY_PLANE_FLAG
                 BEQ     UB
-                LDA     #L_RUNWAY_PLANE_TOP_LEFT|L_C_1
+                LDA     #L_RUNWAY_PLANE_TOP_LEFT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
-                LDA     #L_RUNWAY_PLANE_TOP_RIGHT|L_C_1
+                LDA     #L_RUNWAY_PLANE_TOP_RIGHT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #0
                 STA     ENEMY_RUNWAY_PLANE_FLAG
@@ -7703,10 +7719,10 @@ UB:                                     ; CODE XREF: ENRUN+50↑j
                 AND     #7
                 BNE     UC              ; 12.5% chance of a plane
                 INY
-                LDA     #L_RUNWAY_PLANE_BOTTOM_LEFT|L_C_1
+                LDA     #L_RUNWAY_PLANE_BOTTOM_LEFT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
-                LDA     #L_RUNWAY_PLANE_BOTTOM_RIGHT|L_C_1
+                LDA     #L_RUNWAY_PLANE_BOTTOM_RIGHT|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 STA     ENEMY_RUNWAY_PLANE_FLAG
 
@@ -7811,12 +7827,12 @@ H0:                                     ; CODE XREF: ENRUN+AA↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     H1
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 JMP     H2
 ; ---------------------------------------------------------------------------
 
 H1:                                     ; CODE XREF: ENRUN+F4↑j
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
 
 H2:                                     ; CODE XREF: ENRUN+F8↑j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -7894,13 +7910,13 @@ CLEAR:                                  ; CODE XREF: CITY↓p B7+9D↓p
                 BCC     XD
                 CMP     #GAME_PHASE_8
                 BCS     XD
-                LDA     #L_SOLID_WALL|L_C_1
+                LDA     #L_SOLID_WALL|L_PF3
                 JMP     TG
 ; ---------------------------------------------------------------------------
 
 XD:                                     ; CODE XREF: CLEAR+A↑j
                                         ; CLEAR+E↑j
-                LDA     #L_GRAS|L_C_0
+                LDA     #L_GRAS|L_PF2
 
 TG:                                     ; CODE XREF: CLEAR+12↑j
                                         ; CLEAR+1A↓j
@@ -8410,7 +8426,7 @@ loc_3048:                               ; CODE XREF: BLDG:loc_2FEA↑j
                 CPX     byte_672
                 BCS     loc_30CC
                 LDY     byte_670
-                LDA     #L_SKYSCRAPER_54|L_C_0
+                LDA     #L_SKYSCRAPER_54|L_PF2
                 CLC
                 ADC     SKYSCRAPER_TILE_OFFSET
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -8430,7 +8446,7 @@ loc_3069:                               ; CODE XREF: BLDG+BA↑j
 
 loc_306E:                               ; CODE XREF: BLDG+B6↑j
                 LDX     byte_671
-                LDA     #L_SKYSCRAPER_57|L_C_0
+                LDA     #L_SKYSCRAPER_57|L_PF2
                 CLC
                 ADC     SKYSCRAPER_TILE_OFFSET
 
@@ -8467,12 +8483,12 @@ loc_30A2:                               ; CODE XREF: BLDG+ED↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     loc_30AE
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 JMP     loc_30B0
 ; ---------------------------------------------------------------------------
 
 loc_30AE:                               ; CODE XREF: BLDG+FD↑j
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
 
 loc_30B0:                               ; CODE XREF: BLDG+101↑j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -8507,7 +8523,7 @@ loc_30CC:                               ; CODE XREF: BLDG+A5↑j
                 BCS     loc_30EA
                 LDX     byte_672
                 DEX
-                LDA     #L_SKYSCRAPER_56|L_C_0
+                LDA     #L_SKYSCRAPER_56|L_PF2
                 CLC
                 ADC     SKYSCRAPER_TILE_OFFSET
 
@@ -8530,7 +8546,7 @@ loc_30EA:                               ; CODE XREF: BLDG+12B↑j
                 SBC     byte_675
                 BEQ     loc_3109
                 TAX
-                LDA     #L_SKYSCRAPER_56|L_C_0
+                LDA     #L_SKYSCRAPER_56|L_PF2
                 CLC
                 ADC     SKYSCRAPER_TILE_OFFSET
 
@@ -8541,21 +8557,21 @@ loc_3103:                               ; CODE XREF: BLDG+15D↓j
                 BNE     loc_3103
 
 loc_3109:                               ; CODE XREF: BLDG+151↑j
-                LDA     #L_SKYSCRAPER_58|L_C_0
+                LDA     #L_SKYSCRAPER_58|L_PF2
                 CLC
                 ADC     SKYSCRAPER_TILE_OFFSET
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDX     byte_671
                 DEY
                 DEX
-                LDA     #L_SKYSCRAPER_55|L_C_0
+                LDA     #L_SKYSCRAPER_55|L_PF2
 
 loc_3117:                               ; CODE XREF: BLDG+171↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3117
-                LDA     #L_SKYSCRAPER_59|L_C_0
+                LDA     #L_SKYSCRAPER_59|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
@@ -8893,19 +8909,19 @@ YZ:                                     ; CODE XREF: BLDGL+8↑j
                 LDX     #4
 
 ZA:                                     ; CODE XREF: BLDGL+1C↓j
-                LDA     DIRECTION_A,X
+                LDA     JOYSTICK_DIR_BACKWARD,X
                 PHA
                 LDA     byte_686,X
-                STA     DIRECTION_A,X
+                STA     JOYSTICK_DIR_BACKWARD,X
                 DEX
                 BNE     ZA
                 LDX     #4
 
 ZB:                                     ; CODE XREF: BLDGL+2B↓j
-                LDA     DIRECTION_B,X
+                LDA     JOYSTICK_DIR_FORWARD,X
                 PHA
                 LDA     byte_68A,X
-                STA     DIRECTION_B,X
+                STA     JOYSTICK_DIR_FORWARD,X
                 DEX
                 BNE     ZB
                 LDX     #5
@@ -9112,7 +9128,7 @@ YL:                                     ; CODE XREF: ZE+B↑j
 YQ:                                     ; CODE XREF: ZE+22↑j
                 DEC     byte_67A
                 LDY     byte_67A
-                LDA     #L_RUNWAY_CENTER_12|L_C_0
+                LDA     #L_RUNWAY_CENTER_12|L_PF2
                 CLC
                 ADC     byte_BB
                 LDX     #3
@@ -9195,7 +9211,7 @@ loc_3484:                               ; CODE XREF: ZE+8E↑j
                 DEY
 
 loc_3487:                               ; CODE XREF: ZE+84↑j
-                LDA     #L_65|L_C_0
+                LDA     #L_65|L_PF2
                 CLC
                 ADC     byte_681
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -9204,14 +9220,14 @@ loc_3487:                               ; CODE XREF: ZE+84↑j
                 INX
                 INX
                 INX
-                LDA     #L_WATER_60|L_C_0
+                LDA     #L_WATER_60|L_PF2
 
 loc_3498:                               ; CODE XREF: ZE+AB↓j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 DEX
                 BNE     loc_3498
-                LDA     #L_61|L_C_0
+                LDA     #L_61|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
@@ -9225,12 +9241,12 @@ loc_34A3:                               ; CODE XREF: ZE:XK↑j
 ; ---------------------------------------------------------------------------
 
 loc_34B1:                               ; CODE XREF: ZE+B8↑j
-                LDA     #L_62|L_C_0
+                LDA     #L_62|L_PF2
                 CLC
                 ADC     byte_BD
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_RUNWAY_CENTER_12|L_C_0
+                LDA     #L_RUNWAY_CENTER_12|L_PF2
                 CLC
                 ADC     byte_BB
                 CPX     #1
@@ -9254,7 +9270,7 @@ loc_34CC:                               ; CODE XREF: ZE+CF↑j
 ; ---------------------------------------------------------------------------
 
 loc_34D9:                               ; CODE XREF: ZE+BD↑j ZE+E2↑j
-                LDA     #L_RUNWAY_CENTER_12|L_C_0
+                LDA     #L_RUNWAY_CENTER_12|L_PF2
                 CLC
                 ADC     byte_681+1
                 LDX     #3
@@ -9268,7 +9284,7 @@ loc_34E1:                               ; CODE XREF: ZE+F4↓j
                 CLC
                 ADC     #4
                 TAX
-                LDA     #L_64|L_C_0
+                LDA     #L_64|L_PF2
                 CLC
                 ADC     byte_681+2
 
@@ -9285,7 +9301,7 @@ loc_34F4:                               ; CODE XREF: ZE+107↓j
 
 XYZ:                                    ; CODE XREF: ZE+44↑p
                                         ; ZE:loc_34CC↑p
-                LDA     #L_64|L_C_0
+                LDA     #L_64|L_PF2
                 LDX     #4
                 CLC
                 ADC     byte_BC
@@ -9936,7 +9952,7 @@ EW:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+11↑j
 
 LY:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+8↑j
                 LDA     RUNWAY_POS_Y_INDEX ; Runway is 45 characters long, this is an index used for drawing the correct line
-                BNE     MB
+                BNE     MB              ; Draw the runway at the beginning of the game, when plane is waiting
                 LDA     byte_FE
                 BEQ     EW              ; => Return
                 LDA     #100
@@ -9961,12 +9977,12 @@ R3:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+4F↑j
                 LDA     #_R|_C_BLACK
                 STA     byte_C4
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
-                STA     byte_6B6
+                STA     LANDING_CHARACTER ; "L" or "R" character for landing
                 LSR     A
                 STA     RUN_SOUND_COUNTER ; 0=Run sound off, otherwise a count down timer for the effect
 
 MD:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+4B↑j
-                JSR     FLSH
+                JSR     FLSH            ; Flash "L" for landing
                 LDY     RIVER_RIGHT_X_POS ; Right position of the river
                 CPY     #40
                 BCS     LZ
@@ -10010,16 +10026,16 @@ EY:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+A4↑j
 
 MB:                                     ; CODE XREF: EB+3↑p
                                         ; DRUN__DRAW_RUNWAY+33↑j
-                DEC     RUNWAY_POS_Y_INDEX ; Runway is 45 characters long, this is an index used for drawing the correct line
+                DEC     RUNWAY_POS_Y_INDEX ; Draw the runway at the beginning of the game, when plane is waiting
                 BNE     SH
                 JMP     MC
 ; ---------------------------------------------------------------------------
 
 SH:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+B5↑j
-                JSR     FLSH
+                JSR     FLSH            ; Flash "L" for landing
 
                 LDY     RUNWAY_POS_X_INDEX ; Right position where the runway starts
-                LDA     #L_RUNWAY_RIGHT_11|L_C_1
+                LDA     #L_RUNWAY_RIGHT_11|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
                 LDX     #9
@@ -10030,7 +10046,7 @@ SH:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+B5↑j
                 BEQ     EZ              ; Draw a horizontal runway marker line
                 CMP     #44
                 BEQ     NB
-                LDA     #L_RUNWAY_CENTER|L_C_1
+                LDA     #L_RUNWAY_CENTER|L_PF3
                 JMP     FA
 ; ---------------------------------------------------------------------------
 
@@ -10045,7 +10061,7 @@ EZ:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+CC↑j
                                         ; DRUN__DRAW_RUNWAY+D0↑j ...
                 LDA     #2              ; Draw a horizontal runway marker line
                 STA     byte_B6
-                LDA     #L_RUNWAY_MARKER_14|L_C_1
+                LDA     #L_RUNWAY_MARKER_14|L_PF3
 
 FA:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+D8↑j
                                         ; DRUN__DRAW_RUNWAY+F0↓j
@@ -10053,7 +10069,7 @@ FA:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+D8↑j
                 DEY
                 DEX
                 BNE     FA
-                LDA     #L_RUNWAY_LEFT_13|L_C_1
+                LDA     #L_RUNWAY_LEFT_13|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
 
@@ -10113,7 +10129,7 @@ FE:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+118↑j
 V2:                                     ; CODE XREF: DRUN__DRAW_RUNWAY+11C↑j
                 LDY     #_SPACE|_C_BLACK
                 STY     SC_STATUS_LINE.line_2.landing_flag ; "L" character
-                STY     byte_6B6
+                STY     LANDING_CHARACTER ; "L" or "R" character for landing
                 INY
                 STY     CAN_LAND_FLAG   ; set to 1
                 RTS
@@ -10401,20 +10417,20 @@ J6:                                     ; CODE XREF: DRCAR+5↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     J7
-                LDA     #L_STREET_CAR_RIGHT_COLOR_A|L_C_1
+                LDA     #L_STREET_CAR_RIGHT_COLOR_A|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_STREET_CAR_LEFT_COLOR_A|L_C_1
+                LDA     #L_STREET_CAR_LEFT_COLOR_A|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; ---------------------------------------------------------------------------
 
 J7:                                     ; CODE XREF: DRCAR+13↑j
                                         ; DRCAR+19↑j ...
-                LDA     #L_STREET_CAR_RIGHT_COLOR_B|L_C_1
+                LDA     #L_STREET_CAR_RIGHT_COLOR_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 DEY
-                LDA     #L_STREET_CAR_LEFT_COLOR_B|L_C_1
+                LDA     #L_STREET_CAR_LEFT_COLOR_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function DRCAR
@@ -10748,14 +10764,14 @@ E8:                                     ; CODE XREF: TNKC1-17↓j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     E6
-                LDA     #L_TANK_RIGHT_A|L_C_1
+                LDA     #L_TANK_RIGHT_A|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
-                LDA     #L_TANK_LEFT_A|L_C_1
+                LDA     #L_TANK_LEFT_A|L_PF3
                 JMP     E7
 ; ---------------------------------------------------------------------------
 
 E6:                                     ; CODE XREF: TNKC1-2B↑j
-                LDA     #L_GRAS_BEFORE_BUILDING|L_C_0
+                LDA     #L_GRAS_BEFORE_BUILDING|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
 
 E7:                                     ; CODE XREF: TNKC1-23↑j
@@ -10768,7 +10784,7 @@ E7:                                     ; CODE XREF: TNKC1-23↑j
                 LDA     RANDOM          ; Random Number Generator
                 LSR     A
                 BCC     TH
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 JMP     F2
 ; END OF FUNCTION CHUNK FOR TNKC1
 ; ---------------------------------------------------------------------------
@@ -10777,7 +10793,7 @@ E7:                                     ; CODE XREF: TNKC1-23↑j
 ; START OF FUNCTION CHUNK FOR TNKC1
 
 TH:                                     ; CODE XREF: TNKC1-10↑j
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
 
 F2:                                     ; CODE XREF: TNKC1-C↑j
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
@@ -10993,21 +11009,21 @@ _1:                                     ; CODE XREF: X5+A↑j
 ; Check if a tile based target in A was hit
 
 CKCHAR:                                 ; CODE XREF: XPLSN+35↑p
-                CMP     #L_RUNWAY_PLANE_TOP_RIGHT|L_C_1
+                CMP     #L_RUNWAY_PLANE_TOP_RIGHT|L_PF3
                 BEQ     Y7__HIT_RW_PLANE_TR ; HIT: runway plane top-right
-                CMP     #L_RUNWAY_PLANE_TOP_LEFT|L_C_1
+                CMP     #L_RUNWAY_PLANE_TOP_LEFT|L_PF3
                 BEQ     Y9__HIT_RW_PLANE_TL ; HIT: runway plane top-left
-                CMP     #L_RUNWAY_PLANE_BOTTOM_RIGHT|L_C_1
+                CMP     #L_RUNWAY_PLANE_BOTTOM_RIGHT|L_PF3
                 BEQ     Z0__HIT_RW_PLANE_BR ; HIT: runway plane bottom-right
-                CMP     #L_RUNWAY_PLANE_BOTTOM_LEFT|L_C_1
+                CMP     #L_RUNWAY_PLANE_BOTTOM_LEFT|L_PF3
                 BEQ     Z1__HIT_RW_PLANE_BL ; HIT: runway plane bottom-left
-                CMP     #L_FIXED_BOAT_TOP_LEFT|L_C_1
+                CMP     #L_FIXED_BOAT_TOP_LEFT|L_PF3
                 BEQ     X9__HIT_BOAT_TL ; HIT: fixed boat top-left
-                CMP     #L_FIXED_BOAT_TOP_RIGHT|L_C_1
+                CMP     #L_FIXED_BOAT_TOP_RIGHT|L_PF3
                 BEQ     X8__HIT_BOAT_TR ; HIT: fixed boat top-right
-                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_PF3
                 BEQ     Y1__HIT_BOAT_BL ; HIT: fixed boat bottom-left
-                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_PF3
                 BEQ     Y0__HIT_BOAT_BR ; HIT: fixed boat bottom-right
 
                 LDX     #8
@@ -11767,8 +11783,8 @@ S1000__SCORE_ADD_1000:                  ; CODE XREF: S500__SCORE_ADD_500+14↓j
 S10000__SCORE_ADD_10000:                ; CODE XREF: S100__SCORE_ADD_100+18↑j
                 LDA     #_0|_C_BLUE
                 STA     SC_STATUS_LINE.line_2.score_digit_1000
-                LDA     SC_STATUS_LINE.line_2.score_digit_10000
-                BNE     _1_
+                LDA     SC_STATUS_LINE.line_2.score_digit_10000 ; 10000 digit is a space?
+                BNE     _1_             ; => no
                 LDA     #_0|_C_BLUE
                 STA     SC_STATUS_LINE.line_2.score_digit_10000
 
@@ -12099,6 +12115,7 @@ _4:                                     ; CODE XREF: Z3+11↑j
 
 ; =============== S U B R O U T I N E =======================================
 
+; Flash "L" for landing
 
 FLSH:                                   ; CODE XREF: DRUN__DRAW_RUNWAY:MD↑p
                                         ; DRUN__DRAW_RUNWAY:SH↑p
@@ -12109,17 +12126,18 @@ FLSH:                                   ; CODE XREF: DRUN__DRAW_RUNWAY:MD↑p
 ; ---------------------------------------------------------------------------
 
 _1:                                     ; CODE XREF: FLSH+6↑j
-                DEC     byte_6B7
-                LDA     byte_6B7
+                DEC     LANDING_FLASH_COUNTER ; Counter to control the speed of the flashing "L" for landing
+                LDA     LANDING_FLASH_COUNTER ; Counter to control the speed of the flashing "L" for landing
                 LSR     A
                 LSR     A
                 BCC     _2
+
                 LDA     #_SPACE|_C_BLUE
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
                 LDA     GAME_COMPLETION_MASK
                 CMP     #FINAL_TARGET_ALL
                 BNE     _4
-                LDA     byte_6B6
+                LDA     LANDING_CHARACTER ; "L" or "R" character for landing
                 BEQ     _4
                 LDA     #COLOR_INTENSITY_4|COLOR_GREEN
                 STA     DL_IRQ_BACKGROUND_COLOR ; mission complete! – and land and receive award
@@ -12139,7 +12157,7 @@ _2:                                     ; CODE XREF: FLSH+11↑j
                 STA     DL_IRQ_BACKGROUND_COLOR ; Background color set in the DL IRQ
 
 _5:                                     ; CODE XREF: FLSH+34↑j
-                LDA     byte_6B6
+                LDA     LANDING_CHARACTER ; "L" or "R" character for landing
                 STA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
                 BEQ     _4
                 LDA     #AUDIO_CONTROL_VOL_2|AUDIO_CONTROL_DIST_4
@@ -12162,26 +12180,26 @@ Y6:                                     ; CODE XREF: ID:Y5↑j
                 LSR     A
                 LSR     A
                 BCC     loc_43A2
-                LDA     #L_EXPLOSION_WATER_4|L_C_1
+                LDA     #L_EXPLOSION_WATER_4|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 INY
-                LDA     #L_EXPLOSION_WATER_3|L_C_1
+                LDA     #L_EXPLOSION_WATER_3|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 JSR     CPBT            ; Check if previous tile row is still visible, exit if not
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
                 DEY
-                LDA     #L_EXPLOSION_STREET_2|L_C_1
+                LDA     #L_EXPLOSION_STREET_2|L_PF3
                 STA     (PREVIOUS_TILE_ROW_PTR),Y
                 RTS
 ; ---------------------------------------------------------------------------
 
 loc_43A2:                               ; CODE XREF: Y6+A↑j
-                LDA     #L_EXPLOSION_WATER_2|L_C_0
+                LDA     #L_EXPLOSION_WATER_2|L_PF2
                 JMP     X3
 ; ---------------------------------------------------------------------------
 
 _2:                                     ; CODE XREF: Y6+5↑j
-                LDA     #L_WATER|L_C_0
+                LDA     #L_WATER|L_PF2
                 JMP     X3
 ; ---------------------------------------------------------------------------
 
@@ -12191,7 +12209,7 @@ X7:                                     ; CODE XREF: ID:X6↑j
                 LSR     A
                 LSR     A
                 BCC     loc_43BC
-                LDA     #L_EXPLOSION_STREET_1|L_C_1
+                LDA     #L_EXPLOSION_STREET_1|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 INY
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -12199,10 +12217,10 @@ X7:                                     ; CODE XREF: ID:X6↑j
 ; ---------------------------------------------------------------------------
 
 loc_43BC:                               ; CODE XREF: Y6+30↑j
-                LDA     #L_EXPLOSION_STREET_2|L_C_1
+                LDA     #L_EXPLOSION_STREET_2|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 INY
-                LDA     #L_EXPLOSION_STREET_3|L_C_1
+                LDA     #L_EXPLOSION_STREET_3|L_PF3
                 STA     (CURRENT_TILE_ROW_PTR),Y
                 RTS
 ; ---------------------------------------------------------------------------
@@ -12213,7 +12231,7 @@ W6:                                     ; CODE XREF: ID:W5↑j
                 LSR     A
                 LSR     A
                 BCC     X4
-                LDA     #L_EXPLOSION_STREET_1|L_C_1
+                LDA     #L_EXPLOSION_STREET_1|L_PF3
 
 X3:                                     ; CODE XREF: Y6+22↑j Y6+27↑j
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -12228,7 +12246,7 @@ X3:                                     ; CODE XREF: Y6+22↑j Y6+27↑j
 
 X4:                                     ; CODE XREF: Y6+4A↑j
                 CLC
-                LDA     #L_EXPLOSION_STREET_2|L_C_1
+                LDA     #L_EXPLOSION_STREET_2|L_PF3
                 JMP     _5
 ; ---------------------------------------------------------------------------
 
@@ -12286,7 +12304,7 @@ loc_4414:                               ; CODE XREF: GUNC-5F4↑j
                 SEC
                 SBC     #10
                 TAY
-                LDA     #L_FLASHING_MARKER|L_C_1
+                LDA     #L_FLASHING_MARKER|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 CLC
@@ -12296,7 +12314,7 @@ loc_4414:                               ; CODE XREF: GUNC-5F4↑j
                 CLC
                 ADC     #1
                 TAY
-                LDA     #L_FLASHING_MARKER|L_C_1
+                LDA     #L_FLASHING_MARKER|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 ADC     #7
@@ -12420,25 +12438,25 @@ _1:                                     ; CODE XREF: SHBT+6↑j
                 STA     TEMP_ADR
                 JSR     ADA             ; Convert a X/Y position into an address to screen memory
                 LDA     (TEMP_ADR),Y
-                CMP     #L_TANK_LEFT_A|L_C_1
+                CMP     #L_TANK_LEFT_A|L_PF3
                 BEQ     _7
-                CMP     #L_TANK_RIGHT_A|L_C_1
+                CMP     #L_TANK_RIGHT_A|L_PF3
                 BEQ     _6
-                CMP     #L_STREET_CAR_LEFT_COLOR_A|L_C_1
+                CMP     #L_STREET_CAR_LEFT_COLOR_A|L_PF3
                 BEQ     _7
-                CMP     #L_STREET_CAR_LEFT_COLOR_B|L_C_1
+                CMP     #L_STREET_CAR_LEFT_COLOR_B|L_PF3
                 BEQ     _7
-                CMP     #L_STREET_CAR_RIGHT_COLOR_A|L_C_1
+                CMP     #L_STREET_CAR_RIGHT_COLOR_A|L_PF3
                 BEQ     _6
-                CMP     #L_STREET_CAR_RIGHT_COLOR_B|L_C_1
+                CMP     #L_STREET_CAR_RIGHT_COLOR_B|L_PF3
                 BEQ     _6
-                CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 BEQ     _10
-                CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+                CMP     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
                 BEQ     _10
-                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_LEFT|L_PF3
                 BEQ     _5
-                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_C_1
+                CMP     #L_FIXED_BOAT_BOTTOM_RIGHT|L_PF3
                 BNE     _2              ; => Return
                 DEY
 
@@ -12718,6 +12736,7 @@ _5:                                     ; CODE XREF: BMCPTL+26↑j
                 STA     GAME_COMPLETION_MASK
 
                 JSR     S500__SCORE_ADD_500 ; Score: add 500
+
                 LDX     #18
                 LDY     CAPITAL_Y_POS
 
@@ -13177,12 +13196,12 @@ XI:                                     ; CODE XREF: ID:BD↑j
                 LSR     A
                 LSR     A
                 BCC     _1
-                LDA     #L_WATER_60|L_C_0
+                LDA     #L_WATER_60|L_PF2
                 JMP     _2
 ; ---------------------------------------------------------------------------
 
 _1:                                     ; CODE XREF: XI+5↑j
-                LDA     #L_EXPLOSION_WATER_1|L_C_0
+                LDA     #L_EXPLOSION_WATER_1|L_PF2
 
 _2:                                     ; CODE XREF: XI+9↑j
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -13234,12 +13253,12 @@ AEI:                                    ; CODE XREF: ID:AEH↑j
                 LSR     A
                 LSR     A
                 BCC     loc_4922
-                LDA     #L_SOLID_WALL|L_C_1
+                LDA     #L_SOLID_WALL|L_PF3
                 JMP     loc_4924
 ; ---------------------------------------------------------------------------
 
 loc_4922:                               ; CODE XREF: AEI+5↑j
-                LDA     #L_EXPLOSION_5F|L_C_0
+                LDA     #L_EXPLOSION_5F|L_PF2
 
 loc_4924:                               ; CODE XREF: AEI+9↑j
                 STA     (CURRENT_TILE_ROW_PTR),Y
@@ -13393,7 +13412,7 @@ _3:                                     ; CODE XREF: CTYGN+A↑j
 _5:                                     ; CODE XREF: CTYGN+2A↓j
                                         ; CTYGN+32↓j ...
                 LDY     #25
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #32
                 JMP     A2
@@ -13421,7 +13440,7 @@ _1:                                     ; CODE XREF: CTYGN+E↑j
 _4:                                     ; CODE XREF: CTYGN+26↑j
                                         ; CTYGN+2E↑j ...
                 LDY     #25
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_C_0
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_A|L_PF2
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 LDA     #32
                 JMP     B3
@@ -13478,7 +13497,7 @@ _2:                                     ; CODE XREF: GUNC+13↑j
                 SEC
                 SBC     #10
                 TAY
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 CLC
@@ -13488,7 +13507,7 @@ _2:                                     ; CODE XREF: GUNC+13↑j
                 CLC
                 ADC     #1
                 TAY
-                LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_C_1
+                LDA     #L_ANTI_AIRCRAFT_BATTERY_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 TYA
                 ADC     #7
@@ -13514,10 +13533,10 @@ _6:                                     ; CODE XREF: GUNC+5B↑j
 
 _4:                                     ; CODE XREF: GUNC+62↑j
                 TAY
-                LDA     #L_TANK_LEFT_B|L_C_1
+                LDA     #L_TANK_LEFT_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 INY
-                LDA     #L_TANK_RIGHT_B|L_C_1
+                LDA     #L_TANK_RIGHT_B|L_PF3
                 STA     (VBL_NEXT_ROW_PTR),Y ; new row to be draw. Set inside the VBL.
                 RTS
 ; End of function GUNC
@@ -13652,12 +13671,12 @@ _3:                                     ; CODE XREF: CLCSC__READ_SCORE_VALUE+1C�
 
 WORST:                                  ; CODE XREF: RNK__DISPLAY_RANK+1E↓j
                 JSR     FTG             ; Print "FLYING TIGER" to screen
-                LDA     #L_RUNWAY_LEFT_13|L_C_0
+                LDA     #L_RUNWAY_LEFT_13|L_PF2
                 BNE     AIB
 
 WORST1:                                 ; CODE XREF: RNK__DISPLAY_RANK+24↓j
                 JSR     FTG             ; Print "FLYING TIGER" to screen
-                LDA     #L_RUNWAY_MARKER_14|L_C_0
+                LDA     #L_RUNWAY_MARKER_14|L_PF2
 
 AIB:                                    ; CODE XREF: RNK__DISPLAY_RANK-B↑j
                 STA     SC_STATUS_LINE.line_0.decreased_maneuverability ; "M" character
@@ -14204,7 +14223,7 @@ _14:                                    ; CODE XREF: CNSL__CONSOLE+A1↑j
 _8:                                     ; CODE XREF: CNSL__CONSOLE+A6↑j
                                         ; CNSL__CONSOLE+AC↑j
                 LDX     #11
-                LDA     DIRECTION_A
+                LDA     JOYSTICK_DIR_BACKWARD
                 CMP     #13
                 BNE     _9
                 JSR     NOR__PRINT_NORMAL ; Print "NORMAL CTRL " to screen
@@ -14438,10 +14457,10 @@ _15:                                    ; CODE XREF: MENU__CHECK_KEYS+82↑j
 
 _8:                                     ; CODE XREF: MENU__CHECK_KEYS+64↑j
                 LDX     #11             ; Option 1 was selected
-                LDA     DIRECTION_A
-                LDY     DIRECTION_B
-                STA     DIRECTION_B
-                STY     DIRECTION_A
+                LDA     JOYSTICK_DIR_BACKWARD
+                LDY     JOYSTICK_DIR_FORWARD
+                STA     JOYSTICK_DIR_FORWARD
+                STY     JOYSTICK_DIR_BACKWARD
                 CMP     #JOYSTICK_DOWN
                 BEQ     _12
                 JMP     NOR__PRINT_NORMAL ; Print "NORMAL CTRL " to screen
@@ -14496,7 +14515,7 @@ _1:                                     ; CODE XREF: DBMB__DEMO_BOMB_RELEASE+2�
                 BNE     _2              ; button is pressed
 
 _9:                                     ; CODE XREF: DBMB__DEMO_BOMB_RELEASE+E↑j
-                LDA     DIRECTION_A
+                LDA     JOYSTICK_DIR_BACKWARD
                 STA     STICK0_COPY     ; JOYSTICK 0 copy
                 LDA     #0              ; button is pressed
                 STA     STRIG0_COPY     ; 0=: joystick button is pressed, !=0: button is not pressed
@@ -14536,7 +14555,7 @@ _2:                                     ; CODE XREF: DJOY__DEMO_JOYSTICK_INPUT+E
                 CMP     #JOYSTICK_NOTHING
                 BEQ     _3
                 LDA     DEMO_STICK0     ; Demo mode: joystick movement
-                CMP     DIRECTION_A
+                CMP     JOYSTICK_DIR_BACKWARD
                 BNE     _15
                 LDA     PLANE_VERT_SHADOW_POS ; Vertical Position of the Plane Shadow
                 SBC     PLANE_VERT_POS  ; Vertical Position of the Plane
@@ -15155,28 +15174,28 @@ PROPIM:         .BYTE 10110100b         ; DATA XREF: PLFWD:loc_216C↑t
                 .BYTE   100101b
                 .BYTE       10b
 
-BR1:            .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_C_1,L_CLIFF_GRAS_A|L_C_0,L_BRIDGE_J|L_C_1,L_BRIDGE_G|L_C_1
+BR1:            .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_PF3,L_CLIFF_GRAS_A|L_PF2,L_BRIDGE_J|L_PF3,L_BRIDGE_G|L_PF3
                                         ; DATA XREF: DRBR__DRAW_BRIDGE:FT↑t
-                .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_Q|L_C_1
-                .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_J|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1
-                .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_Q|L_C_1
-                .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_J|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1
-                .BYTE L_BRIDGE_G|L_C_1,L_BRIDGE_G|L_C_1,L_BRIDGE_H|L_C_1,L_GRAS_BEFORE_BUILDING|L_C_0
-                .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
-BR2:            .BYTE L_BRIDGE_C|L_C_1,L_BRIDGE_A|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1
+                .BYTE L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_Q|L_PF3
+                .BYTE L_BRIDGE_Q|L_PF3,L_BRIDGE_J|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3
+                .BYTE L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_Q|L_PF3
+                .BYTE L_BRIDGE_Q|L_PF3,L_BRIDGE_J|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3
+                .BYTE L_BRIDGE_G|L_PF3,L_BRIDGE_G|L_PF3,L_BRIDGE_H|L_PF3,L_GRAS_BEFORE_BUILDING|L_PF2
+                .BYTE L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
+BR2:            .BYTE L_BRIDGE_C|L_PF3,L_BRIDGE_A|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3
                                         ; DATA XREF: DRBR__DRAW_BRIDGE:GA↑t
-                .BYTE L_BRIDGE_F|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_A|L_C_1
-                .BYTE L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1
-                .BYTE L_BRIDGE_F|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_A|L_C_1
-                .BYTE L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_C|L_C_1
-                .BYTE L_BRIDGE_D|L_C_1
-BR3:            .BYTE L_BRIDGE_P|L_C_1,L_BRIDGE_O|L_C_1,L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1
+                .BYTE L_BRIDGE_F|L_PF3,L_BRIDGE_C|L_PF3,L_BRIDGE_C|L_PF3,L_BRIDGE_A|L_PF3
+                .BYTE L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3
+                .BYTE L_BRIDGE_F|L_PF3,L_BRIDGE_C|L_PF3,L_BRIDGE_C|L_PF3,L_BRIDGE_A|L_PF3
+                .BYTE L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_C|L_PF3
+                .BYTE L_BRIDGE_D|L_PF3
+BR3:            .BYTE L_BRIDGE_P|L_PF3,L_BRIDGE_O|L_PF3,L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3
                                         ; DATA XREF: DRBR__DRAW_BRIDGE+132↑t
-                .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_P|L_C_1,L_BRIDGE_P|L_C_1,L_BRIDGE_O|L_C_1
-                .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1
-                .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_P|L_C_1,L_BRIDGE_P|L_C_1,L_BRIDGE_O|L_C_1
-                .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1,L_BRIDGE_B|L_C_1,L_BRIDGE_P|L_C_1
-                .BYTE L_BRIDGE_O|L_C_1
+                .BYTE L_BRIDGE_B|L_PF3,L_BRIDGE_P|L_PF3,L_BRIDGE_P|L_PF3,L_BRIDGE_O|L_PF3
+                .BYTE L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3
+                .BYTE L_BRIDGE_B|L_PF3,L_BRIDGE_P|L_PF3,L_BRIDGE_P|L_PF3,L_BRIDGE_O|L_PF3
+                .BYTE L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3,L_BRIDGE_B|L_PF3,L_BRIDGE_P|L_PF3
+                .BYTE L_BRIDGE_O|L_PF3
 
 XPL1IM:         .BYTE 10001000b         ; DATA XREF: TURN:_10↑r
                                         ; DG:_1↑r
@@ -15193,19 +15212,19 @@ XPL1IM:         .BYTE 10001000b         ; DATA XREF: TURN:_10↑r
                 .BYTE 10000010b
                 .BYTE         1
 
-ROADR:          .BYTE L_ROAD_DIAG_LEFT_A|L_C_1,L_ROAD_DIAG_LEFT_B|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_ROAD_DIAG_RIGHT_A|L_C_1,L_ROAD_DIAG_RIGHT_B|L_C_1,L_GRAS_BEFORE_BUILDING|L_C_0
+ROADR:          .BYTE L_ROAD_DIAG_LEFT_A|L_PF3,L_ROAD_DIAG_LEFT_B|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_ROAD_DIAG_RIGHT_A|L_PF3,L_ROAD_DIAG_RIGHT_B|L_PF3,L_GRAS_BEFORE_BUILDING|L_PF2
                                         ; DATA XREF: DROAD+23↑t
-ROADS:          .BYTE L_RUNWAY_LEFT|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_RIGHT|L_C_1
+ROADS:          .BYTE L_RUNWAY_LEFT|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_RIGHT|L_PF3
                                         ; DATA XREF: DROAD+34↑t
-HNGR1:          .BYTE L_HANGAR_A|L_C_1,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_HANGAR_A|L_C_1,L_HANGAR_F|L_C_1
+HNGR1:          .BYTE L_HANGAR_A|L_PF3,L_SOLID_WALL|L_PF2,L_SOLID_WALL|L_PF2,L_HANGAR_A|L_PF3,L_HANGAR_F|L_PF3
                                         ; DATA XREF: ENRUN:UJ↑t
-HNGR2:          .BYTE L_HANGAR_B|L_C_1,L_HANGAR_C|L_C_1,L_HANGAR_D|L_C_1,L_HANGAR_E|L_C_1,L_HANGAR_G|L_C_1,L_HANGAR_F|L_C_1
+HNGR2:          .BYTE L_HANGAR_B|L_PF3,L_HANGAR_C|L_PF3,L_HANGAR_D|L_PF3,L_HANGAR_E|L_PF3,L_HANGAR_G|L_PF3,L_HANGAR_F|L_PF3
                                         ; DATA XREF: ENRUN:UK↑t
-HNGR3:          .BYTE L_HANGAR_H|L_C_0,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_SOLID_WALL|L_C_0,L_HANGAR_G|L_C_1,L_HANGAR_F|L_C_1
+HNGR3:          .BYTE L_HANGAR_H|L_PF2,L_SOLID_WALL|L_PF2,L_SOLID_WALL|L_PF2,L_SOLID_WALL|L_PF2,L_HANGAR_G|L_PF3,L_HANGAR_F|L_PF3
                                         ; DATA XREF: ENRUN:UM↑t
-HNGR5:          .BYTE L_HANGAR_I|L_C_0,L_HANGAR_J|L_C_0,L_HANGAR_K|L_C_0,L_HANGAR_L|L_C_0
+HNGR5:          .BYTE L_HANGAR_I|L_PF2,L_HANGAR_J|L_PF2,L_HANGAR_K|L_PF2,L_HANGAR_L|L_PF2
                                         ; DATA XREF: ENRUN:UN↑t
-ENRNIM:         .BYTE L_RUNWAY_LEFT|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_CENTER|L_C_1,L_RUNWAY_RIGHT|L_C_1
+ENRNIM:         .BYTE L_RUNWAY_LEFT|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_CENTER|L_PF3,L_RUNWAY_RIGHT|L_PF3
                                         ; DATA XREF: ENRUN+44↑t
                                         ; Enemy runway
 
@@ -15302,25 +15321,25 @@ XSHPIM:         .BYTE 10100010b         ; DATA XREF: BMBSHP:S6↑t
                 .BYTE 10111100b
                 .BYTE  1110101b
 
-AAA:            .BYTE L_BUILDING_ROOF_TOP_RIGHT|L_C_0,L_BUILDING_ROOF_TOP_RIGHT|L_C_1,L_BUILDING_WALL_A|L_C_0,L_BUILDING_WALL_A|L_C_1,L_BUILDING_ROOF_TOP_LEFT|L_C_0,L_BUILDING_ROOF_TOP_LEFT|L_C_1,L_BUILDING_WINDOW|L_C_1,L_BUILDING_WINDOW|L_C_0,L_HANGAR_H|L_C_1,L_BUILDING_ROOF_CENTER|L_C_1
+AAA:            .BYTE L_BUILDING_ROOF_TOP_RIGHT|L_PF2,L_BUILDING_ROOF_TOP_RIGHT|L_PF3,L_BUILDING_WALL_A|L_PF2,L_BUILDING_WALL_A|L_PF3,L_BUILDING_ROOF_TOP_LEFT|L_PF2,L_BUILDING_ROOF_TOP_LEFT|L_PF3,L_BUILDING_WINDOW|L_PF3,L_BUILDING_WINDOW|L_PF2,L_HANGAR_H|L_PF3,L_BUILDING_ROOF_CENTER|L_PF3
                                         ; DATA XREF: CKCHAR:T6↑t
                                         ; Targets: building
-AAB:            .BYTE L_SKYSCRAPER_58|L_C_0,L_SKYSCRAPER_56|L_C_0,L_SKYSCRAPER_54|L_C_0,L_SKYSCRAPER_B_5E|L_C_0,L_SKYSCRAPER_B_C|L_C_0,L_SKYSCRAPER_B_5A|L_C_0,L_SKYSCRAPER_B_5E|L_C_1,L_SKYSCRAPER_B_C|L_C_1,L_SKYSCRAPER_B_5A|L_C_1,L_SKYSCRAPER_57|L_C_0,L_SKYSCRAPER_B_5D|L_C_0,L_SKYSCRAPER_B_5D|L_C_1,L_SKYSCRAPER_59|L_C_0,L_SKYSCRAPER_55|L_C_0
+AAB:            .BYTE L_SKYSCRAPER_58|L_PF2,L_SKYSCRAPER_56|L_PF2,L_SKYSCRAPER_54|L_PF2,L_SKYSCRAPER_B_5E|L_PF2,L_SKYSCRAPER_B_C|L_PF2,L_SKYSCRAPER_B_5A|L_PF2,L_SKYSCRAPER_B_5E|L_PF3,L_SKYSCRAPER_B_C|L_PF3,L_SKYSCRAPER_B_5A|L_PF3,L_SKYSCRAPER_57|L_PF2,L_SKYSCRAPER_B_5D|L_PF2,L_SKYSCRAPER_B_5D|L_PF3,L_SKYSCRAPER_59|L_PF2,L_SKYSCRAPER_55|L_PF2
                                         ; DATA XREF: CKCHAR:T8↑t
                                         ; Targets: skyscraper
-AAC:            .BYTE L_BRIDGE_Q|L_C_1,L_BRIDGE_C|L_C_1,L_BRIDGE_D|L_C_1,L_BRIDGE_F|L_C_1,L_BRIDGE_A|L_C_1,L_BRIDGE_J|L_C_1,L_SKYSCRAPER_B_5B|L_C_1
+AAC:            .BYTE L_BRIDGE_Q|L_PF3,L_BRIDGE_C|L_PF3,L_BRIDGE_D|L_PF3,L_BRIDGE_F|L_PF3,L_BRIDGE_A|L_PF3,L_BRIDGE_J|L_PF3,L_SKYSCRAPER_B_5B|L_PF3
                                         ; DATA XREF: CKCHAR:U0↑t
                                         ; Targets: lower parts of a bridge
-AAD:            .BYTE L_BRIDGE_B|L_C_1,L_BRIDGE_O|L_C_1,L_BRIDGE_P|L_C_1
+AAD:            .BYTE L_BRIDGE_B|L_PF3,L_BRIDGE_O|L_PF3,L_BRIDGE_P|L_PF3
                                         ; DATA XREF: CKCHAR:_1↑t
                                         ; Targets: upper parts of a bridge
-AAE:            .BYTE L_ROAD_DIAG_LEFT_A|L_C_1,L_ROAD_DIAG_LEFT_B|L_C_1,L_RUNWAY_CENTER|L_C_1,L_ROAD_DIAG_RIGHT_A|L_C_1,L_ROAD_DIAG_RIGHT_B|L_C_1,L_RUNWAY_LEFT|L_C_1,L_BRIDGE_M|L_C_1,L_BRIDGE_N|L_C_1
+AAE:            .BYTE L_ROAD_DIAG_LEFT_A|L_PF3,L_ROAD_DIAG_LEFT_B|L_PF3,L_RUNWAY_CENTER|L_PF3,L_ROAD_DIAG_RIGHT_A|L_PF3,L_ROAD_DIAG_RIGHT_B|L_PF3,L_RUNWAY_LEFT|L_PF3,L_BRIDGE_M|L_PF3,L_BRIDGE_N|L_PF3
                                         ; DATA XREF: CKCHAR:_9↑t
                                         ; Targets: roads
-AAF:            .BYTE L_HANGAR_A|L_C_1,L_SOLID_WALL|L_C_0,L_HANGAR_B|L_C_1,L_HANGAR_C|L_C_1,L_HANGAR_D|L_C_1,L_HANGAR_E|L_C_1,L_HANGAR_G|L_C_1,L_HANGAR_H|L_C_0,L_HANGAR_I|L_C_0,L_HANGAR_J|L_C_0,L_HANGAR_K|L_C_0,L_HANGAR_L|L_C_0,L_HANGAR_F|L_C_1
+AAF:            .BYTE L_HANGAR_A|L_PF3,L_SOLID_WALL|L_PF2,L_HANGAR_B|L_PF3,L_HANGAR_C|L_PF3,L_HANGAR_D|L_PF3,L_HANGAR_E|L_PF3,L_HANGAR_G|L_PF3,L_HANGAR_H|L_PF2,L_HANGAR_I|L_PF2,L_HANGAR_J|L_PF2,L_HANGAR_K|L_PF2,L_HANGAR_L|L_PF2,L_HANGAR_F|L_PF3
                                         ; DATA XREF: Z3:_1↑r
                                         ; Targets: all parts of a hangar
-AAG:            .BYTE L_STREET_CAR_LEFT_COLOR_A|L_C_1,L_STREET_CAR_RIGHT_COLOR_A|L_C_1,L_STREET_CAR_LEFT_COLOR_B|L_C_1,L_STREET_CAR_RIGHT_COLOR_B|L_C_1,L_ANTI_AIRCRAFT_BATTERY_B|L_C_1,L_TANK_LEFT_B|L_C_1,L_TANK_RIGHT_B|L_C_1,L_TANK_LEFT_A|L_C_1,L_TANK_RIGHT_A|L_C_1,L_ANTI_AIRCRAFT_BATTERY_A|L_C_0,L_ANTI_AIRCRAFT_BATTERY_A|L_C_1
+AAG:            .BYTE L_STREET_CAR_LEFT_COLOR_A|L_PF3,L_STREET_CAR_RIGHT_COLOR_A|L_PF3,L_STREET_CAR_LEFT_COLOR_B|L_PF3,L_STREET_CAR_RIGHT_COLOR_B|L_PF3,L_ANTI_AIRCRAFT_BATTERY_B|L_PF3,L_TANK_LEFT_B|L_PF3,L_TANK_RIGHT_B|L_PF3,L_TANK_LEFT_A|L_PF3,L_TANK_RIGHT_A|L_PF3,L_ANTI_AIRCRAFT_BATTERY_A|L_PF2,L_ANTI_AIRCRAFT_BATTERY_A|L_PF3
                                         ; DATA XREF: Z3:_7↑t
                                         ; Targets: all cars, tanks, ait-aircraft battery on the playfield
 
@@ -16226,7 +16245,7 @@ SC_STATUS_LINE: CONTROL_DISPLAY <?>     ; DATA XREF: RESET:AFZ↑t
 SC_STATUS_TITLE:.BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; (uninited)
                                         ; DATA XREF: RESET+9A↑t
                                         ; RESET+9F↑t ...
-                .BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; (uninited)
+                .BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; (uninited) ; 3 text lines during attract mode
                 .BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; (uninited)
                 .BYTE 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 ; (uninited)
                 .BYTE 0,0,0,0,0,0,0,0 ; (uninited)

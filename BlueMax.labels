@@ -106,7 +106,7 @@
         },
         {
           Address: 0x00f1
-          Name: SCROLL_OFFSET_F1
+          Name: SCROLL_HSCROL_SHADOW
           Comment: HSCROL and VSCROL shadow during gameplay
         },
         {
@@ -401,6 +401,10 @@
           Name: AUDIO2_DROPSND_FREQ
         },
         {
+          Address: 0x0643
+          Name: SND_ROAR_COUNTER
+        },
+        {
           Address: 0x0644
           Name: AUDIO3_SOUND_COUNTER
         },
@@ -521,11 +525,11 @@
         },
         {
           Address: 0x0679
-          Name: DIRECTION_A
+          Name: JOYSTICK_DIR_BACKWARD
         },
         {
           Address: 0x0680
-          Name: DIRECTION_B
+          Name: JOYSTICK_DIR_FORWARD
         },
         {
           Address: 0x0695
@@ -585,6 +589,16 @@
         {
           Address: 0x06b4
           Name: TEMP_PREVIOUS_ROW_PTR
+        },
+        {
+          Address: 0x06b6
+          Name: LANDING_CHARACTER
+          Comment: L\" or \"R\" character for landing
+        },
+        {
+          Address: 0x06b7
+          Name: LANDING_FLASH_COUNTER
+          Comment: Counter to control the speed of the flashing \"L\" for landing
         },
         {
           Address: 0x06b9
@@ -854,6 +868,7 @@
         {
           Address: 0x10d8
           Name: J
+          Comment: Move lines in the DL list down and left
         },
         {
           Address: 0x10ec
@@ -2282,6 +2297,7 @@
         {
           Address: 0x24e3
           Name: DK
+          Comment: Plane was crashed
         },
         {
           Address: 0x24e6
@@ -2344,6 +2360,7 @@
         {
           Address: 0x25cc
           Name: PS
+          Comment: Increment AUDC1 engine sound
         },
         {
           Address: 0x25d5
@@ -2353,6 +2370,7 @@
         {
           Address: 0x25d6
           Name: PR
+          Comment: Increment AUDC1 till max value
         },
         {
           Address: 0x25e7
@@ -3589,6 +3607,7 @@
         {
           Address: 0x389d
           Name: MB
+          Comment: Draw the runway at the beginning of the game, when plane is waiting
         },
         {
           Address: 0x38a5
@@ -5315,6 +5334,7 @@
         {
           Address: 0x6a90
           Name: SC_STATUS_TITLE
+          Comment: 3 text lines during attract mode
         },
         {
           Address: 0x7000

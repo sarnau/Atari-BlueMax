@@ -642,8 +642,8 @@ static Enums_0(id) {
 	add_enum_member(id,"L_ROAD_DIAG_LEFT_A",	0X7D,	0x7F);
 	add_enum_member(id,"L_SOLID_WALL",	0X7E,	0x7F);
 	add_enum_member(id,"L_BUILDING_ROOF_TOP_LEFT",	0X7F,	0x7F);
-	add_enum_member(id,"L_C_0",	0,	0x80);
-	add_enum_member(id,"L_C_1",	0X80,	0x80);
+	add_enum_member(id,"L_PF2",	0,	0x80);
+	add_enum_member(id,"L_PF3",	0X80,	0x80);
 	id = add_enum(-1,"DIR_RIVER",0x1100000);
 	add_enum_member(id,"DIR_RIVER_STRAIGHT",	0X1,	-1);
 	add_enum_member(id,"DIR_RIVER_LEFT",	0X2,	-1);
@@ -1304,7 +1304,7 @@ static Bytes_0(void) {
 	set_name	(0XF0,	"DISABLE_MAP_GENERATION");
 	set_cmt	(0XF1,	"HSCROL and VSCROL shadow during gameplay",	1);
 	create_byte	(0XF1);
-	set_name	(0XF1,	"SCROLL_OFFSET_F1");
+	set_name	(0XF1,	"SCROLL_HSCROL_SHADOW");
 	set_cmt	(0XF2,	"new row to be draw. Set inside the VBL.",	1);
 	create_word	(x=0XF2);
 	op_plain_offset	(x,	0,	0);
@@ -1564,6 +1564,7 @@ static Bytes_0(void) {
 	create_byte	(0X642);
 	set_name	(0X642,	"AUDIO2_DROPSND_FREQ");
 	create_byte	(0X643);
+	set_name	(0X643,	"SND_ROAR_COUNTER");
 	create_byte	(0X644);
 	set_name	(0X644,	"AUDIO3_SOUND_COUNTER");
 	create_byte	(0X645);
@@ -1654,14 +1655,14 @@ static Bytes_0(void) {
 	create_byte	(0X676);
 	create_byte	(0X677);
 	create_byte	(0X679);
-	set_name	(0X679,	"DIRECTION_A");
+	set_name	(0X679,	"JOYSTICK_DIR_BACKWARD");
 	create_byte	(0X67A);
 	create_byte	(0X67B);
 	create_byte	(0X67C);
 	create_byte	(0X67D);
 	make_array	(0X67E,	0X2);
 	create_byte	(0X680);
-	set_name	(0X680,	"DIRECTION_B");
+	set_name	(0X680,	"JOYSTICK_DIR_FORWARD");
 	create_byte	(0X681);
 	make_array	(0X681,	0X3);
 	create_byte	(0X684);
@@ -1736,8 +1737,13 @@ static Bytes_0(void) {
 	op_plain_offset	(x,	0,	0);
 	op_plain_offset	(x,	128,	0);
 	set_name	(0X6B4,	"TEMP_PREVIOUS_ROW_PTR");
-	create_byte	(0X6B6);
+	set_cmt	(0X6B6,	"\"L\" or \"R\" character for landing",	1);
+	create_byte	(x=0X6B6);
+	op_enum		(x,	0,	GetEnum("ATASCI"),0);
+	set_name	(0X6B6,	"LANDING_CHARACTER");
+	set_cmt	(0X6B7,	"Counter to control the speed of the flashing \"L\" for landing",	1);
 	create_byte	(0X6B7);
+	set_name	(0X6B7,	"LANDING_FLASH_COUNTER");
 	set_cmt	(0X6B9,	"Flashing the screen counter (0=flashing disabled, >0:duration of the flashing)",	1);
 	create_byte	(0X6B9);
 	set_name	(0X6B9,	"COLOR_FLASHING");
@@ -2028,6 +2034,8 @@ static Bytes_0(void) {
 	op_dec		(x,	0);
 	create_insn	(x=0XD27);
 	op_dec		(x,	0);
+	create_insn	(x=0XD30);
+	op_dec		(x,	0);
 	create_insn	(x=0XD48);
 	op_dec		(x,	0);
 	create_insn	(x=0XD50);
@@ -2076,8 +2084,12 @@ static Bytes_0(void) {
 	set_name	(0XE8B,	"EA");
 	create_insn	(0XE8E);
 	set_name	(0XE8E,	"EB");
+	update_extra_cmt		(0XE97,	E_PREV + 0,	" ");
+	update_extra_cmt		(0XE9B,	E_PREV + 0,	" ");
 	create_insn	(x=0XE9B);
 	create_insn	(x=0XEA0);
+	create_insn	(x=0XEA5);
+	op_dec		(x,	0);
 	create_insn	(x=0XEA9);
 	op_dec		(x,	0);
 	create_insn	(x=0XEAD);
@@ -2123,6 +2135,7 @@ static Bytes_0(void) {
 	op_enum		(x,	0,	GetEnum("SND_FREQ"),0);
 	create_insn	(x=0XF1D);
 	op_enum		(x,	0,	GetEnum("AUDIO_CONTROL"),0);
+	update_extra_cmt		(0XF25,	E_PREV + 0,	" ");
 	create_insn	(x=0XF25);
 	op_dec		(x,	0);
 	create_insn	(x=0XF43);
@@ -2130,9 +2143,15 @@ static Bytes_0(void) {
 	set_name	(0XF43,	"MZ");
 	create_insn	(x=0XF45);
 	create_insn	(x=0XF47);
+	update_extra_cmt		(0XF54,	E_PREV + 0,	" ");
 	create_insn	(x=0XF54);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
+	update_extra_cmt		(0XF62,	E_PREV + 0,	" ");
 	create_insn	(x=0XF68);
+	op_dec		(x,	0);
+	create_insn	(x=0XF6C);
+	op_dec		(x,	0);
+	create_insn	(x=0XF71);
 	op_dec		(x,	0);
 	update_extra_cmt		(0XF7C,	E_PREV + 0,	" ");
 	create_insn	(x=0XF84);
@@ -2179,6 +2198,7 @@ static Bytes_0(void) {
 	create_insn	(0X10BD);
 	create_insn	(x=0X10CA);
 	op_dec		(x,	0);
+	set_cmt	(0X10D8,	"Move lines in the DL list down and left",	1);
 	create_insn	(0X10D8);
 	set_name	(0X10D8,	"J");
 	create_insn	(x=0X10E0);
@@ -2187,6 +2207,7 @@ static Bytes_0(void) {
 	op_bin		(x,	0);
 	create_insn	(x=0X10EC);
 	op_dec		(x,	0);
+	update_extra_cmt		(0X10F0,	E_PREV + 0,	" ");
 	create_insn	(x=0X10F0);
 	op_dec		(x,	0);
 	update_extra_cmt		(0X10FB,	E_PREV + 0,	" ");
@@ -2194,10 +2215,12 @@ static Bytes_0(void) {
 	op_dec		(x,	0);
 	create_insn	(x=0X1107);
 	op_dec		(x,	0);
+	update_extra_cmt		(0X110C,	E_PREV + 0,	" ");
 	create_insn	(x=0X1113);
 	op_dec		(x,	0);
 	create_insn	(x=0X111F);
 	op_dec		(x,	0);
+	update_extra_cmt		(0X1123,	E_PREV + 0,	" ");
 	create_insn	(x=0X1123);
 	op_dec		(x,	0);
 	create_insn	(x=0X1125);
@@ -2216,6 +2239,7 @@ static Bytes_0(void) {
 	create_insn	(x=0X1133);
 	op_plain_offset	(x,	0,	0);
 	op_plain_offset	(x,	128,	0);
+	update_extra_cmt		(0X113B,	E_PREV + 0,	" ");
 	create_insn	(x=0X113F);
 	op_dec		(x,	0);
 	create_insn	(x=0X1147);
@@ -4055,17 +4079,22 @@ static Bytes_0(void) {
 	op_enum		(x,	0,	GetEnum("AUDIO_CONTROL"),0);
 	create_insn	(0X2491);
 	set_name	(0X2491,	"TAKOF__TAKEOFF_LOOP");
+	update_extra_cmt		(0X24AF,	E_PREV + 0,	" ");
 	create_insn	(x=0X24B2);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
 	create_insn	(0X24BC);
+	update_extra_cmt		(0X24BF,	E_PREV + 0,	" ");
 	create_insn	(x=0X24C7);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
 	create_insn	(x=0X24DA);
 	op_enum		(x,	0,	GetEnum("JOYSTICK"),0);
+	set_cmt	(0X24E3,	"Plane was crashed",	1);
 	create_insn	(0X24E6);
+	set_cmt	(0X24E9,	"Plane collision with environment?",	1);
 	create_insn	(x=0X24E9);
 	op_bin		(x,	0);
 	create_insn	(0X24F0);
+	set_cmt	(0X24F3,	"Plane speed too low?",	1);
 	create_insn	(x=0X24F3);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
 	create_insn	(0X24F8);
@@ -4111,14 +4140,17 @@ static Bytes_0(void) {
 	set_name	(0X25A9,	"ROAR");
 	create_insn	(x=0X25AE);
 	op_dec		(x,	0);
+	update_extra_cmt		(0X25B3,	E_PREV + 0,	" ");
 	create_insn	(x=0X25B5);
 	op_enum		(x,	0,	GetEnum("JOYSTICK"),0);
 	create_insn	(x=0X25BC);
 	op_enum		(x,	0,	GetEnum("AUDIO_CONTROL"),0);
 	create_insn	(0X25C2);
 	set_name	(0X25C2,	"PO");
+	set_cmt	(0X25CC,	"Increment AUDC1 engine sound",	1);
 	create_insn	(0X25CC);
 	set_cmt	(0X25D5,	"=> Return",	1);
+	set_cmt	(0X25D6,	"Increment AUDC1 till max value",	1);
 	create_insn	(0X25D6);
 	create_insn	(x=0X25D9);
 	op_enum		(x,	0,	GetEnum("AUDIO_CONTROL"),0);
@@ -5423,6 +5455,15 @@ static Bytes_0(void) {
 	create_insn	(0X3555);
 	create_insn	(0X3560);
 	create_insn	(0X3577);
+}
+
+//------------------------------------------------------------------------
+// Information about bytes
+
+static Bytes_1(void) {
+        auto x;
+#define id x
+
 	create_insn	(0X3582);
 	create_insn	(0X358D);
 	create_insn	(0X3598);
@@ -5489,15 +5530,6 @@ static Bytes_0(void) {
 	create_insn	(0X366E);
 	create_insn	(0X3671);
 	set_name	(0X3671,	"FM2GN");
-}
-
-//------------------------------------------------------------------------
-// Information about bytes
-
-static Bytes_1(void) {
-        auto x;
-#define id x
-
 	update_extra_cmt		(0X3676,	E_PREV + 0,	" ");
 	create_insn	(x=0X367B);
 	op_enum		(x,	0,	GetEnum("GAME_PHASE"),0);
@@ -5649,6 +5681,7 @@ static Bytes_1(void) {
 	op_dec		(x,	0);
 	create_insn	(x=0X3892);
 	op_dec		(x,	0);
+	set_cmt	(0X389D,	"Draw the runway at the beginning of the game, when plane is waiting",	1);
 	create_insn	(0X389D);
 	set_name	(0X389D,	"MB");
 	create_insn	(0X38A5);
@@ -6516,6 +6549,8 @@ static Bytes_1(void) {
 	create_insn	(x=0X41A6);
 	create_insn	(x=0X41AB);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
+	set_cmt	(0X41B0,	"10000 digit is a space?",	1);
+	set_cmt	(0X41B3,	"=> no",	1);
 	create_insn	(x=0X41B5);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
 	create_insn	(0X41BE);
@@ -6641,6 +6676,7 @@ static Bytes_1(void) {
 	create_insn	(0X4334);
 	set_name	(0X4334,	"FLSH");
 	create_insn	(0X433D);
+	update_extra_cmt		(0X4347,	E_PREV + 0,	" ");
 	create_insn	(x=0X4347);
 	op_enum		(x,	0,	GetEnum("ATASCI"),0);
 	create_insn	(x=0X434F);
@@ -6987,6 +7023,7 @@ static Bytes_1(void) {
 	create_insn	(x=0X464B);
 	op_enum		(x,	0,	GetEnum("FINAL_TARGETS_STATE"),0);
 	update_extra_cmt		(0X4650,	E_PREV + 0,	" ");
+	update_extra_cmt		(0X4653,	E_PREV + 0,	" ");
 	create_insn	(x=0X4653);
 	op_dec		(x,	0);
 	create_insn	(x=0X4658);
@@ -8797,6 +8834,7 @@ static Bytes_1(void) {
 	set_name	(0X6A46,	"SC_STATUS_LINE");
 	create_byte	(0X6A8E);
 	make_array	(0X6A8E,	0X2);
+	set_cmt	(0X6A90,	"3 text lines during attract mode",	1);
 	create_byte	(0X6A90);
 	make_array	(0X6A90,	0X48);
 	set_name	(0X6A90,	"SC_STATUS_TITLE");
@@ -9574,11 +9612,13 @@ static Functions_0(void) {
 	set_name(0X25A0, "QD", SN_LOCAL);
 	add_func    (0X25A9,0X25C2);
 	set_func_flags(0X25A9,0x1000);
+	set_func_cmt(0X25A9,	"Update plane engine sound", 1);
 	set_name(0X25CC, "PS", SN_LOCAL);
 	set_name(0X25D5, "PQ", SN_LOCAL);
 	set_name(0X25D6, "PR", SN_LOCAL);
 	add_func    (0X25C2,0X25CC);
 	set_func_flags(0X25C2,0x1000);
+	set_func_cmt(0X25C2,	"Decrement AUDC1 engine sound", 1);
 	add_func    (0X25E7,0X25F6);
 	set_func_flags(0X25E7,0x1000);
 	add_func    (0X25F6,0X2640);
@@ -10210,6 +10250,7 @@ static Functions_0(void) {
 	set_name(0X432A, ".4", SN_LOCAL);
 	add_func    (0X4334,0X4382);
 	set_func_flags(0X4334,0x1000);
+	set_func_cmt(0X4334,	"Flash \"L\" for landing", 1);
 	set_name(0X433D, ".1", SN_LOCAL);
 	set_name(0X435D, ".4", SN_LOCAL);
 	set_name(0X4363, ".2", SN_LOCAL);
