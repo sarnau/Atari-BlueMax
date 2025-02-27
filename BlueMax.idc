@@ -2179,17 +2179,21 @@ static Bytes_0(void) {
 	op_bin		(x,	0);
 	create_insn	(0XFE4);
 	set_name	(0XFE4,	"SRT");
+	set_cmt	(0X101C,	"=> loop",	1);
 	create_insn	(0X101F);
 	set_name	(0X101F,	"COMMON");
+	update_extra_cmt		(0X1029,	E_PREV + 0,	" ");
 	create_insn	(0X1049);
 	set_cmt	(0X1099,	"=> Return",	1);
 	create_insn	(x=0X109A);
-	op_bin		(x,	0);
-	set_name	(0X109A,	"TIMER");
+	op_dec		(x,	0);
+	set_name	(0X109A,	"TIMER__SYNC_VBL");
 	create_insn	(x=0X109F);
 	op_dec		(x,	0);
+	set_cmt	(0X10A1,	"1 VBL period",	1);
 	create_insn	(x=0X10A1);
 	op_dec		(x,	0);
+	set_cmt	(0X10AE,	"wait for the VBL",	1);
 	create_insn	(x=0X10B1);
 	op_plain_offset	(x,	0,	0);
 	op_plain_offset	(x,	128,	0);
@@ -3948,7 +3952,8 @@ static Bytes_0(void) {
 	op_dec		(x,	0);
 	create_insn	(x=0X2224);
 	op_enum		(x,	0,	GetEnum("AUDIO_CONTROL"),0);
-	create_insn	(0X223B);
+	create_insn	(x=0X223B);
+	op_dec		(x,	0);
 	create_insn	(x=0X2245);
 	op_enum		(x,	0,	GetEnum("JOYSTICK"),0);
 	create_insn	(x=0X2249);
@@ -5448,13 +5453,6 @@ static Bytes_0(void) {
 	create_insn	(x=0X3502);
 	op_plain_offset	(x,	0,	0);
 	op_plain_offset	(x,	128,	0);
-	create_insn	(0X3509);
-	set_name	(0X3509,	"END");
-	create_insn	(x=0X3542);
-	op_enum		(x,	0,	GetEnum("GAME_PHASE"),0);
-	create_insn	(0X3555);
-	create_insn	(0X3560);
-	create_insn	(0X3577);
 }
 
 //------------------------------------------------------------------------
@@ -5464,6 +5462,13 @@ static Bytes_1(void) {
         auto x;
 #define id x
 
+	create_insn	(0X3509);
+	set_name	(0X3509,	"END");
+	create_insn	(x=0X3542);
+	op_enum		(x,	0,	GetEnum("GAME_PHASE"),0);
+	create_insn	(0X3555);
+	create_insn	(0X3560);
+	create_insn	(0X3577);
 	create_insn	(0X3582);
 	create_insn	(0X358D);
 	create_insn	(0X3598);
@@ -7531,7 +7536,7 @@ static Bytes_1(void) {
 	op_plain_offset	(x,	0,	0);
 	op_plain_offset	(x,	128,	0);
 	create_insn	(0X4A73);
-	set_name	(0X4A73,	"GGNSND");
+	set_name	(0X4A73,	"GGNSND__GUN_SOUND");
 	create_insn	(0X4A79);
 	create_insn	(x=0X4A81);
 	op_dec		(x,	0);
@@ -9148,7 +9153,7 @@ static Functions_0(void) {
 	set_name(0X1099, ".9", SN_LOCAL);
 	add_func    (0X109A,0X10B1);
 	set_func_flags(0X109A,0x1000);
-	set_func_cmt(0X109A,	"Wait for Timer 3. Sync gameplay to 60Hz", 1);
+	set_func_cmt(0X109A,	"Busy-wait for a VBL to sync the game to 50/60Hz", 1);
 	set_name(0X10AB, "L", SN_LOCAL);
 	add_func    (0X10B1,0X115B);
 	set_func_flags(0X10B1,0x1000);
@@ -9234,6 +9239,7 @@ static Functions_0(void) {
 	set_name(0X1484, ".1", SN_LOCAL);
 	add_func    (0X1493,0X14D8);
 	set_func_flags(0X1493,0x1000);
+	set_func_cmt(0X1493,	"Check joystick input to move the plane", 1);
 	set_name(0X14A2, "SE", SN_LOCAL);
 	set_name(0X14C9, "PI", SN_LOCAL);
 	set_name(0X14CC, "PJ", SN_LOCAL);
@@ -9534,6 +9540,7 @@ static Functions_0(void) {
 	set_name(0X21E0, "LE", SN_LOCAL);
 	add_func    (0X2217,0X2255);
 	set_func_flags(0X2217,0x1000);
+	set_func_cmt(0X2217,	"Demo: generate joystick data to move the plane", 1);
 	set_name(0X222B, "PP", SN_LOCAL);
 	set_name(0X2235, "NC", SN_LOCAL);
 	set_name(0X223B, "NE", SN_LOCAL);
@@ -9725,7 +9732,7 @@ static Functions_0(void) {
 	set_func_flags(0X2ACF,0x1000);
 	add_func    (0X2AFB,0X2B19);
 	set_func_flags(0X2AFB,0);
-	set_func_cmt(0X2AFB,	"Fire Gun", 1);
+	set_func_cmt(0X2AFB,	"Fire gun", 1);
 	set_name(0X2B16, "ZW", SN_LOCAL);
 	set_name(0X2B3F, "SY", SN_LOCAL);
 	set_name(0X2B45, "TA", SN_LOCAL);
@@ -9915,6 +9922,7 @@ static Functions_0(void) {
 	set_func_flags(0X3598,0x1000);
 	add_func    (0X35A6,0X35AD);
 	set_func_flags(0X35A6,0);
+	set_func_cmt(0X35A6,	"Fire enemy gun", 1);
 	add_func    (0X35E2,0X35FB);
 	set_func_flags(0X35E2,0x1000);
 	set_name(0X35F8, "A5", SN_LOCAL);

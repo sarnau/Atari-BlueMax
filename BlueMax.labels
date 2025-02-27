@@ -846,7 +846,7 @@
         },
         {
           Address: 0x109a
-          Name: TIMER
+          Name: TIMER__SYNC_VBL
         },
         {
           Address: 0x10ab
@@ -4469,7 +4469,7 @@
         },
         {
           Address: 0x4a73
-          Name: GGNSND
+          Name: GGNSND__GUN_SOUND
         },
         {
           Address: 0x4aa2

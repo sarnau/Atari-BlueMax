@@ -369,7 +369,7 @@ FFFFFFFF SND_FREQ_57:     = 57
 FFFFFFFF SND_FREQ_58:     = 58
 FFFFFFFF SND_FREQ_59:     = 59                   ; XREF: DATA:VOICE_2/s
 FFFFFFFF                                         ; DATA:VOICE_3/s
-FFFFFFFF SND_FREQ_60:     = 60                   ; XREF: GGNSND:_4/s
+FFFFFFFF SND_FREQ_60:     = 60                   ; XREF: GGNSND__GUN_SOUND:_4/s
 FFFFFFFF SND_FREQ_61:     = 61
 FFFFFFFF SND_FREQ_62:     = 62
 FFFFFFFF SND_FREQ_63:     = 63
@@ -1291,7 +1291,7 @@ LOWMEM:0218 CDTMV1:         .BYTE 0,0 ; (uninited)  ; DATA XREF: CNSL__CONSOLE+1
 LOWMEM:0218                                         ; CNSL__CONSOLE+29↓w ...
 LOWMEM:0218                                         ; COUNT DOWN TIMER 1 - used for music playback
 LOWMEM:021A                 .BYTE 0,0 ; (uninited)
-LOWMEM:021C CDTMV3:         .BYTE 0,0 ; (uninited)  ; DATA XREF: TIMER:L↓r
+LOWMEM:021C CDTMV3:         .BYTE 0,0 ; (uninited)  ; DATA XREF: TIMER__SYNC_VBL:L↓r
 LOWMEM:021C                                         ; COUNT DOWN TIMER 3
 LOWMEM:021E                 .BYTE 0,0,0,0 ; (uninited)
 LOWMEM:0222 VVBLKI:         .BYTE 0,0 ; (uninited)  ; IMMEDIATE VERTICAL BLANK NMI VECTOR
@@ -2100,7 +2100,7 @@ GAME:0C42 START:                                  ; CODE XREF: TURN+196↓j
 GAME:0C42                                         ; CNSL__CONSOLE+1E↓j ...
 GAME:0C42                 JSR     STOP_SN         ; Sound: Stop
 GAME:0C45                 STA     SDMCTL          ; SAVE DMACTL REGISTER
-GAME:0C48                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:0C48                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:0C4B
 GAME:0C4B                 LDA     #$50 ; 'P'      ; Display List: DL_LMS + DL_HSCROL
 GAME:0C4D                 STA     DL
@@ -2455,7 +2455,7 @@ GAME:0F2C                 JSR     TURN            ; Check for the joystick and s
 GAME:0F2F                 JSR     CNSL__CONSOLE   ; Console for option selection and to start the game
 GAME:0F32                 JSR     FUEL            ; Use fuel, update the display as well
 GAME:0F35                 JSR     DFLSH__DEMO_FLASH_BLUEMAX ; Demo: Pulsate "BLUE MAX" in blue
-GAME:0F38                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:0F38                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:0F3B                 JSR     ROAR            ; Update plane engine sound
 GAME:0F3E                 LDX     RIVER_BRIDGE_ROW
 GAME:0F40                 DEX
@@ -2560,14 +2560,14 @@ GAME:0FFC                 JSR     SHIP            ; Draw a moving ship
 GAME:0FFF                 JSR     COMMON
 GAME:1002                 JSR     CKLAND          ; Check if the player wants to land the plane while being over the runway
 GAME:1005                 JSR     RUNSND
-GAME:1008                 JSR     FBRGN           ; Fire Gun
-GAME:100B                 JSR     FBTGN
+GAME:1008                 JSR     FBRGN           ; Fire gun
+GAME:100B                 JSR     FBTGN           ; Fire enemy gun
 GAME:100E                 JSR     DRP23           ; Draw Car or Truck driving left/right
 GAME:1011                 JSR     CKCOL           ; Check collision?!?
 GAME:1014                 JSR     SPD__SPEED_CHANGE ; Change the speed of the plane up/down based on the joystick
-GAME:1017                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:1017                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:101A                 STA     ATRACT          ; ATRACT FLAG
-GAME:101C                 JMP     SRT
+GAME:101C                 JMP     SRT             ; => loop
 GAME:101C ; End of function SRT
 GAME:101C
 GAME:101F
@@ -2580,6 +2580,7 @@ GAME:101F                 LDA     STICK0          ; JOYSTICK 0 RAM CELL
 GAME:1022                 STA     STICK0_COPY     ; JOYSTICK 0 copy
 GAME:1024                 LDA     STRIG0          ; JOYSTICK TRIGGER 0
 GAME:1027                 STA     STRIG0_COPY     ; 0=: joystick button is pressed, !=0: button is not pressed
+GAME:1029
 GAME:1029                 JSR     DEMO__DEMO_TRIGGER ; Demo Bomb release
 GAME:102C                 JSR     WIND            ; Check if Wind Warnings are possible and randomly trigger it.
 GAME:102F                 JSR     TRGT
@@ -2589,12 +2590,12 @@ GAME:1038                 JSR     QUAKE           ; Quake, if enabled, shake the
 GAME:103B                 JSR     PROP            ; Update the propeller graphics for rotation
 GAME:103E                 LDA     IS_DEMO_MODE    ; 0=Demo Mode active
 GAME:1041                 BNE     NQ
-GAME:1043                 JSR     KMKZ
+GAME:1043                 JSR     KMKZ            ; Demo: generate joystick data to move the plane
 GAME:1046                 JMP     NR
 GAME:1049 ; ---------------------------------------------------------------------------
 GAME:1049
 GAME:1049 NQ:                                     ; CODE XREF: COMMON+22↑j
-GAME:1049                 JSR     JOYST
+GAME:1049                 JSR     JOYST           ; Check joystick input to move the plane
 GAME:104C
 GAME:104C NR:                                     ; CODE XREF: COMMON+27↑j
 GAME:104C                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
@@ -2613,7 +2614,7 @@ GAME:1070                 JSR     FTNKGN
 GAME:1073                 JSR     M2GPOS
 GAME:1076                 JSR     FM2GN
 GAME:1079                 JSR     ALT__ALTITUDE_DISPLAY_FIXUP ; Fixup Altitude display to make sure that all digits are correct. This can be necessary, because the last digit can over/underflow when in/decremented somewhere else.
-GAME:107C                 JSR     GGNSND          ; Play gun sound, if enabled
+GAME:107C                 JSR     GGNSND__GUN_SOUND ; Play gun sound, if enabled
 GAME:107F                 JSR     COLRDM__COLOR_DAMAGE ; Flash background of control display to signal damage
 GAME:1082                 JSR     XFLSH           ; Flash the screen colors after e.g. a crash
 GAME:1085                 JSR     CKSC            ; Check and update difficulty variables depending on the progress/score
@@ -2631,23 +2632,23 @@ GAME:1099
 GAME:109A
 GAME:109A ; =============== S U B R O U T I N E =======================================
 GAME:109A
-GAME:109A ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:109A ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:109A
-GAME:109A TIMER:                                  ; CODE XREF: RESET+48↑p
+GAME:109A TIMER__SYNC_VBL:                        ; CODE XREF: RESET+48↑p
 GAME:109A                                         ; EB+AA↑p ...
-GAME:109A                 LDA     #11b
+GAME:109A                 LDA     #3
 GAME:109C                 STA     HITCLR          ; write to HITCLR clears all of the collision registers.
 GAME:109F                 LDX     #0
-GAME:10A1                 LDY     #1
+GAME:10A1                 LDY     #1              ; 1 VBL period
 GAME:10A3                 JSR     SETVBV          ; SET SYSTEM TIMERS ROUTINE
 GAME:10A6                 LDA     #$C0
 GAME:10A8                 STA     NMIEN           ; $80: DL IRQ enabled, $40: VBL IRQ enabled
 GAME:10AB
-GAME:10AB L:                                      ; CODE XREF: TIMER+14↓j
+GAME:10AB L:                                      ; CODE XREF: TIMER__SYNC_VBL+14↓j
 GAME:10AB                 LDA     CDTMV3          ; COUNT DOWN TIMER 3
-GAME:10AE                 BNE     L
+GAME:10AE                 BNE     L               ; wait for the VBL
 GAME:10B0                 RTS
-GAME:10B0 ; End of function TIMER
+GAME:10B0 ; End of function TIMER__SYNC_VBL
 GAME:10B0
 GAME:10B1
 GAME:10B1 ; =============== S U B R O U T I N E =======================================
@@ -3296,7 +3297,7 @@ GAME:1429
 GAME:1429 IG:                                     ; CODE XREF: PAUSE+31↓j
 GAME:1429                 JSR     PROP            ; Update the propeller graphics for rotation
 GAME:142C                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
-GAME:142F                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:142F                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:1432                 LDA     CH              ; GLOBAL VARIABLE FOR KEYBOARD
 GAME:1435                 CMP     #KEYCODE_SPACE  ; Wait for Space to be pressed again
 GAME:1437                 BNE     IG
@@ -3368,6 +3369,7 @@ GAME:1490
 GAME:1493
 GAME:1493 ; =============== S U B R O U T I N E =======================================
 GAME:1493
+GAME:1493 ; Check joystick input to move the plane
 GAME:1493
 GAME:1493 JOYST:                                  ; CODE XREF: COMMON:NQ↑p
 GAME:1493
@@ -3925,7 +3927,7 @@ GAME:177A                 JSR     XPLSN
 GAME:177D                 JSR     SPLASH          ; Splash sound effect on channel 2
 GAME:1780                 JSR     CNSL__CONSOLE   ; Console for option selection and to start the game
 GAME:1783                 JSR     XSHIP
-GAME:1786                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:1786                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:1789                 DEC     CRASH_EXPLOSION_COUNTER ; Duration counter for the plane explosion
 GAME:178B                 BNE     _11
 GAME:178D
@@ -3947,7 +3949,7 @@ GAME:17AB                 LDA     #64
 GAME:17AD                 STA     TEMP_B0
 GAME:17AF
 GAME:17AF _15:                                    ; CODE XREF: TURN+15E↓j
-GAME:17AF                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:17AF                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:17B2                 DEC     TEMP_B0
 GAME:17B4                 BNE     _15
 GAME:17B6                 LDA     byte_655
@@ -6001,6 +6003,7 @@ GAME:2216 ; END OF FUNCTION CHUNK FOR PLFWD
 GAME:2217
 GAME:2217 ; =============== S U B R O U T I N E =======================================
 GAME:2217
+GAME:2217 ; Demo: generate joystick data to move the plane
 GAME:2217
 GAME:2217 KMKZ:                                   ; CODE XREF: COMMON+24↑p
 GAME:2217                 DEC     SND_ROAR_COUNTER
@@ -6142,7 +6145,7 @@ GAME:22CF                                         ; REFUEL+47↓j
 GAME:22CF                 JSR     PROP            ; Update the propeller graphics for rotation
 GAME:22D2                 JSR     PBMB
 GAME:22D5                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
-GAME:22D8                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:22D8                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:22DB                 JSR     TRIGC__TRIGGER_COUNT ; Count individual button presses during a landing
 GAME:22DE                 LDA     TRIGGER_COUNT   ; Increment with each button/trigger press
 GAME:22E1                 CMP     #3
@@ -6183,7 +6186,7 @@ GAME:2319                 JSR     PROP            ; Update the propeller graphic
 GAME:231C                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
 GAME:231F                 JSR     PBMB
 GAME:2322                 JSR     ROAR            ; Update plane engine sound
-GAME:2325                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:2325                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:2328                 DEC     RIVER_BRIDGE_ROW
 GAME:232A                 BNE     NA
 GAME:232C                 LDA     RTCLOK+2        ; REAL TIME CLOCK (IN 16 MSEC UNITS)
@@ -6309,7 +6312,7 @@ GAME:23CB _2:                                     ; CODE XREF: STOPL+3F↓j
 GAME:23CB                                         ; STOPL+54↓j
 GAME:23CB                 JSR     PROP            ; Update the propeller graphics for rotation
 GAME:23CE                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
-GAME:23D1                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:23D1                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:23D4                 DEC     FUEL_TIMER
 GAME:23D7                 BNE     _2
 GAME:23D9                 LDY     AUDC1_SHADOW
@@ -6363,15 +6366,15 @@ GAME:240D                 STY     SC_STATUS_LINE.line_2.landing_flag ; "L" chara
 GAME:2410                 STY     LANDING_CHARACTER ; "L" or "R" character for landing
 GAME:2413
 GAME:2413 LAND:                                   ; CODE XREF: CKLAND+3B↓j
-GAME:2413                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:2413                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:2416                 JSR     DRAW            ; Draw river/gras on the map
 GAME:2419                 JSR     DRUN__DRAW_RUNWAY ; Draw the runway on the map
 GAME:241C                 JSR     COMMON
 GAME:241F                 JSR     RUNSND
 GAME:2422                 JSR     SPDL            ; Decrement speed, except if we are at 100
 GAME:2425                 JSR     CKCOL           ; Check collision?!?
-GAME:2428                 JSR     FBRGN           ; Fire Gun
-GAME:242B                 JSR     FBTGN
+GAME:2428                 JSR     FBRGN           ; Fire gun
+GAME:242B                 JSR     FBTGN           ; Fire enemy gun
 GAME:242E                 LDA     SC_STATUS_LINE.line_2.landing_flag ; "L" character
 GAME:2431                 BNE     MK
 GAME:2433                 RTS
@@ -6400,7 +6403,7 @@ GAME:245A ; --------------------------------------------------------------------
 GAME:245A
 GAME:245A MJ:                                     ; CODE XREF: CKLAND+55↑j
 GAME:245A                                         ; CKLAND+75↓j
-GAME:245A                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:245A                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:245D                 STA     DL_IRQ_BACKGROUND_COLOR ; Color back to BLACK
 GAME:2460                 JSR     DRAW            ; Draw river/gras on the map
 GAME:2463                 JSR     DRUN__DRAW_RUNWAY ; Draw the runway on the map
@@ -6420,7 +6423,7 @@ GAME:2478                                         ; STOPL+F1↓j ...
 GAME:2478                 JSR     PROP            ; Update the propeller graphics for rotation
 GAME:247B                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
 GAME:247E                 JSR     REFUEL
-GAME:2481                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:2481                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:2484                 LDA     AUDC1_SHADOW
 GAME:2487                 CMP     #AUDIO_CONTROL_VOL_2|AUDIO_CONTROL_DIST_6
 GAME:2489                 BCC     GROUND
@@ -6467,7 +6470,7 @@ GAME:24D1                 JSR     TKOSPD__INCREMENT_SPEED ; Increment Speed
 GAME:24D4
 GAME:24D4 _1:                                     ; CODE XREF: TAKOF__TAKEOFF_LOOP+28↑j
 GAME:24D4                                         ; TAKOF__TAKEOFF_LOOP+31↑j ...
-GAME:24D4                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:24D4                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:24D7                 LDA     STICK0          ; JOYSTICK 0 RAM CELL
 GAME:24DA                 CMP     #JOYSTICK_NOTHING
 GAME:24DC                 BEQ     DI
@@ -6713,7 +6716,7 @@ GAME:2602                 JSR     PROP            ; Update the propeller graphic
 GAME:2605                 JSR     TURN            ; Check for the joystick and set the plane graphics. Check for too low altitude as well and then crash the plane.
 GAME:2608                 JSR     TRIGC__TRIGGER_COUNT ; Count individual button presses during a landing
 GAME:260B                 JSR     PBMB
-GAME:260E                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:260E                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:2611
 GAME:2611                 LDA     TRIGGER_COUNT   ; Increment with each button/trigger press
 GAME:2614                 CMP     #2
@@ -7648,7 +7651,7 @@ GAME:2AFA
 GAME:2AFB
 GAME:2AFB ; =============== S U B R O U T I N E =======================================
 GAME:2AFB
-GAME:2AFB ; Fire Gun
+GAME:2AFB ; Fire gun
 GAME:2AFB
 GAME:2AFB FBRGN:                                  ; CODE XREF: SRT+24↑p
 GAME:2AFB                                         ; CKLAND+28↑p
@@ -8282,7 +8285,7 @@ GAME:2E2E                 JSR     CKCOL           ; Check collision?!?
 GAME:2E31                 JSR     CPTL
 GAME:2E34                 JSR     SPD__SPEED_CHANGE ; Change the speed of the plane up/down based on the joystick
 GAME:2E37                 JSR     CDRP
-GAME:2E3A                 JSR     TIMER           ; Wait for Timer 3. Sync gameplay to 60Hz
+GAME:2E3A                 JSR     TIMER__SYNC_VBL ; Busy-wait for a VBL to sync the game to 50/60Hz
 GAME:2E3D                 STA     ATRACT          ; ATRACT FLAG
 GAME:2E3F                 JMP     CITY
 GAME:2E3F ; End of function CITY
@@ -9694,6 +9697,7 @@ GAME:35A5
 GAME:35A6
 GAME:35A6 ; =============== S U B R O U T I N E =======================================
 GAME:35A6
+GAME:35A6 ; Fire enemy gun
 GAME:35A6
 GAME:35A6 FBTGN:                                  ; CODE XREF: SRT+27↑p
 GAME:35A6                                         ; CKLAND+2B↑p
@@ -13830,13 +13834,13 @@ GAME:4A73 ; =============== S U B R O U T I N E ================================
 GAME:4A73
 GAME:4A73 ; Play gun sound, if enabled
 GAME:4A73
-GAME:4A73 GGNSND:                                 ; CODE XREF: COMMON+5D↑p
+GAME:4A73 GGNSND__GUN_SOUND:                      ; CODE XREF: COMMON+5D↑p
 GAME:4A73                 LDA     AUDIO4_GUN_SND_COUNTER
 GAME:4A76                 BNE     _1
 GAME:4A78                 RTS
 GAME:4A79 ; ---------------------------------------------------------------------------
 GAME:4A79
-GAME:4A79 _1:                                     ; CODE XREF: GGNSND+3↑j
+GAME:4A79 _1:                                     ; CODE XREF: GGNSND__GUN_SOUND+3↑j
 GAME:4A79                 DEC     AUDIO4_GUN_SND_COUNTER
 GAME:4A7C                 BEQ     _2
 GAME:4A7E                 LDA     AUDIO4_GUN_SND_COUNTER
@@ -13848,24 +13852,24 @@ GAME:4A87                 BCC     _2
 GAME:4A89                 LDA     #AUDIO_CONTROL_VOL_7|AUDIO_CONTROL_DIST_2
 GAME:4A8B                 STA     AUDC4           ; Audio 4 Channel Control Register
 GAME:4A8E
-GAME:4A8E _4:                                     ; CODE XREF: GGNSND+26↓j
+GAME:4A8E _4:                                     ; CODE XREF: GGNSND__GUN_SOUND+26↓j
 GAME:4A8E                 LDA     #SND_FREQ_60
 GAME:4A90                 STA     AUDF4           ; Audio 4 Frequency Register
 GAME:4A93                 RTS
 GAME:4A94 ; ---------------------------------------------------------------------------
 GAME:4A94
-GAME:4A94 _3:                                     ; CODE XREF: GGNSND+10↑j
+GAME:4A94 _3:                                     ; CODE XREF: GGNSND__GUN_SOUND+10↑j
 GAME:4A94                 LDA     #AUDIO_CONTROL_VOL_5|AUDIO_CONTROL_DIST_1
 GAME:4A96                 STA     AUDC4           ; Audio 4 Channel Control Register
 GAME:4A99                 JMP     _4
 GAME:4A9C ; ---------------------------------------------------------------------------
 GAME:4A9C
-GAME:4A9C _2:                                     ; CODE XREF: GGNSND+9↑j
-GAME:4A9C                                         ; GGNSND+14↑j
+GAME:4A9C _2:                                     ; CODE XREF: GGNSND__GUN_SOUND+9↑j
+GAME:4A9C                                         ; GGNSND__GUN_SOUND+14↑j
 GAME:4A9C                 LDA     #0
 GAME:4A9E                 STA     AUDC4           ; Audio 4 Channel Control Register
 GAME:4AA1                 RTS
-GAME:4AA1 ; End of function GGNSND
+GAME:4AA1 ; End of function GGNSND__GUN_SOUND
 GAME:4AA1
 GAME:4AA2
 GAME:4AA2 ; =============== S U B R O U T I N E =======================================
@@ -16847,7 +16851,7 @@ IO:D01B                 .BYTE 0,0 ; (uninited)
 IO:D01D GRACTL:         .BYTE 0 ; (uninited)    ; DATA XREF: RESET+221↑w
 IO:D01D                                         ; Graphics Control Register
 IO:D01E HITCLR:         .BYTE 0 ; (uninited)    ; DATA XREF: EB+C3↑w
-IO:D01E                                         ; TIMER+2↑w
+IO:D01E                                         ; TIMER__SYNC_VBL+2↑w
 IO:D01E                                         ; write to HITCLR clears all of the collision registers.
 IO:D01F CONSOL:         .BYTE 0 ; (uninited)    ; DATA XREF: CNSL__CONSOLE↑r
 IO:D01F                                         ; MENU__CHECK_KEYS↑r
@@ -17246,7 +17250,7 @@ ROM:E459 SIOV:           .BYTE 0,0,0 ; (uninited)
 ROM:E459                                         ; CODE XREF: READ_BLOCK+B↑p
 ROM:E459                                         ; SERIAL INPUT OUTPUT ROUTINE
 ROM:E45C SETVBV:         .BYTE 0,0,0 ; (uninited) ; CODE XREF: EB+BB↑p
-ROM:E45C                                         ; TIMER+9↑p ...
+ROM:E45C                                         ; TIMER__SYNC_VBL+9↑p ...
 ROM:E45C                                         ; SET SYSTEM TIMERS ROUTINE
 ROM:E45F SYSVBV:         .BYTE 0,0,0 ; (uninited) ; SYSTEM VERTICAL BLANK CALCULATIONS
 ROM:E462 XITVBV:         .BYTE 0,0,0 ; (uninited) ; CODE XREF: XSND:PV↑j
